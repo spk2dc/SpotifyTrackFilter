@@ -16,7 +16,9 @@ let basicTokenMethods = (token) => {
             'Authorization': `${token.token_type} ${token.access_token}`
         }
 
-    }).then(parseData)
+    }).then((data) => {
+        console.log(data)
+    })
 
 }
 
@@ -67,11 +69,6 @@ let currentTrack = (token) => {
 
 }
 
-let parseData = (data) => {
-    console.log(data);
-
-}
-
 let getBasicToken = () => {
     let baseurl = "https://accounts.spotify.com/api/token"
     let encodedID = btoa(`${client_id}:${client_secret}`)
@@ -93,20 +90,30 @@ let getBasicToken = () => {
 
 let getUserToken = () => {
     let baseurl = "https://accounts.spotify.com/authorize"
-    let encodedID = btoa(`${client_id}:${client_secret}`)
+    let redirect = "https://spk2dc.github.io/SpotifyPlaylist/"
+    let permissions = "user-read-private user-read-email user-library-modify playlist-read-collaborative playlist-modify-public playlist-modify-private"
+    let str = `GET ${baseurl}?client_id=${client_id}&response_type=code&redirect_uri=${redirect}&scope=${permissions}`
 
-    console.log(`user client: ${client_id}`);
-    
+    console.log(`cmd: ${str}`);
+
 
     $.ajax({
-        url: baseurl,
+        //this website fixes the CORS no Access-Control-Allow-Origin header issue. Works for now but might need to create my own proxy server with Express.js for final solution
+        url: `https://cors-anywhere.herokuapp.com/${baseurl}`,
         type: "GET",
         client_id: client_id,
         response_type: 'code',
-        redirect_uri: 'https://spk2dc.github.io/SpotifyPlaylist/',
-        scope: 'user-read-private user-read-email user-library-modify playlist-read-collaborative playlist-modify-public playlist-modify-private'
+        redirect_uri: redirect,
+        scope: permissions,
+        // headers: {
+        //     'Access-Control-Allow-Origin': '*'
+        // }
+
+    }).then((data) => {
+        console.log(data);
         
-    }).then(userTokenMethods)
+        //userTokenMethods(data)
+    })
 
 }
 
@@ -122,9 +129,16 @@ $(() => {
 Sources:
 https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
-https://stackoverflow.com/questions/45053624/convert-hex-to-binary-in-javascript
+https://developer.spotify.com/documentation/web-api/quick-start/
+
+https://developer.spotify.com/dashboard/applications/6a9b462fe78344ec8fe04d1bd91409b1
 
 https://stackoverflow.com/questions/23190056/hex-to-base64-converter-for-javascript
 
 https://www.w3schools.com/jsref/met_win_btoa.asp
+
+https://github.com/spotify/web-api-auth-examples/blob/master/authorization_code/app.js
+
+https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+
 */

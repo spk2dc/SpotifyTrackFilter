@@ -66,6 +66,7 @@ let searchPlaylists = (token) => {
     let limit = 10
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
+    
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
     

@@ -19,7 +19,6 @@ let getBasicToken = () => {
 
 let basicTokenMethods = (token) => {
 
-
     $('#search-box').on('keypress', () => {
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {

@@ -111,7 +111,11 @@ let getUserToken = () => {
 
     }).then((data) => {
         console.log(data);
-        
+
+        var win = window.open("") //open new window and write to it
+
+        win.document.write(data)
+        // win.document.close();
         //userTokenMethods(data)
     })
 
@@ -140,5 +144,7 @@ https://www.w3schools.com/jsref/met_win_btoa.asp
 https://github.com/spotify/web-api-auth-examples/blob/master/authorization_code/app.js
 
 https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+
+https://stackoverflow.com/questions/4293495/javascript-redirect-to-dynamically-created-html
 
 */

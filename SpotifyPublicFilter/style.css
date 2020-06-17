@@ -1,0 +1,23 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#container {
+    width: 750px;
+    height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background: rgb(51, 49, 49);
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    margin: 50px auto;
+    padding: 20px;
+    /* overflow: scroll; */
+}
+

@@ -18,41 +18,19 @@ let getBasicToken = () => {
 }
 
 let basicTokenMethods = (token) => {
-    let baseurl = "https://api.spotify.com/v1/"
-    let testSongID = '4JjUwfp8GQ3PxWg2QPKnpn'
-    let filter = `${baseurl}audio-features/${testSongID}`
 
-    //log below is for testing ajax query using command prompt
-    // console.log(`curl -X "GET" "${filter}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
-
-    $.ajax({
-        url: filter,
-        type: "GET",
-        data: {
-
-        },
-        headers: {
-            'Authorization': `${token.token_type} ${token.access_token}`
-        }
-
-    }).then((data) => {
-        console.log(data);
-
-    })
 
     $('#search-box').on('keypress', () => {
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
             // Cancel the default action, if needed
-            //event.preventDefault();
+            event.preventDefault();
             // Trigger the button element with a click
             $('#search-button').click();
         }
     })
     $('#search-button').on('click', (event) => {
         event.preventDefault();
-        console.log(token);
-
         searchPlaylists(token)
 
     })
@@ -66,10 +44,10 @@ let searchPlaylists = (token) => {
     let limit = 10
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
-    
+
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
-    
+
 
     $.ajax({
         type: "GET",
@@ -82,6 +60,30 @@ let searchPlaylists = (token) => {
 
     }).then((data) => {
         console.log(data)
+    })
+}
+
+let audioAnalysis = (token) => {
+    let baseurl = "https://api.spotify.com/v1/"
+    let testSongID = '4JjUwfp8GQ3PxWg2QPKnpn'
+    let finalurl = `${baseurl}audio-features/${testSongID}`
+
+    //log below is for testing ajax query using command prompt
+    // console.log(`curl -X "GET" "${filter}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+
+    $.ajax({
+        url: finalurl,
+        type: "GET",
+        data: {
+
+        },
+        headers: {
+            'Authorization': `${token.token_type} ${token.access_token}`
+        }
+
+    }).then((data) => {
+        console.log(data);
+
     })
 }
 

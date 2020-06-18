@@ -40,7 +40,7 @@ let basicTokenMethods = (token) => {
 let searchPlaylists = (token) => {
     let baseurl = "https://api.spotify.com/v1/search"
     let queryStr = encodeURIComponent($('#search-box').val())
-    let typeStr = encodeURIComponent('playlist,album')
+    let typeStr = encodeURIComponent('album,artist,playlist,track')
     let limit = 10
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
@@ -58,18 +58,21 @@ let searchPlaylists = (token) => {
             'Authorization': `${token.token_type} ${token.access_token}`,
         }
 
-    }).then((data) => {
-        console.log(data)
-        let $box = $('#results-box')
+    }).then(displaySearchResults)
+}
 
-        for (const itr of data.albums.items) {
-            let $trackDiv = $('<div>').addClass('track')
-            let $titleDiv = $('<div>').addClass('track__title').text(itr.name)
-            $box.append($trackDiv.append($titleDiv))
-            console.log(itr.name)
+let displaySearchResults = (itemsObj) => {
+    console.log(itemsObj);
 
-        }
-    })
+    let $box = $('#results-box')
+
+    for (const itr of itemsObj.albums.items) {
+        let $trackDiv = $('<div>').addClass('track')
+        let $titleDiv = $('<div>').addClass('track__title').text(itr.name)
+        $box.append($trackDiv.append($titleDiv))
+        console.log(itr.name)
+
+    }
 }
 
 let audioAnalysis = (token) => {

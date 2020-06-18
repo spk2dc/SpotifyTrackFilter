@@ -2,7 +2,8 @@ let getBasicToken = () => {
     let baseurl = "https://accounts.spotify.com/api/token"
     let encodedID = btoa(`${client_id}:${client_secret}`)
 
-    let token = {}
+    //log below is for testing ajax query using command prompt
+    //console.log(`curl -X "POST" -H "Authorization: Basic ${encodedID}" -d grant_type=client_credentials ${baseurl}`);
 
     $.ajax({
         url: baseurl,
@@ -59,6 +60,15 @@ let searchPlaylists = (token) => {
 
     }).then((data) => {
         console.log(data)
+        let $box = $('#results-box')
+
+        for (const itr of data.albums.items) {
+            let $trackDiv = $('<div>').addClass('track')
+            let $titleDiv = $('<div>').addClass('track__title').text(itr.name)
+            $box.append($trackDiv.append($titleDiv))
+            console.log(itr.name)
+
+        }
     })
 }
 
@@ -131,5 +141,9 @@ https://stackoverflow.com/questions/41224070/spotify-javascript-api-getting-the-
 https://github.com/watsonbox/exportify
 
 https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
+
+https://freebiesbug.com/code-stuff/spotify-ui-html-css/
+
+https://jsonformatter.org/scss-to-css
 
 */

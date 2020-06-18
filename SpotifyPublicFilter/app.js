@@ -64,15 +64,91 @@ let searchPlaylists = (token) => {
 let displaySearchResults = (itemsObj) => {
     console.log(itemsObj);
 
-    let $box = $('#results-box')
 
-    for (const itr of itemsObj.albums.items) {
-        let $trackDiv = $('<div>').addClass('track')
-        let $titleDiv = $('<div>').addClass('track__title').text(itr.name)
-        $box.append($trackDiv.append($titleDiv))
-        console.log(itr.name)
+
+    for (let i = 0; i < 10; i++) {
+
+        displayOneAlbum(itemsObj, i)
+        displayOneArtist(itemsObj, i)
+        displayOnePlaylist(itemsObj, i)
+        displayOneTrack(itemsObj, i)
 
     }
+
+}
+
+let displayOneAlbum = (itemsObj, i) => {
+    $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
+    let $album = $('<tr>').addClass('album-row')
+    let $albumLink = $('<a>').text('View in Spotify').attr('target', 'blank')
+    let allArtists = ''
+
+    $album.append($('<td>').text(itemsObj.albums.items[i].name))
+
+    for (const itr of itemsObj.albums.items[i].artists) {
+        if (allArtists.length < 1) {
+            allArtists = itr.name
+        } else {
+            allArtists += ', ' + itr.name
+        }
+    }
+    $album.append($('<td>').text(allArtists))
+    $album.append($('<td>').text(itemsObj.albums.items[i].release_date))
+    $albumLink.attr('href', itemsObj.albums.items[i].external_urls.spotify)
+    $album.append($('<td>').append($albumLink))
+
+    $('#albums-table').append($album)
+}
+
+let displayOneArtist = (itemsObj, i) => {
+    $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
+    let $artist = $('<tr>').addClass('artist-row')
+    let $artistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
+
+    $artist.append($('<td>').text(itemsObj.artists.items[i].name))
+    $artist.append($('<td>').text('empty'))
+    $artist.append($('<td>').text(itemsObj.artists.items[i].followers.total))
+    $artistLink.attr('href', itemsObj.artists.items[i].external_urls.spotify)
+    $artist.append($('<td>').append($artistLink))
+
+    $('#artists-table').append($artist)
+}
+
+let displayOnePlaylist = (itemsObj, i) => {
+    $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
+    let $playlist = $('<tr>').addClass('playlist-row')
+    let $playlistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
+
+    $playlist.append($('<td>').text(itemsObj.playlists.items[i].name))
+    $playlist.append($('<td>').text(itemsObj.playlists.items[i].owner.display_name))
+    $playlist.append($('<td>').text(itemsObj.playlists.items[i].tracks.total))
+    $playlistLink.attr('href', itemsObj.playlists.items[i].external_urls.spotify)
+    $playlist.append($('<td>').append($playlistLink))
+
+    $('#playlists-table').append($playlist)
+}
+
+let displayOneTrack = (itemsObj, i) => {
+    $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
+    let $track = $('<tr>').addClass('track-row')
+    let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
+    let allArtists = ''
+
+    $track.append($('<td>').text(itemsObj.tracks.items[i].name))
+
+    for (const itr of itemsObj.tracks.items[i].artists) {
+        if (allArtists.length < 1) {
+            allArtists = itr.name
+        } else {
+            allArtists += ', ' + itr.name
+        }
+    }
+    $track.append($('<td>').text(allArtists))
+    $track.append($('<td>').text(itemsObj.tracks.items[i].album.name))
+    $trackLink.attr('href', itemsObj.tracks.items[i].external_urls.spotify)
+    $track.append($('<td>').append($trackLink))
+
+    $('#tracks-table').append($track)
 }
 
 let audioAnalysis = (token) => {

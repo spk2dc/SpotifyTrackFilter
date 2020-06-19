@@ -90,12 +90,15 @@ let searchUserInput = (token) => {
                 <div id="albums-header">Albums</div>
                 <div id="albums-results">
                     <table id="albums-table">
-                        <tr>
-                            <th>Album Name</th>
-                            <th>Artists</th>
-                            <th>Release Date</th>
-                            <th>URL</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Album Name</th>
+                                <th>Artists</th>
+                                <th>Release Date</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -104,12 +107,15 @@ let searchUserInput = (token) => {
                 <div id="artists-header">Artists</div>
                 <div id="artists-results">
                     <table id="artists-table">
-                        <tr>
-                            <th>Artist Name</th>
-                            <th>Albums (3 most recent)</th>
-                            <th>Followers</th>
-                            <th>URL</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Artist Name</th>
+                                <th>Albums (3 most recent)</th>
+                                <th>Followers</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -118,12 +124,15 @@ let searchUserInput = (token) => {
                 <div id="playlists-header">Playlists</div>
                 <div id="playlists-results">
                     <table id="playlists-table">
-                        <tr>
-                            <th>Playlist Name</th>
-                            <th>Owner</th>
-                            <th>Total Tracks</th>
-                            <th>URL</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Playlist Name</th>
+                                <th>Owner</th>
+                                <th>Total Tracks</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -132,12 +141,15 @@ let searchUserInput = (token) => {
                 <div id="tracks-header">Tracks</div>
                 <div id="tracks-results">
                     <table id="tracks-table">
-                        <tr>
-                            <th>Track Name</th>
-                            <th>Artists</th>
-                            <th>Duration (ms)</th>
-                            <th>URL</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Track Name</th>
+                                <th>Artists</th>
+                                <th>Duration (ms)</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -181,12 +193,15 @@ let searchURL = (token, queryStr) => {
                 <div id="tracks-header">Tracks</div>
                 <div id="tracks-results">
                     <table id="tracks-table">
-                        <tr>
-                            <th>Track Name</th>
-                            <th>Artists</th>
-                            <th>Duration (ms)</th>
-                            <th>URL</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Track Name</th>
+                                <th>Artists</th>
+                                <th>Duration (ms)</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -330,17 +345,17 @@ let displayOneTrack = (itemsObj, i) => {
     $trackLink.attr('href', oneItem.external_urls.spotify)
     $track.append($('<td>').append($trackLink))
 
-    $('#tracks-table').append($track)
+    $('#tracks-table tbody').append($track)
 }
 
 //get audio feature values for a track
-let getTrackAudioFeatures = (token, trackID) => {
+let getTrackAudioFeatures = (token, trackID, allFilteredTracks) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${baseurl}/${track}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
-    $.ajax({
+    return $.ajax({
         url: `${baseurl}/${trackID}`,
         type: "GET",
         data: {
@@ -353,8 +368,9 @@ let getTrackAudioFeatures = (token, trackID) => {
         }
 
     }).then((track) => {
-        // console.log(track);
         addFilteredResultsTrack(trackID, track)
+        allFilteredTracks[trackID] = track
+        return track
     })
 }
 
@@ -409,12 +425,20 @@ let runFilters = (token) => {
     $('#filtered-header-total').text('0')
 
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
-    let rows = $('#results-tables table').get(0).rows
+    let rows = $('#results-tables tbody').get(0).rows
+    let allFilteredTracks = {}
+    let arrPromise = []
 
-    //first row is header so start at 1 not 0
-    for (let i = 1; i < rows.length; i++) {
-        getTrackAudioFeatures(token, rows[i].id)
+    for (let i = 0; i < rows.length; i++) {
+        arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks)
     }
+    console.log(allFilteredTracks);
+
+    Promise.allSettled(arrPromise).then((data) => {
+        console.log(data);
+
+    })
+
 }
 
 let currentTrack = (token) => {

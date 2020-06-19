@@ -1,3 +1,4 @@
+//gets a valid client credentials token from spotify for authentication purposes
 let getBasicToken = () => {
     let baseurl = "https://accounts.spotify.com/api/token"
     let encodedID = btoa(`${client_id}:${client_secret}`)
@@ -21,6 +22,7 @@ let getBasicToken = () => {
 //true main method of program, only operates if token is valid
 let basicTokenMethods = (token) => {
 
+    //listeners for search box and button
     $('#search-box').on('keypress', () => {
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
@@ -36,13 +38,14 @@ let basicTokenMethods = (token) => {
 
     })
 
+    //listener for filter button
     $('#filter-button').on('click', (event) => {
         event.preventDefault();
-        //disable filter button for a few seconds after clicked once
+        //disable filter button after clicked once so method has time to finish and it can't be spammed
         $('#filter-button').prop('disabled', true);
 
         runFilters(token)
-
+        //re-enable filter button after a few seconds
         setTimeout(() => {
             $('#filter-button').prop('disabled', false);
         }, 2000)
@@ -51,6 +54,7 @@ let basicTokenMethods = (token) => {
 
 }
 
+//main search method, for when usere inputs normal text. searches the first 10 results for albums, artists, playlists, and tracks
 let searchUserInput = (token) => {
     let baseurl = "https://api.spotify.com/v1/search"
     let queryStr = $('#search-box').val()
@@ -139,10 +143,11 @@ let searchUserInput = (token) => {
             </div>
         `)
 
-        displaySearchResults(token, itemsObj)
+        displaySearchResults(token, itemsObj, limit)
     })
 }
 
+//separate search method for when user inputs a spotify URL
 let searchURL = (token, queryStr) => {
     let baseurl = "https://api.spotify.com/v1"
     let queryURL = new URL(queryStr)
@@ -193,22 +198,18 @@ let searchURL = (token, queryStr) => {
     })
 }
 
-let displaySearchResults = (token, itemsObj) => {
+//display all search results using 1 loop and calling a separate display function on each item
+let displaySearchResults = (token, itemsObj, limit) => {
     console.log(itemsObj);
-
-
-
-    for (let i = 0; i < 10; i++) {
-
+    for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)
         displayOneArtist(token, itemsObj, i)
         displayOnePlaylist(itemsObj, i)
         displayOneTrack(itemsObj, i)
-
     }
-
 }
 
+//display one album in the search results table
 let displayOneAlbum = (itemsObj, i) => {
     $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
     let $album = $('<tr>').addClass('album-row').attr('id', itemsObj.albums.items[i].id)
@@ -232,6 +233,7 @@ let displayOneAlbum = (itemsObj, i) => {
     $('#albums-table').append($album)
 }
 
+//display one artist in the search results table
 let displayOneArtist = (token, itemsObj, i) => {
     $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
     let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id', itemsObj.artists.items[i].id)
@@ -251,6 +253,7 @@ let displayOneArtist = (token, itemsObj, i) => {
     $('#artists-table').append($artist)
 }
 
+//need to make a separate ajax query to get the albums from an individual artist
 let setOneArtistsAlbums = (token, itemsObj, i) => {
     let baseurl = `https://api.spotify.com/v1/artists/${itemsObj.artists.items[i].id}/albums`
     let groups = 'album,single'
@@ -284,6 +287,7 @@ let setOneArtistsAlbums = (token, itemsObj, i) => {
     })
 }
 
+//display one playlist in the search results table
 let displayOnePlaylist = (itemsObj, i) => {
     $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
     let $playlist = $('<tr>').addClass('playlist-row').attr('id', itemsObj.playlists.items[i].id)
@@ -298,6 +302,7 @@ let displayOnePlaylist = (itemsObj, i) => {
     $('#playlists-table').append($playlist)
 }
 
+//display one track in the search results table
 let displayOneTrack = (itemsObj, i) => {
     //if object contains multiple objects only select the track object, else it's only a track object so go straight to items
     if ('tracks' in itemsObj) {

@@ -327,15 +327,15 @@ let displayOneTrack = (itemsObj, i) => {
     $('#tracks-table').append($track)
 }
 
-let getTrackAudioFeatures = (token, track) => {
+//get audio feature values for a track
+let getTrackAudioFeatures = (token, trackID) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
-    track = '4JjUwfp8GQ3PxWg2QPKnpn'
 
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${baseurl}/${track}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     $.ajax({
-        url: `${baseurl}/${track}`,
+        url: `${baseurl}/${trackID}`,
         type: "GET",
         data: {
 
@@ -346,13 +346,62 @@ let getTrackAudioFeatures = (token, track) => {
             'Authorization': `${token.token_type} ${token.access_token}`
         }
 
-    }).then((data) => {
-        console.log(data);
-
+    }).then((track) => {
+        // console.log(track);
+        addFilteredResultsTrack(trackID, track)
     })
 }
 
+//add track to filtered results if it meets all user input criteria
+let addFilteredResultsTrack = (trackID, track) => {
+    //names correspond to both spotify object keys and ids in various html input elements
+    let filterNames = ['acousticness', 'danceability', 'duration_ms', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness', 'tempo', 'valence']
+    //set default boolean to add track as true
+    let addTrack = true
+
+    filterNames.forEach((name) => {
+        console.log(`${name} is checked: ${$('#check-' + name).is(':checked')}`);
+        if ($(`#check-${name}`).is(':checked')) {
+
+            console.log(`${name} above is : ${$('#radio-' + name + '-above').is(':checked')}`);
+            console.log(`${name} below is : ${$('#radio-' + name + '-below').is(':checked')}`);
+
+            if ($(`#radio-${name}-above`).is(':checked')) {
+                console.log(`${track[name]} < ${$('#' + name).get(0).value}`);
+
+                if (track[`${name}`] < $(`#${name}`).get(0).value) {
+                    //if filter is checked and radio is set to above but track value is less than filter value then do not add track
+                    addTrack = false
+                }
+            } else {
+                console.log(`${track[name]} < ${$('#' + name).get(0).value}`);
+
+                if (track[`${name}`] > $(`#${name}`).get(0).value) {
+                    //if filter is checked and radio is set to below but track value is greater than filter value then do not add track
+                    addTrack = false
+                }
+            }
+        }
+    });
+
+    if (addTrack) {
+        //clone html row containing track to add. do not copy event handlers
+        let $tr = $(`#${trackID}`).clone(false)
+        //cannot have duplicate id's, must change new one
+        $tr.attr('id', `filtered_${trackID}`)
+        $('#filtered-table tbody').append($tr)
+        //increase total number in header by 1
+        let $total = $('#filtered-header-total')
+        $total.text(parseInt($total.text(), 10) + 1)
+    }
+}
+
+//add each track in search results table to filtered results table based on current filter settings
 let runFilters = (token) => {
+    //clear any filtered results that are already displayed
+    $('#filtered-table tbody').empty()
+    $('#filtered-header-total').text('0')
+
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#results-tables table').get(0).rows
 

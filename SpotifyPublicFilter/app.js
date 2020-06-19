@@ -173,7 +173,7 @@ let searchURL = (token, queryStr) => {
         }
 
     }).then((itemsObj) => {
-        console.log(itemsObj);
+        // console.log(itemsObj);
 
         $('#results-tables').empty()
         $('#results-tables').html(`
@@ -257,6 +257,7 @@ let displayOneArtist = (token, itemsObj, i) => {
 let setOneArtistsAlbums = (token, itemsObj, i) => {
     let baseurl = `https://api.spotify.com/v1/artists/${itemsObj.artists.items[i].id}/albums`
     let groups = 'album,single'
+    //limit to 3 albums so does not try to display too many in the table
     let limit = 3
     let offset = 0
     let finalurl = `${baseurl}?include_groups=${groups}&limit=${limit}&offset=${offset}`
@@ -365,21 +366,21 @@ let addFilteredResultsTrack = (trackID, track) => {
     let addTrack = true
 
     filterNames.forEach((name) => {
-        console.log(`${name} is checked: ${$('#check-' + name).is(':checked')}`);
+        // console.log(`${name} is checked: ${$('#check-' + name).is(':checked')}`);
         if ($(`#check-${name}`).is(':checked')) {
 
-            console.log(`${name} above is : ${$('#radio-' + name + '-above').is(':checked')}`);
-            console.log(`${name} below is : ${$('#radio-' + name + '-below').is(':checked')}`);
+            // console.log(`${name} above is : ${$('#radio-' + name + '-above').is(':checked')}`);
+            // console.log(`${name} below is : ${$('#radio-' + name + '-below').is(':checked')}`);
 
             if ($(`#radio-${name}-above`).is(':checked')) {
-                console.log(`${track[name]} < ${$('#' + name).get(0).value}`);
+                // console.log(`${track[name]} < ${$('#' + name).get(0).value}`);
 
                 if (track[`${name}`] < $(`#${name}`).get(0).value) {
                     //if filter is checked and radio is set to above but track value is less than filter value then do not add track
                     addTrack = false
                 }
             } else {
-                console.log(`${track[name]} < ${$('#' + name).get(0).value}`);
+                // console.log(`${track[name]} < ${$('#' + name).get(0).value}`);
 
                 if (track[`${name}`] > $(`#${name}`).get(0).value) {
                     //if filter is checked and radio is set to below but track value is greater than filter value then do not add track

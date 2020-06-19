@@ -18,6 +18,7 @@ let getBasicToken = () => {
 
 }
 
+//true main method of program, only operates if token is valid
 let basicTokenMethods = (token) => {
 
     $('#search-box').on('keypress', () => {
@@ -33,7 +34,19 @@ let basicTokenMethods = (token) => {
         event.preventDefault();
         searchUserInput(token)
 
-        getTrackAudioFeatures(token)
+    })
+
+    $('#filter-button').on('click', (event) => {
+        event.preventDefault();
+        //disable filter button for a few seconds after clicked once
+        $('#filter-button').prop('disabled', true);
+
+        runFilters(token)
+
+        setTimeout(() => {
+            $('#filter-button').prop('disabled', false);
+        }, 2000)
+
     })
 
 }
@@ -156,7 +169,7 @@ let searchURL = (token, queryStr) => {
 
     }).then((itemsObj) => {
         console.log(itemsObj);
-        
+
         $('#results-tables').empty()
         $('#results-tables').html(`
             <div id="tracks-div">
@@ -198,7 +211,7 @@ let displaySearchResults = (token, itemsObj) => {
 
 let displayOneAlbum = (itemsObj, i) => {
     $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
-    let $album = $('<tr>').addClass('album-row').attr('id',itemsObj.albums.items[i].id)
+    let $album = $('<tr>').addClass('album-row').attr('id', itemsObj.albums.items[i].id)
     let $albumLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
 
@@ -221,7 +234,7 @@ let displayOneAlbum = (itemsObj, i) => {
 
 let displayOneArtist = (token, itemsObj, i) => {
     $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
-    let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id',itemsObj.artists.items[i].id)
+    let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id', itemsObj.artists.items[i].id)
     let $artistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
 
     $artist.append($('<td>').text(itemsObj.artists.items[i].name))
@@ -273,7 +286,7 @@ let setOneArtistsAlbums = (token, itemsObj, i) => {
 
 let displayOnePlaylist = (itemsObj, i) => {
     $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
-    let $playlist = $('<tr>').addClass('playlist-row').attr('id',itemsObj.playlists.items[i].id)
+    let $playlist = $('<tr>').addClass('playlist-row').attr('id', itemsObj.playlists.items[i].id)
     let $playlistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
 
     $playlist.append($('<td>').text(itemsObj.playlists.items[i].name))
@@ -294,7 +307,7 @@ let displayOneTrack = (itemsObj, i) => {
         $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
         oneItem = itemsObj.items[i]
     }
-    let $track = $('<tr>').addClass('track-row').attr('id',oneItem.id)
+    let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
     $track.append($('<td>').text(oneItem.name))
@@ -334,18 +347,18 @@ let getTrackAudioFeatures = (token, track) => {
         }
 
     }).then((data) => {
-        // console.log(data);
+        console.log(data);
 
     })
 }
 
-let filter = (token) => {
+let runFilters = (token) => {
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#results-tables table').get(0).rows
 
     //first row is header so start at 1 not 0
     for (let i = 1; i < rows.length; i++) {
-        getTrackAudioFeatures(rows[i].id)
+        getTrackAudioFeatures(token, rows[i].id)
     }
 }
 
@@ -354,6 +367,7 @@ let currentTrack = (token) => {
 }
 
 $(() => {
+    //get spotify authentication token before any other method can work
     getBasicToken()
 
 
@@ -402,5 +416,7 @@ https://freebiesbug.com/code-stuff/spotify-ui-html-css/
 https://jsonformatter.org/scss-to-css
 
 https://stackoverflow.com/questions/901712/how-do-i-check-whether-a-checkbox-is-checked-in-jquery
+
+https://stackoverflow.com/questions/42418925/prevent-click-event-for-two-seconds
 
 */

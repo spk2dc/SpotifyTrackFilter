@@ -31,19 +31,27 @@ let basicTokenMethods = (token) => {
     })
     $('#search-button').on('click', (event) => {
         event.preventDefault();
-        searchPlaylists(token)
+        searchUserInput(token)
 
+        getTrackAudioFeatures(token)
     })
 
 }
 
-let searchPlaylists = (token) => {
+let searchUserInput = (token) => {
     let baseurl = "https://api.spotify.com/v1/search"
-    let queryStr = encodeURIComponent($('#search-box').val())
+    let queryStr = $('#search-box').val()
     let typeStr = encodeURIComponent('album,artist,playlist,track')
     let limit = 10
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
+
+    //if user inputs a spotify url call different search function and end this function
+    if (queryStr.includes('open.spotify.com')) {
+        searchURL(token, queryStr)
+        return;
+    }
+    queryStr = encodeURIComponent(queryStr)
 
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
@@ -58,10 +66,121 @@ let searchPlaylists = (token) => {
             'Authorization': `${token.token_type} ${token.access_token}`,
         }
 
-    }).then(displaySearchResults)
+    }).then((itemsObj) => {
+        $('#results-tables').empty()
+        $('#results-tables').html(`
+            <div id="albums-div">
+                <div id="albums-header">Albums</div>
+                <div id="albums-results">
+                    <table id="albums-table">
+                        <tr>
+                            <th>Album Name</th>
+                            <th>Artists</th>
+                            <th>Release Date</th>
+                            <th>URL</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="artists-div">
+                <div id="artists-header">Artists</div>
+                <div id="artists-results">
+                    <table id="artists-table">
+                        <tr>
+                            <th>Artist Name</th>
+                            <th>Albums (3 most recent)</th>
+                            <th>Followers</th>
+                            <th>URL</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="playlists-div">
+                <div id="playlists-header">Playlists</div>
+                <div id="playlists-results">
+                    <table id="playlists-table">
+                        <tr>
+                            <th>Playlist Name</th>
+                            <th>Owner</th>
+                            <th>Total Tracks</th>
+                            <th>URL</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tracks-div">
+                <div id="tracks-header">Tracks</div>
+                <div id="tracks-results">
+                    <table id="tracks-table">
+                        <tr>
+                            <th>Track Name</th>
+                            <th>Artists</th>
+                            <th>Duration (ms)</th>
+                            <th>URL</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        `)
+
+        displaySearchResults(token, itemsObj)
+    })
 }
 
-let displaySearchResults = (itemsObj) => {
+let searchURL = (token, queryStr) => {
+    let baseurl = "https://api.spotify.com/v1"
+    let queryURL = new URL(queryStr)
+    let path = queryURL.pathname.split('/')
+    let finalurl = `${baseurl}/${path[1]}s/${path[2]}`
+
+    if (path[1] === 'artist') {
+        finalurl += `/top-tracks?country=from_token`
+    } else if (path[1] !== 'track') {
+        finalurl += `/tracks`
+    }
+
+    //log below is for testing ajax query using command prompt
+    // console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+
+    $.ajax({
+        type: "GET",
+        url: finalurl,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `${token.token_type} ${token.access_token}`,
+        }
+
+    }).then((itemsObj) => {
+        console.log(itemsObj);
+        
+        $('#results-tables').empty()
+        $('#results-tables').html(`
+            <div id="tracks-div">
+                <div id="tracks-header">Tracks</div>
+                <div id="tracks-results">
+                    <table id="tracks-table">
+                        <tr>
+                            <th>Track Name</th>
+                            <th>Artists</th>
+                            <th>Duration (ms)</th>
+                            <th>URL</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        `)
+
+        for (let i = 0; i < itemsObj.items.length; i++) {
+            displayOneTrack(itemsObj, i)
+        }
+    })
+}
+
+let displaySearchResults = (token, itemsObj) => {
     console.log(itemsObj);
 
 
@@ -69,7 +188,7 @@ let displaySearchResults = (itemsObj) => {
     for (let i = 0; i < 10; i++) {
 
         displayOneAlbum(itemsObj, i)
-        displayOneArtist(itemsObj, i)
+        displayOneArtist(token, itemsObj, i)
         displayOnePlaylist(itemsObj, i)
         displayOneTrack(itemsObj, i)
 
@@ -79,7 +198,7 @@ let displaySearchResults = (itemsObj) => {
 
 let displayOneAlbum = (itemsObj, i) => {
     $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
-    let $album = $('<tr>').addClass('album-row')
+    let $album = $('<tr>').addClass('album-row').attr('id',itemsObj.albums.items[i].id)
     let $albumLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
 
@@ -100,13 +219,18 @@ let displayOneAlbum = (itemsObj, i) => {
     $('#albums-table').append($album)
 }
 
-let displayOneArtist = (itemsObj, i) => {
+let displayOneArtist = (token, itemsObj, i) => {
     $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
-    let $artist = $('<tr>').addClass('artist-row')
+    let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id',itemsObj.artists.items[i].id)
     let $artistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
 
     $artist.append($('<td>').text(itemsObj.artists.items[i].name))
-    $artist.append($('<td>').text('empty'))
+
+    //add placeholder cell to row
+    $artist.append($('<td>').text('NULL'))
+    //send another ajax request to set each artist's albums in the placeholder cell
+    setOneArtistsAlbums(token, itemsObj, i)
+
     $artist.append($('<td>').text(itemsObj.artists.items[i].followers.total))
     $artistLink.attr('href', itemsObj.artists.items[i].external_urls.spotify)
     $artist.append($('<td>').append($artistLink))
@@ -114,9 +238,42 @@ let displayOneArtist = (itemsObj, i) => {
     $('#artists-table').append($artist)
 }
 
+let setOneArtistsAlbums = (token, itemsObj, i) => {
+    let baseurl = `https://api.spotify.com/v1/artists/${itemsObj.artists.items[i].id}/albums`
+    let groups = 'album,single'
+    let limit = 3
+    let offset = 0
+    let finalurl = `${baseurl}?include_groups=${groups}&limit=${limit}&offset=${offset}`
+    //log below is for testing ajax query using command prompt
+    // console.log(`curl -X "GET" "${baseurl}?include_groups=${groups}&limit=${limit}&offset=${offset}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+
+    $.ajax({
+        type: "GET",
+        url: finalurl,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `${token.token_type} ${token.access_token}`,
+        }
+
+    }).then((artistsAlbums) => {
+        // console.log(artistsAlbums);
+        let allAlbums = ''
+        for (const itr of artistsAlbums.items) {
+            if (allAlbums.length < 1) {
+                allAlbums = itr.name
+            } else {
+                allAlbums += ', ' + itr.name
+            }
+        }
+        //select 2nd cell from current row in artists-table
+        $(`#artists-table .r${i} td`).eq(1).text(allAlbums)
+    })
+}
+
 let displayOnePlaylist = (itemsObj, i) => {
     $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
-    let $playlist = $('<tr>').addClass('playlist-row')
+    let $playlist = $('<tr>').addClass('playlist-row').attr('id',itemsObj.playlists.items[i].id)
     let $playlistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
 
     $playlist.append($('<td>').text(itemsObj.playlists.items[i].name))
@@ -129,14 +286,20 @@ let displayOnePlaylist = (itemsObj, i) => {
 }
 
 let displayOneTrack = (itemsObj, i) => {
-    $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
-    let $track = $('<tr>').addClass('track-row')
+    //if object contains multiple objects only select the track object, else it's only a track object so go straight to items
+    if ('tracks' in itemsObj) {
+        $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
+        oneItem = itemsObj.tracks.items[i]
+    } else {
+        $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
+        oneItem = itemsObj.items[i]
+    }
+    let $track = $('<tr>').addClass('track-row').attr('id',oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
+    $track.append($('<td>').text(oneItem.name))
 
-    $track.append($('<td>').text(itemsObj.tracks.items[i].name))
-
-    for (const itr of itemsObj.tracks.items[i].artists) {
+    for (const itr of oneItem.artists) {
         if (allArtists.length < 1) {
             allArtists = itr.name
         } else {
@@ -144,39 +307,46 @@ let displayOneTrack = (itemsObj, i) => {
         }
     }
     $track.append($('<td>').text(allArtists))
-    $track.append($('<td>').text(itemsObj.tracks.items[i].album.name))
-    $trackLink.attr('href', itemsObj.tracks.items[i].external_urls.spotify)
+    $track.append($('<td>').text(oneItem.duration_ms))
+    $trackLink.attr('href', oneItem.external_urls.spotify)
     $track.append($('<td>').append($trackLink))
 
     $('#tracks-table').append($track)
 }
 
-let audioAnalysis = (token) => {
-    let baseurl = "https://api.spotify.com/v1/"
-    let testSongID = '4JjUwfp8GQ3PxWg2QPKnpn'
-    let finalurl = `${baseurl}audio-features/${testSongID}`
+let getTrackAudioFeatures = (token, track) => {
+    let baseurl = "https://api.spotify.com/v1/audio-features"
+    track = '4JjUwfp8GQ3PxWg2QPKnpn'
 
     //log below is for testing ajax query using command prompt
-    // console.log(`curl -X "GET" "${filter}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    // console.log(`curl -X "GET" "${baseurl}/${track}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     $.ajax({
-        url: finalurl,
+        url: `${baseurl}/${track}`,
         type: "GET",
         data: {
 
         },
         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `${token.token_type} ${token.access_token}`
         }
 
     }).then((data) => {
-        console.log(data);
+        // console.log(data);
 
     })
 }
 
 let filter = (token) => {
+    //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
+    let rows = $('#results-tables table').get(0).rows
 
+    //first row is header so start at 1 not 0
+    for (let i = 1; i < rows.length; i++) {
+        getTrackAudioFeatures(rows[i].id)
+    }
 }
 
 let currentTrack = (token) => {
@@ -199,9 +369,15 @@ https://developer.spotify.com/documentation/web-api/quick-start/
 
 https://developer.spotify.com/dashboard/applications/6a9b462fe78344ec8fe04d1bd91409b1
 
-https://stackoverflow.com/questions/23190056/hex-to-base64-converter-for-javascript
+https://developer.mozilla.org/en-US/
 
-https://www.w3schools.com/jsref/met_win_btoa.asp
+https://stackoverflow.com/
+
+https://www.w3schools.com/
+
+https://api.jquery.com/
+
+https://stackoverflow.com/questions/23190056/hex-to-base64-converter-for-javascript
 
 https://github.com/spotify/web-api-auth-examples/blob/master/authorization_code/app.js
 
@@ -224,5 +400,7 @@ https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
 https://freebiesbug.com/code-stuff/spotify-ui-html-css/
 
 https://jsonformatter.org/scss-to-css
+
+https://stackoverflow.com/questions/901712/how-do-i-check-whether-a-checkbox-is-checked-in-jquery
 
 */

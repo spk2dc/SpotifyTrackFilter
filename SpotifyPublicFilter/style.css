@@ -67,6 +67,7 @@ body {
 
 button {
   margin: 5px 0px;
+  padding: 11px;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0%);
@@ -76,8 +77,9 @@ button {
   color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 1px;
-  height: 27px;
-  font-size: 11px;
+  min-width: 150px;
+  font-size: 14px;
+  font-weight: 600;
   outline: black;
 }
 
@@ -95,15 +97,43 @@ ul {
   list-style-type: none;
 }
 
+li {
+  margin: auto;
+  text-align: center;
+}
+
+label.filter-option {
+  display: inline-block;
+  min-width: 250px;
+  text-align: start;
+}
+
+input.filter-option {
+  display: inline-block;
+  width: 80px;
+  margin: 0px 10px 0px 0px;
+}
+
+label.comparison {
+  display: inline-block;
+  width: 60px;
+  text-align: start;
+}
+
 table, th, td {
   border: 1px solid #aaaaaa;
   border-collapse: collapse;
-  margin: 8px;
+  margin: 8px auto;
   padding: 8px;
+  overflow-x: auto;
 }
 
 tbody > tr:hover {
   background-color: #373737;
+}
+
+th {
+  background-color: #1ed75fb9;
 }
 
 /*

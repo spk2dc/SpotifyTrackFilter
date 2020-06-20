@@ -12,7 +12,12 @@ body {
 }
 
 .main-header {
-  font-size: 30px;
+  font-size: 36px;
+  text-align: center;
+}
+
+.sub-header {
+  font-size: 26px;
   text-align: center;
 }
 
@@ -25,6 +30,18 @@ body {
   background: #373737;
 }
 
+#apikeys {
+  display: block;
+  margin: 0;
+  padding-left: 10px;
+  text-align: start;
+  border-radius: 10px;
+  border: none;
+  background: #fff;
+  color: #181818;
+  width: 150px;
+}
+
 #search-box {
   display: block;
   margin: 10px auto;
@@ -33,7 +50,7 @@ body {
   background: #fff;
   color: #181818;
   height: 30px;
-  width: 150px;
+  width: 300px;
   padding-left: 30px;
   outline: none;
   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/ios-search.svg);
@@ -43,7 +60,7 @@ body {
   transition: width 0.4s ease-in-out;
 }
 
-#search-box[type=text]:focus {
+#search-box[type=search]:focus {
   width: 70%;
 }
 

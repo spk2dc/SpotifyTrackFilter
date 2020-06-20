@@ -1,7 +1,7 @@
 //gets a valid client credentials token from spotify for authentication purposes
-let getBasicToken = () => {
+let getBasicToken = (clientID, secretID, event) => {
     let baseurl = "https://accounts.spotify.com/api/token"
-    let encodedID = btoa(`${client_id}:${client_secret}`)
+    let encodedID = btoa(`${clientID}:${secretID}`)
 
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "POST" -H "Authorization: Basic ${encodedID}" -d grant_type=client_credentials ${baseurl}`);
@@ -15,20 +15,19 @@ let getBasicToken = () => {
         headers: {
             'Authorization': `Basic ${encodedID}`
         }
-    }).then(basicTokenMethods)
+    }).then((token) => {
+        basicTokenMethods(token, event)
+    })
 
 }
 
 //true main method of program, only operates if token is valid
-let basicTokenMethods = (token) => {
+let basicTokenMethods = (token, event) => {
 
     //listeners for search box and button
     $('#search-box').on('keypress', () => {
-        // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
-            // Cancel the default action, if needed
             event.preventDefault();
-            // Trigger the button element with a click
             $('#search-button').click();
         }
     })
@@ -49,6 +48,11 @@ let basicTokenMethods = (token) => {
         $('#filter-button').prop('disabled', false)
 
     })
+
+    //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
+    if (event.currentTarget == 2) {
+        searchUserInput(token)
+    }
 
 }
 
@@ -85,10 +89,10 @@ let searchUserInput = (token) => {
         $('#results-tables').empty()
         $('#results-tables').html(`
             <div id="albums-div">
-                <div id="albums-header">Albums</div>
-                <div id="albums-results">
-                    <table id="albums-table">
-                        <thead>
+                <div id="albums-header" class="sub-header">Albums</div>
+                <div id="albums-results" class="results-div">
+                    <table id="albums-table" class="results-table">
+                        <thead class="results-thead">
                             <tr>
                                 <th>Album Name</th>
                                 <th>Artists</th>
@@ -102,10 +106,10 @@ let searchUserInput = (token) => {
             </div>
 
             <div id="artists-div">
-                <div id="artists-header">Artists</div>
-                <div id="artists-results">
-                    <table id="artists-table">
-                        <thead>
+                <div id="artists-header" class="sub-header">Artists</div>
+                <div id="artists-results" class="results-div">
+                    <table id="artists-table" class="results-table">
+                        <thead class="results-thead">
                             <tr>
                                 <th>Artist Name</th>
                                 <th>Albums (3 most recent)</th>
@@ -119,10 +123,10 @@ let searchUserInput = (token) => {
             </div>
 
             <div id="playlists-div">
-                <div id="playlists-header">Playlists</div>
-                <div id="playlists-results">
-                    <table id="playlists-table">
-                        <thead>
+                <div id="playlists-header" class="sub-header">Playlists</div>
+                <div id="playlists-results" class="results-div">
+                    <table id="playlists-table" class="results-table">
+                        <thead class="results-thead">
                             <tr>
                                 <th>Playlist Name</th>
                                 <th>Owner</th>
@@ -136,10 +140,10 @@ let searchUserInput = (token) => {
             </div>
 
             <div id="tracks-div">
-                <div id="tracks-header">Tracks</div>
-                <div id="tracks-results">
-                    <table id="tracks-table">
-                        <thead>
+                <div id="tracks-header" class="sub-header">Tracks</div>
+                <div id="tracks-results" class="results-div">
+                    <table id="tracks-table" class="results-table">
+                        <thead class="results-thead">
                             <tr>
                                 <th>Track Name</th>
                                 <th>Artists</th>
@@ -188,10 +192,10 @@ let searchURL = (token, queryStr) => {
         $('#results-tables').empty()
         $('#results-tables').html(`
             <div id="tracks-div">
-                <div id="tracks-header">Tracks</div>
-                <div id="tracks-results">
-                    <table id="tracks-table">
-                        <thead>
+                <div id="tracks-header" class="sub-header">Tracks</div>
+                <div id="tracks-results" class="results-div">
+                    <table id="tracks-table" class="results-table">
+                        <thead class="results-thead">
                             <tr>
                                 <th>Track Name</th>
                                 <th>Artists</th>
@@ -469,9 +473,37 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
 }
 
 $(() => {
-    //get spotify authentication token before any other method can work
-    getBasicToken()
+    let clientID = ''
+    let secretID = ''
 
+    //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
+    $('#search-box').on('keypress', () => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#search-button').click();
+        }
+    })
+    $('#search-button').on('click', (event) => {
+        event.preventDefault();
+        if (client_id.length > 0 && client_secret.length > 0) {
+            clientID = client_id
+            secretID = client_secret
+            getBasicToken(clientID, secretID, event)
+        }
+    })
+
+    //if need to get client and secret ids from user then wait until they are entered and go to token method
+    $('#apikeys').on('keypress', () => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            let userID = $('#apikeys').val().split(':')
+            clientID = userID[0]
+            secretID = userID[1]
+
+            //get spotify authentication token before any other method can work
+            getBasicToken(clientID, secretID, event)
+        }
+    })
 
 });
 

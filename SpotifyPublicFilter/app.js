@@ -65,6 +65,11 @@ let searchUserInput = (token) => {
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
 
+    $('#results-tables').empty()
+    $('#filtered-table tbody').empty()
+    $('#filtered-header-total').text('0')
+    $('#track-analysis-table tbody').empty()
+
     //if user inputs a spotify url call different search function and end this function
     if (queryStr.includes('open.spotify.com')) {
         searchURL(token, queryStr)
@@ -86,7 +91,6 @@ let searchUserInput = (token) => {
         }
 
     }).then((itemsObj) => {
-        $('#results-tables').empty()
         $('#results-tables').html(`
             <div id="albums-div">
                 <div id="albums-header" class="sub-header">Albums</div>

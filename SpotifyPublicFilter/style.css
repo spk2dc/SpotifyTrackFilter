@@ -14,6 +14,7 @@ body {
 .main-header {
   font-size: 36px;
   text-align: center;
+  font-weight: 600;
 }
 
 .sub-header {
@@ -87,11 +88,22 @@ button:active {
 }
 
 a {
-  color: #aaaaaa;
+  color: #1ed760;
 }
 
 ul {
   list-style-type: none;
+}
+
+table, th, td {
+  border: 1px solid #aaaaaa;
+  border-collapse: collapse;
+  margin: 8px;
+  padding: 8px;
+}
+
+tbody > tr:hover {
+  background-color: #373737;
 }
 
 /*

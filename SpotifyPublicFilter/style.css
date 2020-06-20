@@ -138,9 +138,10 @@ table, th, td {
   border-collapse: collapse;
   margin: 8px auto;
   padding: 8px;
-  /* overflow-x: auto; */
+  overflow-x: hidden;
   /* overflow-y: scroll; */
   min-width: 125px;
+  word-wrap: break-word;
 }
 
 #track-analysis-table {
@@ -149,6 +150,10 @@ table, th, td {
 
 th {
   background-color: #1ed75fb9;
+}
+
+th, td {
+  max-width: 350px;
 }
 
 tbody {
@@ -167,7 +172,7 @@ tbody td:last-child {
 }
 
 /*need to override tbody column centering for 1 specific table*/
-#track-analysis-table tbody {
+#track-analysis-table td {
   text-align: left;
 }
 

@@ -206,7 +206,7 @@ let searchURL = (token, queryStr) => {
         `)
 
         for (let i = 0; i < itemsObj.items.length; i++) {
-            displayOneTrack(token, itemsObj, i)
+            displayOneTrack(itemsObj, i)
         }
     })
 }
@@ -218,7 +218,7 @@ let displaySearchResults = (token, itemsObj, limit) => {
         displayOneAlbum(itemsObj, i)
         displayOneArtist(token, itemsObj, i)
         displayOnePlaylist(itemsObj, i)
-        displayOneTrack(token, itemsObj, i)
+        displayOneTrack(itemsObj, i)
     }
 }
 
@@ -317,7 +317,7 @@ let displayOnePlaylist = (itemsObj, i) => {
 }
 
 //display one track in the search results table
-let displayOneTrack = (token, itemsObj, i) => {
+let displayOneTrack = (itemsObj, i) => {
     //if object contains multiple objects only select the track object, else it's only a track object so go straight to items    
     if ('tracks' in itemsObj) {
         $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
@@ -344,17 +344,6 @@ let displayOneTrack = (token, itemsObj, i) => {
     $track.append($('<td>').append($trackLink))
 
     $('#tracks-table tbody').append($track)
-
-    console.log(oneItem.id);
-
-    let allFilteredTracks = {}
-    let promiseResult = getTrackAudioFeatures(token, oneItem.id, allFilteredTracks, false)
-
-    $('#tracks-table tbody tr').on('click', (event) => {
-        displayAudioFeatures(event, allFilteredTracks)
-        console.log(allFilteredTracks);
-        
-    })
 }
 
 //get audio feature values for a track
@@ -457,7 +446,14 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     let row = event.currentTarget
     let trackID = row.id.split('_')[1]
     let $tbody = $('#track-analysis-table tbody')
+    let $tdTrackName = $('<td>').text($(row).children().eq(0).text())
+    let $tdArtist = $('<td>').text($(row).children().eq(1).text())
+    let $trName = $('<tr>').append($('<td>').text('Track Name'), $tdTrackName)
+    let $trArtist = $('<tr>').append($('<td>').text('Artist'), $tdArtist)
+
     $tbody.empty()
+    $tbody.append($trName)
+    $tbody.append($trArtist)
 
     for (const key in allFilteredTracks[trackID]) {
         let $tr = $('<tr>')

@@ -45,10 +45,8 @@ let basicTokenMethods = (token) => {
         $('#filter-button').prop('disabled', true);
 
         runFilters(token)
-        //re-enable filter button after a few seconds
-        setTimeout(() => {
-            $('#filter-button').prop('disabled', false);
-        }, 2000)
+        //re-enable filter button after all tracks have finished filtering
+        $('#filter-button').prop('disabled', false)
 
     })
 
@@ -208,7 +206,7 @@ let searchURL = (token, queryStr) => {
         `)
 
         for (let i = 0; i < itemsObj.items.length; i++) {
-            displayOneTrack(itemsObj, i)
+            displayOneTrack(token, itemsObj, i)
         }
     })
 }
@@ -220,7 +218,7 @@ let displaySearchResults = (token, itemsObj, limit) => {
         displayOneAlbum(itemsObj, i)
         displayOneArtist(token, itemsObj, i)
         displayOnePlaylist(itemsObj, i)
-        displayOneTrack(itemsObj, i)
+        displayOneTrack(token, itemsObj, i)
     }
 }
 
@@ -319,8 +317,8 @@ let displayOnePlaylist = (itemsObj, i) => {
 }
 
 //display one track in the search results table
-let displayOneTrack = (itemsObj, i) => {
-    //if object contains multiple objects only select the track object, else it's only a track object so go straight to items
+let displayOneTrack = (token, itemsObj, i) => {
+    //if object contains multiple objects only select the track object, else it's only a track object so go straight to items    
     if ('tracks' in itemsObj) {
         $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
         oneItem = itemsObj.tracks.items[i]
@@ -346,10 +344,21 @@ let displayOneTrack = (itemsObj, i) => {
     $track.append($('<td>').append($trackLink))
 
     $('#tracks-table tbody').append($track)
+
+    console.log(oneItem.id);
+
+    let allFilteredTracks = {}
+    let promiseResult = getTrackAudioFeatures(token, oneItem.id, allFilteredTracks, false)
+
+    $('#tracks-table tbody tr').on('click', (event) => {
+        displayAudioFeatures(event, allFilteredTracks)
+        console.log(allFilteredTracks);
+        
+    })
 }
 
 //get audio feature values for a track
-let getTrackAudioFeatures = (token, trackID, allFilteredTracks) => {
+let getTrackAudioFeatures = (token, trackID, allFilteredTracks, boolAdd) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
     //log below is for testing ajax query using command prompt
@@ -368,8 +377,10 @@ let getTrackAudioFeatures = (token, trackID, allFilteredTracks) => {
         }
 
     }).then((track) => {
-        addFilteredResultsTrack(trackID, track)
         allFilteredTracks[trackID] = track
+        if (boolAdd) {
+            addFilteredResultsTrack(trackID, track)
+        }
         return track
     })
 }
@@ -430,19 +441,30 @@ let runFilters = (token) => {
     let arrPromise = []
 
     for (let i = 0; i < rows.length; i++) {
-        arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks)
+        arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
     }
-    console.log(allFilteredTracks);
 
     Promise.allSettled(arrPromise).then((data) => {
-        console.log(data);
-
+        $('#filtered-results tbody tr').on('click', (event) => {
+            displayAudioFeatures(event, allFilteredTracks)
+        })
     })
 
 }
 
-let currentTrack = (token) => {
+//display all audio feature properties for the selected track
+let displayAudioFeatures = (event, allFilteredTracks) => {
+    let row = event.currentTarget
+    let trackID = row.id.split('_')[1]
+    let $tbody = $('#track-analysis-table tbody')
+    $tbody.empty()
 
+    for (const key in allFilteredTracks[trackID]) {
+        let $tr = $('<tr>')
+        $tr.append($('<td>').text(key))
+        $tr.append($('<td>').text(allFilteredTracks[trackID][key]))
+        $tbody.append($tr)
+    }
 }
 
 $(() => {

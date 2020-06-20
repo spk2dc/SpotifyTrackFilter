@@ -424,6 +424,11 @@ let runFilters = (token) => {
     $('#filtered-table tbody').empty()
     $('#filtered-header-total').text('0')
 
+    if ($('#results-tables tbody').length < 1) {
+        alert('Please search for tracks before filtering the results.')
+        return;
+    }
+
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#results-tables tbody').get(0).rows
     let allFilteredTracks = {}

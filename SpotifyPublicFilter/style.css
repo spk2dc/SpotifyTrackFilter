@@ -1,24 +1,76 @@
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+  display: block;
+  background-color: #181818;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
 }
 
-#container {
-  width: 750px;
-  height: 600px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  background: rgb(221, 213, 213);
-  border: 1px solid black;
-  justify-content: center;
-  align-items: center;
-  /* font-size: 70px; */
-  margin: 50px auto;
-  padding: 20px;
-  /* overflow: scroll; */
+.main-div {
+  background-color: #282828;
+  margin: 10px 10px;
+  padding: 10px 10px;
+}
+
+.main-header {
+  font-size: 30px;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #373737;
+}
+
+#search-box {
+  display: block;
+  margin: 10px auto;
+  border-radius: 15px;
+  border: none;
+  background: #fff;
+  color: #181818;
+  height: 30px;
+  width: 150px;
+  padding-left: 30px;
+  outline: none;
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/ios-search.svg);
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: 5px;
+  transition: width 0.4s ease-in-out;
+}
+
+#search-box[type=text]:focus {
+  width: 70%;
+}
+
+button {
+  margin: 5px 0px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  background-color: #1ed760;
+  border: 1px solid #1ed760;
+  border-radius: 20px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  height: 27px;
+  font-size: 11px;
+  outline: black;
+}
+
+button:active {
+  background-color: #3e8e41;
+  /* box-shadow: 0 5px #666; */
+  /* transform: translate(1%, 1%); */
+}
+
+a {
+  color: #aaaaaa;
 }
 
 ul {

@@ -13,16 +13,16 @@
 </head>
 
 <body>
-    <div id="container">
-        <div id="results-box" class="tracks">
-            <div id="results-header">Search Results</div>
-            <div id="results-search">
-                <input type="text" id="search-box" value="https://open.spotify.com/album/114sumrk5wTeMWHVin86QC">
-                <button type="button" id="search-button">Search</button>
-            </div>
 
-            <div id="results-tables">
-                <!-- <div id="albums-div">
+    <div id="results-box" class="main-div">
+        <div id="results-header" class="main-header">Search Results</div>
+        <div id="results-search">
+            <input type="text" id="search-box" value="https://open.spotify.com/album/114sumrk5wTeMWHVin86QC">
+            <button type="button" id="search-button">Search</button>
+        </div>
+
+        <div id="results-tables">
+            <!-- <div id="albums-div">
                     <div id="albums-header">Albums</div>
                     <div id="albums-results">
                         <table id="albums-table">
@@ -77,157 +77,158 @@
                         </table>
                     </div>
                 </div> -->
-            </div>
         </div>
-
-        <div>
-            <div class="filter-header">Filter Settings</div>
-            <div class="filter-body">
-                <button type="button" id="filter-button">Run Checked Filters</button>
-
-                <ul>
-                    <li>
-                        <div class="tooltip">A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic. The distribution of values for this feature look like this:</div>
-                        <input type="checkbox" id="check-acousticness">
-                        <label for="check-acousticness">Acousticness (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="acousticness" min="0" max="1" step="0.1"
-                            value="0.5">
-                        <input type="radio" name="radio-acousticness" value="above" id="radio-acousticness-above" checked>
-                        <label for="radio-acousticness-above">Above</label>
-                        <input type="radio" name="radio-acousticness" value="below" id="radio-acousticness-below"> <label
-                            for="radio-acousticness-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-danceability">
-                        <label for="check-danceability">Danceability (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="danceability" min="0" max="1" step="0.1"
-                            value="0.5">
-                        <input type="radio" name="radio-danceability" value="above" id="radio-danceability-above" checked> <label
-                            for="radio-danceability-above">Above</label>
-                        <input type="radio" name="radio-danceability" value="below" id="radio-danceability-below"> <label
-                            for="radio-danceability-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-duration_ms">
-                        <label for="check-duration_ms">Duration (ms):</label>
-                        <input type="number" class="filter-option" id="duration_ms" min="0" step="10000" value="300000">
-                        <input type="radio" name="radio-duration_ms" value="above" id="radio-duration_ms-above" checked>
-                        <label for="radio-duration_ms-above">Above</label>
-                        <input type="radio" name="radio-duration_ms" value="below" id="radio-duration_ms-below"> <label
-                            for="radio-duration_ms-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-energy">
-                        <label for="check-energy">Energy (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="energy" min="0" max="1" step="0.1" value="0.5">
-                        <input type="radio" name="radio-energy" value="above" id="radio-energy-above" checked> <label
-                            for="radio-energy-above">Above</label>
-                        <input type="radio" name="radio-energy" value="below" id="radio-energy-below"> <label
-                            for="radio-energy-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-instrumentalness">
-                        <label for="check-instrumentalness">Instrumentalness (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="instrumentalness" min="0" max="1" step="0.1"
-                            value="0.5">
-                        <input type="radio" name="radio-instrumentalness" value="above" id="radio-instrumentalness-above" checked>
-                        <label for="radio-instrumentalness-above">Above</label>
-                        <input type="radio" name="radio-instrumentalness" value="below" id="radio-instrumentalness-below"> <label
-                            for="radio-instrumentalness-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-liveness">
-                        <label for="check-liveness">Liveness (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="liveness" min="0" max="1" step="0.1" value="0.5">
-                        <input type="radio" name="radio-liveness" value="above" id="radio-liveness-above" checked> <label
-                            for="radio-liveness-above">Above</label>
-                        <input type="radio" name="radio-liveness" value="below" id="radio-liveness-below"> <label
-                            for="radio-liveness-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-loudness">
-                        <label for="check-loudness">Loudness (-60 to 0 dB):</label>
-                        <input type="number" class="filter-option" id="loudness" min="-60" max="0" step="-1" value="-5">
-                        <input type="radio" name="radio-loudness" value="above" id="radio-loudness-above" checked> <label
-                            for="radio-loudness-above">Above</label>
-                        <input type="radio" name="radio-loudness" value="below" id="radio-loudness-below"> <label
-                            for="radio-loudness-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-speechiness">
-                        <label for="check-speechiness">Speechiness (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="speechiness" min="0" max="1" step="0.1"
-                            value="0.5">
-                        <input type="radio" name="radio-speechiness" value="above" id="radio-speechiness-above" checked> <label
-                            for="radio-speechiness-above">Above</label>
-                        <input type="radio" name="radio-speechiness" value="below" id="radio-speechiness-below"> <label
-                            for="radio-speechiness-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-tempo">
-                        <label for="check-tempo">Tempo (0 to 250 BPM):</label>
-                        <input type="number" class="filter-option" id="tempo" min="0" max="250" step="10" value="100">
-                        <input type="radio" name="radio-tempo" value="above" id="radio-tempo-above" checked> <label
-                            for="radio-tempo-above">Above</label>
-                        <input type="radio" name="radio-tempo" value="below" id="radio-tempo-below"> <label
-                            for="radio-tempo-below">Below</label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="check-valence">
-                        <label for="check-valence">Valence (0.0 to 1.0):</label>
-                        <input type="number" class="filter-option" id="valence" min="0" max="1" step="0.1" value="0.5">
-                        <input type="radio" name="radio-valence" value="above" id="radio-valence-above" checked> <label
-                            for="radio-valence-above">Above</label>
-                        <input type="radio" name="radio-valence" value="below" id="radio-valence-below"> <label
-                            for="radio-valence-below">Below</label>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-
-        <div id="filtered-tracks">
-            <div id="filtered-header">Filtered Tracks (total <span id="filtered-header-total">0</span>)</div>
-            <div id="filtered-results">
-                <table id="filtered-table">
-                    <thead>
-                        <tr>
-                            <th>Track Name</th>
-                            <th>Artists</th>
-                            <th>Duration (ms)</th>
-                            <th>URL</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="track-analysis">
-            <div id="track-analysis-header">Selected Track Audio Analysis</div>
-            <div id="track-analysis-results">
-                <table id="track-analysis-table">
-                    <thead>
-                        <tr>
-                            <th>Property</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
+
+    <div id="filter-settings" class="main-div">
+        <div id="filter-header" class="main-header">Filter Settings</div>
+        <div id="filter-body">
+            <button type="button" id="filter-button">Run Checked Filters</button>
+
+            <ul>
+                <li>
+                    <div class="tooltip">A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0
+                        represents high confidence the track is acoustic. The distribution of values for this feature
+                        look like this:</div>
+                    <input type="checkbox" id="check-acousticness">
+                    <label for="check-acousticness">Acousticness (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="acousticness" min="0" max="1" step="0.1" value="0.5">
+                    <input type="radio" name="radio-acousticness" value="above" id="radio-acousticness-above" checked>
+                    <label for="radio-acousticness-above">Above</label>
+                    <input type="radio" name="radio-acousticness" value="below" id="radio-acousticness-below"> <label
+                        for="radio-acousticness-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-danceability">
+                    <label for="check-danceability">Danceability (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="danceability" min="0" max="1" step="0.1" value="0.5">
+                    <input type="radio" name="radio-danceability" value="above" id="radio-danceability-above" checked>
+                    <label for="radio-danceability-above">Above</label>
+                    <input type="radio" name="radio-danceability" value="below" id="radio-danceability-below"> <label
+                        for="radio-danceability-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-duration_ms">
+                    <label for="check-duration_ms">Duration (ms):</label>
+                    <input type="number" class="filter-option" id="duration_ms" min="0" step="10000" value="300000">
+                    <input type="radio" name="radio-duration_ms" value="above" id="radio-duration_ms-above" checked>
+                    <label for="radio-duration_ms-above">Above</label>
+                    <input type="radio" name="radio-duration_ms" value="below" id="radio-duration_ms-below"> <label
+                        for="radio-duration_ms-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-energy">
+                    <label for="check-energy">Energy (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="energy" min="0" max="1" step="0.1" value="0.5">
+                    <input type="radio" name="radio-energy" value="above" id="radio-energy-above" checked> <label
+                        for="radio-energy-above">Above</label>
+                    <input type="radio" name="radio-energy" value="below" id="radio-energy-below"> <label
+                        for="radio-energy-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-instrumentalness">
+                    <label for="check-instrumentalness">Instrumentalness (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="instrumentalness" min="0" max="1" step="0.1"
+                        value="0.5">
+                    <input type="radio" name="radio-instrumentalness" value="above" id="radio-instrumentalness-above"
+                        checked>
+                    <label for="radio-instrumentalness-above">Above</label>
+                    <input type="radio" name="radio-instrumentalness" value="below" id="radio-instrumentalness-below">
+                    <label for="radio-instrumentalness-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-liveness">
+                    <label for="check-liveness">Liveness (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="liveness" min="0" max="1" step="0.1" value="0.5">
+                    <input type="radio" name="radio-liveness" value="above" id="radio-liveness-above" checked> <label
+                        for="radio-liveness-above">Above</label>
+                    <input type="radio" name="radio-liveness" value="below" id="radio-liveness-below"> <label
+                        for="radio-liveness-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-loudness">
+                    <label for="check-loudness">Loudness (-60 to 0 dB):</label>
+                    <input type="number" class="filter-option" id="loudness" min="-60" max="0" step="-1" value="-5">
+                    <input type="radio" name="radio-loudness" value="above" id="radio-loudness-above" checked> <label
+                        for="radio-loudness-above">Above</label>
+                    <input type="radio" name="radio-loudness" value="below" id="radio-loudness-below"> <label
+                        for="radio-loudness-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-speechiness">
+                    <label for="check-speechiness">Speechiness (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="speechiness" min="0" max="1" step="0.1" value="0.5">
+                    <input type="radio" name="radio-speechiness" value="above" id="radio-speechiness-above" checked>
+                    <label for="radio-speechiness-above">Above</label>
+                    <input type="radio" name="radio-speechiness" value="below" id="radio-speechiness-below"> <label
+                        for="radio-speechiness-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-tempo">
+                    <label for="check-tempo">Tempo (0 to 250 BPM):</label>
+                    <input type="number" class="filter-option" id="tempo" min="0" max="250" step="10" value="100">
+                    <input type="radio" name="radio-tempo" value="above" id="radio-tempo-above" checked> <label
+                        for="radio-tempo-above">Above</label>
+                    <input type="radio" name="radio-tempo" value="below" id="radio-tempo-below"> <label
+                        for="radio-tempo-below">Below</label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="check-valence">
+                    <label for="check-valence">Valence (0.0 to 1.0):</label>
+                    <input type="number" class="filter-option" id="valence" min="0" max="1" step="0.1" value="0.5">
+                    <input type="radio" name="radio-valence" value="above" id="radio-valence-above" checked> <label
+                        for="radio-valence-above">Above</label>
+                    <input type="radio" name="radio-valence" value="below" id="radio-valence-below"> <label
+                        for="radio-valence-below">Below</label>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div id="filtered-tracks" class="main-div">
+        <div id="filtered-header" class="main-header">Filtered Tracks (total <span id="filtered-header-total">0</span>)
+        </div>
+        <div id="filtered-results">
+            <table id="filtered-table">
+                <thead>
+                    <tr>
+                        <th>Track Name</th>
+                        <th>Artists</th>
+                        <th>Duration (ms)</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="track-analysis" class="main-div">
+        <div id="track-analysis-header" class="main-header">Selected Track Audio Analysis</div>
+        <div id="track-analysis-results">
+            <table id="track-analysis-table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+
 
 </body>
 

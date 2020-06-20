@@ -2,6 +2,7 @@
 let getBasicToken = (clientID, secretID, event) => {
     let baseurl = "https://accounts.spotify.com/api/token"
     let encodedID = btoa(`${clientID}:${secretID}`)
+    console.log(`client: ${clientID} \nsecret: ${secretID} \nencoded: ${encodedID}`);
 
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "POST" -H "Authorization: Basic ${encodedID}" -d grant_type=client_credentials ${baseurl}`);
@@ -16,6 +17,7 @@ let getBasicToken = (clientID, secretID, event) => {
             'Authorization': `Basic ${encodedID}`
         }
     }).then((token) => {
+        console.log(`token:`, token);
         basicTokenMethods(token, event)
     })
 
@@ -482,7 +484,7 @@ $(() => {
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
     $('#search-button').on('click', (event) => {
-        event.preventDefault();        
+        event.preventDefault();
         if (client_id.length > 0 && client_secret.length > 0) {
             clientID = client_id
             secretID = client_secret

@@ -1,3 +1,4 @@
+/***************  MAIN ELEMENT STYLING  ***************/
 body {
   display: block;
   background-color: #181818;
@@ -31,6 +32,11 @@ body {
   background: #373737;
 }
 
+a {
+  color: #1ed760;
+}
+
+/***************  SEARCH & BUTTON STYLING  ***************/
 #apikeys {
   display: block;
   margin: 0;
@@ -41,6 +47,11 @@ body {
   background: #fff;
   color: #181818;
   width: 150px;
+  transition: width 0.4s ease-in-out;
+}
+
+#apikeys:focus {
+  width: 30%;
 }
 
 #search-box {
@@ -89,10 +100,7 @@ button:active {
   /* transform: translate(1%, 1%); */
 }
 
-a {
-  color: #1ed760;
-}
-
+/***************  LIST STYLING  ***************/
 ul {
   list-style-type: none;
 }
@@ -120,12 +128,55 @@ label.comparison {
   text-align: start;
 }
 
+/***************  TABLE STYLING  ***************/
+table {
+  width: 700px;
+}
+
 table, th, td {
-  border: 1px solid #aaaaaa;
+  /* border: 1px solid #aaaaaa; */
   border-collapse: collapse;
   margin: 8px auto;
   padding: 8px;
-  overflow-x: auto;
+  /* overflow-x: auto; */
+  /* overflow-y: scroll; */
+  min-width: 125px;
+}
+
+#track-analysis-table {
+  width: 400px;
+}
+
+th {
+  background-color: #1ed75fb9;
+}
+
+tbody {
+  /* border-left: 1px solid #1ed760;
+  border-right: 1px solid #1ed760;
+  border-bottom: 1px solid #1ed760; */
+  box-shadow: 0px 0px 5px 0px #282828 inset, 0px -2px 2px 2px #1ed75fb9 inset, -2px 0px 2px 2px #1ed75fb9 inset, 2px 0px 2px 2px #1ed75fb9 inset;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  /* text-align: center; */
+}
+
+/*center last column in tbody*/
+tbody td:last-child {
+  text-align: center;
+}
+
+/*need to override tbody column centering for 1 specific table*/
+#track-analysis-table tbody {
+  text-align: left;
+}
+
+thead:first-child tr:first-child th:first-child {
+  border-top-left-radius: 15px;
+}
+
+thead:first-child tr:first-child th:last-child {
+  border-top-right-radius: 15px;
 }
 
 tbody > tr:hover {
@@ -136,10 +187,8 @@ tr.track-row.highlight-row {
   background-color: #375037;
 }
 
-th {
-  background-color: #1ed75fb9;
-}
 
+/***************  TOOLTIP STYLING  ***************/
 /* Tooltip container */
 .tooltip {
   position: relative;
@@ -182,7 +231,7 @@ th {
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
-.filter-option:hover .tooltip .tooltiptext {
+#acousticID:hover .tooltip .tooltiptext {
   background-color: red;
   visibility: visible;
   opacity: 1;
@@ -196,6 +245,10 @@ https://freebiesbug.com/code-stuff/spotify-ui-html-css/
 https://jsonformatter.org/scss-to-css
 
 https://www.w3schools.com/howto/howto_css_tooltip.asp
+
+https://stackoverflow.com/questions/16635182/solving-table-rounded-corner-css/24712255
+
+https://stackoverflow.com/questions/1429605/creating-a-css3-box-shadow-on-all-sides-but-one
 
 */
 /*

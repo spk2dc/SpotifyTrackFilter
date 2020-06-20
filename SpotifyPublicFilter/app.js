@@ -22,19 +22,19 @@ let getBasicToken = (clientID, secretID, event) => {
 }
 
 //true main method of program, only operates if token is valid
-let basicTokenMethods = (token, event) => {
+let basicTokenMethods = (token, oldEvent) => {
 
     //listeners for search box and button
-    $('#search-box').on('keypress', () => {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            $('#search-button').click();
-        }
-    })
     $('#search-button').on('click', (event) => {
         event.preventDefault();
         searchUserInput(token)
 
+    })
+    $('#search-box').on('keypress', (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#search-button').click();
+        }
     })
 
     //listener for filter button
@@ -50,7 +50,7 @@ let basicTokenMethods = (token, event) => {
     })
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
-    if (event.currentTarget == 2) {
+    if (oldEvent.currentTarget.id === 'search-button') {
         searchUserInput(token)
     }
 
@@ -477,23 +477,23 @@ $(() => {
     let secretID = ''
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
-    $('#search-box').on('keypress', () => {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            $('#search-button').click();
-        }
-    })
     $('#search-button').on('click', (event) => {
-        event.preventDefault();
+        event.preventDefault();        
         if (client_id.length > 0 && client_secret.length > 0) {
             clientID = client_id
             secretID = client_secret
             getBasicToken(clientID, secretID, event)
         }
     })
+    $('#search-box').on('keypress', (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#search-button').click();
+        }
+    })
 
     //if need to get client and secret ids from user then wait until they are entered and go to token method
-    $('#apikeys').on('keypress', () => {
+    $('#apikeys').on('keypress', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
             let userID = $('#apikeys').val().split(':')

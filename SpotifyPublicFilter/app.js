@@ -472,6 +472,7 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     let $trName = $('<tr>').append($('<td>').text('Track Name'), $tdTrackName)
     let $trArtist = $('<tr>').append($('<td>').text('Artist'), $tdArtist)
 
+    $('.highlight-row').removeClass('highlight-row')
     $(row).addClass('highlight-row')
     $tbody.empty()
     $tbody.append($trName)

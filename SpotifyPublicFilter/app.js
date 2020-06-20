@@ -485,7 +485,7 @@ $(() => {
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
     $('#search-button').on('click', (event) => {
         event.preventDefault();
-        if (typeof client_id.length === 'string' && typeof client_secret.length === 'string') {
+        if (typeof client_id === 'string' && typeof client_secret === 'string') {
             clientID = client_id
             secretID = client_secret
             getBasicToken(clientID, secretID, event)

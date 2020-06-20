@@ -132,6 +132,10 @@ tbody > tr:hover {
   background-color: #373737;
 }
 
+tr.track-row.highlight-row {
+  background-color: #375037;
+}
+
 th {
   background-color: #1ed75fb9;
 }

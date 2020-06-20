@@ -448,8 +448,9 @@ let runFilters = (token) => {
         arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
     }
 
+    //when all tracks have finished getting audio features and being displayed then add click event
     Promise.allSettled(arrPromise).then((data) => {
-        $('#filtered-results tbody tr').on('click', (event) => {
+        $('tbody').on('click', (event) => {
             displayAudioFeatures(event, allFilteredTracks)
         })
     })
@@ -458,7 +459,12 @@ let runFilters = (token) => {
 
 //display all audio feature properties for the selected track
 let displayAudioFeatures = (event, allFilteredTracks) => {
-    let row = event.currentTarget
+    //do not display if selected element is not a track row
+    if (!event.target.parentElement.matches('tr.track-row')) {
+        return;
+    }
+    
+    let row = event.target.parentElement
     let trackID = row.id.split('_')[1]
     let $tbody = $('#track-analysis-table tbody')
     let $tdTrackName = $('<td>').text($(row).children().eq(0).text())
@@ -479,6 +485,9 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
 }
 
 $(() => {
+    //scroll to the top of the page when page is reloaded
+    $(window).scrollTop(0);
+
     let clientID = ''
     let secretID = ''
 
@@ -558,5 +567,9 @@ https://jsonformatter.org/scss-to-css
 https://stackoverflow.com/questions/901712/how-do-i-check-whether-a-checkbox-is-checked-in-jquery
 
 https://stackoverflow.com/questions/42418925/prevent-click-event-for-two-seconds
+
+https://davidwalsh.name/event-delegate
+
+https://stackoverflow.com/questions/3664381/force-page-scroll-position-to-top-at-page-refresh-in-html
 
 */

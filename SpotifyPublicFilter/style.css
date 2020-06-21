@@ -204,7 +204,7 @@ tr.track-row.highlight-row {
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 150px;
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -236,8 +236,8 @@ tr.track-row.highlight-row {
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
-#acousticID:hover .tooltip .tooltiptext {
-  background-color: red;
+#acoustic-li:hover .tooltip .tooltiptext {
+  /* background-color: red; */
   visibility: visible;
   opacity: 1;
 }

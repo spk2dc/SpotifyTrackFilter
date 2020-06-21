@@ -68,7 +68,7 @@ let searchUserInput = (token) => {
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
 
-    $('#results-tables').empty()
+    $('#results-tables tbody').empty()
     $('#filtered-table tbody').empty()
     $('#filtered-table').hide()
     $('#filtered-header-total').text('0')
@@ -96,75 +96,9 @@ let searchUserInput = (token) => {
         }
 
     }).then((itemsObj) => {
-        $('#results-tables').html(`
-            <div id="albums-div">
-                <div id="albums-header" class="sub-header">Albums</div>
-                <div id="albums-results" class="results-div">
-                    <table id="albums-table" class="results-table">
-                        <thead class="results-thead">
-                            <tr>
-                                <th>Album Name</th>
-                                <th>Artists</th>
-                                <th>Release Date</th>
-                                <th>URL</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="artists-div">
-                <div id="artists-header" class="sub-header">Artists</div>
-                <div id="artists-results" class="results-div">
-                    <table id="artists-table" class="results-table">
-                        <thead class="results-thead">
-                            <tr>
-                                <th>Artist Name</th>
-                                <th>Albums (3 most recent)</th>
-                                <th>Followers</th>
-                                <th>URL</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="playlists-div">
-                <div id="playlists-header" class="sub-header">Playlists</div>
-                <div id="playlists-results" class="results-div">
-                    <table id="playlists-table" class="results-table">
-                        <thead class="results-thead">
-                            <tr>
-                                <th>Playlist Name</th>
-                                <th>Owner</th>
-                                <th>Total Tracks</th>
-                                <th>URL</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="tracks-div">
-                <div id="tracks-header" class="sub-header">Tracks</div>
-                <div id="tracks-results" class="results-div">
-                    <table id="tracks-table" class="results-table">
-                        <thead class="results-thead">
-                            <tr>
-                                <th>Track Name</th>
-                                <th>Artists</th>
-                                <th>Duration (ms)</th>
-                                <th>URL</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        `)
+        // $('#results-tables').html(`
+            
+        // `)
 
         displaySearchResults(token, itemsObj, limit)
     })
@@ -237,6 +171,7 @@ let displaySearchResults = (token, itemsObj, limit) => {
 
 //display one album in the search results table
 let displayOneAlbum = (itemsObj, i) => {
+    $('#albums-div').show()
     $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
     let $album = $('<tr>').addClass('album-row').attr('id', itemsObj.albums.items[i].id)
     let $albumLink = $('<a>').text('View in Spotify').attr('target', 'blank')
@@ -261,6 +196,7 @@ let displayOneAlbum = (itemsObj, i) => {
 
 //display one artist in the search results table
 let displayOneArtist = (token, itemsObj, i) => {
+    $('#artists-div').show()
     $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
     let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id', itemsObj.artists.items[i].id)
     let $artistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
@@ -316,6 +252,7 @@ let setOneArtistsAlbums = (token, itemsObj, i) => {
 
 //display one playlist in the search results table
 let displayOnePlaylist = (itemsObj, i) => {
+    $('#playlists-div').show()
     $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
     let $playlist = $('<tr>').addClass('playlist-row').attr('id', itemsObj.playlists.items[i].id)
     let $playlistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
@@ -339,6 +276,7 @@ let displayOneTrack = (itemsObj, i) => {
         $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
         oneItem = itemsObj.items[i]
     }
+    $('#tracks-div').show()
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''

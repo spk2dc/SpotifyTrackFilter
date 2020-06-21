@@ -151,7 +151,7 @@ label.comparison {
 
 /***************  TABLE STYLING  ***************/
 /* hide tables initially, only show after adding to them in javascript*/
-#filtered-table, #track-analysis-table {
+#filtered-table, #track-analysis-table, #albums-div, #artists-div, #playlists-div, #tracks-div {
   display: none;
 }
 

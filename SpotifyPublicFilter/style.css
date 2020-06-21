@@ -10,6 +10,8 @@ body {
   background-color: #282828;
   margin: 10px 10px;
   padding: 10px 10px;
+  border: 1px solid #1ed75fb9;
+  border-radius: 8px;
 }
 
 .main-header {
@@ -201,6 +203,74 @@ tr.track-row.highlight-row {
 
 /***************  TOOLTIP STYLING  ***************/
 /* Tooltip container */
+.tooltip-inner{
+  position:relative;
+}
+.tooltip {
+  transform: none;
+  margin: 50px;    
+}
+
+.li-filter:hover .tooltiptext, .li-filter:hover .tooltip-inner, .li-filter:hover .tooltip {
+  pointer-events: auto;
+  opacity: 1.0;
+}
+
+.tooltip .tooltiptext, .tooltip .tooltip-inner {
+  display: block;
+  position: absolute;
+  z-index: 6000;
+  overflow: visible;
+  padding: 5px 8px;
+  margin-top: 10px;
+  line-height: 16px;
+  border-radius: 4px;
+  text-align: left;
+  color: #fff;
+  background: #000;
+  pointer-events: none;
+  opacity: 0.0;
+  -o-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+
+/* Arrow */
+.tooltip .tooltiptext:before, .tooltip .tooltip-inner:before  {
+  display: inline;
+  top: -5px;
+  content: "";
+  position: absolute;
+  border: solid;
+  border-color: rgba(0, 0, 0, 1) transparent;
+  border-width: 0 .5em .5em .5em;
+  z-index: 6000;
+  left: 20px;
+}
+
+/* Invisible area so you can hover over tooltip */
+.tooltip .tooltiptext:after, .tooltip .tooltip-inner:after  {
+  top: -20px;
+  content: " ";
+  display: block;
+  height: 20px;
+  position: absolute;
+  width: 60px;
+  left: 20px;
+}
+
+.tooltip-inner .tooltiptext {
+  overflow-y: auto;
+  max-height: 40px;
+  display: block;
+}
+
+
+
+/* OLD TOOLTIP BASED ON W3SCHOOLS, DOES NOT WORK WITH SCROLLING*/
+/*
 .tooltip, .tooltip-inner{
   position: relative;
   display: inline-block;
@@ -215,7 +285,7 @@ tr.track-row.highlight-row {
   overflow-y: auto;
 }
 
-/* Tooltip text */
+/* Tooltip text *//*
 .tooltip .tooltiptext {
   visibility: hidden;
   background-color: #555;
@@ -224,19 +294,19 @@ tr.track-row.highlight-row {
   padding: 5px 5px;
   border-radius: 6px;
 
-  /* Position the tooltip text */
+  /* Position the tooltip text *//*
   position: absolute;
   z-index: 1;
   bottom: -170px;
   left: 50%;
   margin-left: -160px;
 
-  /* Fade in tooltip */
+  /* Fade in tooltip *//*
   opacity: 0;
   transition: opacity 0.3s;
 }
 
-/* Tooltip arrow */
+/* Tooltip arrow *//*
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
@@ -248,15 +318,20 @@ tr.track-row.highlight-row {
   border-color: transparent transparent transparent #555;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
+/* Show the tooltip text when you mouse over the tooltip container *//*
 .li-filter:hover .tooltip .tooltiptext {
-  /* background-color: red; */
   visibility: visible;
   opacity: 1;
 }
 
+*/
+
+
+
+
 /*
 -------------------------------------------------
+SOURCES:
 https://jsonformatter.org/scss-to-css
 
 https://www.w3schools.com/howto/howto_css_tooltip.asp

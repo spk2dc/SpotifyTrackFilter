@@ -89,10 +89,16 @@
             <button type="button" id="filter-button">Run Checked Filters</button>
 
             <ul>
-                <li id="acoustic-li">
-                    <div class="tooltip"><span class="tooltiptext">A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0
-                        represents high confidence the track is acoustic. The distribution of values for this feature
-                        look like this:</span></div>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext">A confidence measure from 0.0 to 1.0 of whether the
+                                track is acoustic. 1.0
+                                represents high confidence the track is acoustic. The distribution of values for this
+                                feature
+                                look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-acousticness">
                     <label for="check-acousticness" class="filter-option">Acousticness (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="acousticness" min="0" max="1" step="0.1" value="0.5">
@@ -102,7 +108,16 @@
                         for="radio-acousticness-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext">Danceability describes how suitable a track is for
+                                dancing based on a combination of musical elements including tempo, rhythm stability,
+                                beat
+                                strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most
+                                danceable. The distribution of values for this feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-danceability">
                     <label for="check-danceability" class="filter-option">Danceability (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="danceability" min="0" max="1" step="0.1" value="0.5">
@@ -112,7 +127,12 @@
                         for="radio-danceability-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext">The duration of the track in milliseconds.</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-duration_ms">
                     <label for="check-duration_ms" class="filter-option">Duration (ms):</label>
                     <input type="number" class="filter-option" id="duration_ms" min="0" step="10000" value="300000">
@@ -122,7 +142,20 @@
                         for="radio-duration_ms-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext"> Energy is a measure from 0.0 to 1.0 and represents a
+                                perceptual measure of intensity and activity. Typically, energetic tracks feel fast,
+                                loud,
+                                and noisy. For example, death metal has high energy, while a Bach prelude scores low on
+                                the
+                                scale. Perceptual features contributing to this attribute include dynamic range,
+                                perceived
+                                loudness, timbre, onset rate, and general entropy. The distribution of values for this
+                                feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-energy">
                     <label for="check-energy" class="filter-option">Energy (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="energy" min="0" max="1" step="0.1" value="0.5">
@@ -132,7 +165,21 @@
                         for="radio-energy-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext">Predicts whether a track contains no
+                                vocals. “Ooh”
+                                and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks
+                                are
+                                clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood
+                                the
+                                track contains no vocal content. Values above 0.5 are intended to represent instrumental
+                                tracks, but confidence is higher as the value approaches 1.0. The distribution of values
+                                for
+                                this feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-instrumentalness">
                     <label for="check-instrumentalness" class="filter-option">Instrumentalness (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="instrumentalness" min="0" max="1" step="0.1"
@@ -144,7 +191,15 @@
                     <label for="radio-instrumentalness-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext"> Detects the presence of an audience in the
+                                recording. Higher liveness values represent an increased probability that the track was
+                                performed live. A value above 0.8 provides strong likelihood that the track is live. The
+                                distribution of values for this feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-liveness">
                     <label for="check-liveness" class="filter-option">Liveness (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="liveness" min="0" max="1" step="0.1" value="0.5">
@@ -154,7 +209,18 @@
                         for="radio-liveness-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext">The overall loudness of a track in decibels (dB).
+                                Loudness values are averaged across the entire track and are useful for comparing
+                                relative
+                                loudness of tracks. Loudness is the quality of a sound that is the primary psychological
+                                correlate of physical strength (amplitude). Values typical range between -60 and 0 db.
+                                The
+                                distribution of values for this feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-loudness">
                     <label for="check-loudness" class="filter-option">Loudness (-60 to 0 dB):</label>
                     <input type="number" class="filter-option" id="loudness" min="-60" max="0" step="-1" value="-5">
@@ -164,7 +230,21 @@
                         for="radio-loudness-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext">Speechiness detects the presence of spoken words in a
+                                track. The more exclusively speech-like the recording (e.g. talk show, audio book,
+                                poetry),
+                                the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are
+                                probably
+                                made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may
+                                contain
+                                both music and speech, either in sections or layered, including such cases as rap music.
+                                Values below 0.33 most likely represent music and other non-speech-like tracks. The
+                                distribution of values for this feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-speechiness">
                     <label for="check-speechiness" class="filter-option">Speechiness (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="speechiness" min="0" max="1" step="0.1" value="0.5">
@@ -174,7 +254,16 @@
                         for="radio-speechiness-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext"> The overall estimated tempo of a track in beats per
+                                minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and
+                                derives directly from the average beat duration. The distribution of values for this
+                                feature
+                                look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-tempo">
                     <label for="check-tempo" class="filter-option">Tempo (0 to 250 BPM):</label>
                     <input type="number" class="filter-option" id="tempo" min="0" max="250" step="10" value="100">
@@ -184,7 +273,17 @@
                         for="radio-tempo-below" class="comparison">Below</label>
                 </li>
 
-                <li>
+                <li class="li-filter">
+                    <div class="tooltip">
+                        <div class="tooltip-inner">
+                            <span class="tooltiptext"> A measure from 0.0 to 1.0 describing the musical
+                                positiveness conveyed by a track. Tracks with high valence sound more positive (e.g.
+                                happy,
+                                cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad,
+                                depressed,
+                                angry). The distribution of values for this feature look like this:</span>
+                        </div>
+                    </div>
                     <input type="checkbox" id="check-valence">
                     <label for="check-valence" class="filter-option">Valence (0.0 to 1.0):</label>
                     <input type="number" class="filter-option" id="valence" min="0" max="1" step="0.1" value="0.5">

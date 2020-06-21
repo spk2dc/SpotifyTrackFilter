@@ -112,7 +112,7 @@ li {
 
 label.filter-option {
   display: inline-block;
-  min-width: 250px;
+  min-width: 220px;
   text-align: start;
 }
 
@@ -157,9 +157,12 @@ th, td {
 }
 
 tbody {
+  /* outer borders can't be used as the column headers don't have borders so it doesn't match up and looks misaligned */
   /* border-left: 1px solid #1ed760;
   border-right: 1px solid #1ed760;
   border-bottom: 1px solid #1ed760; */
+
+  /* use box-shadow to create an inner border. shadow on the top is blurred background color to remove it as much as possible and only display borders on other 3 sides. */
   box-shadow: 0px 0px 5px 0px #282828 inset, 0px -2px 2px 2px #1ed75fb9 inset, -2px 0px 2px 2px #1ed75fb9 inset, 2px 0px 2px 2px #1ed75fb9 inset;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -176,6 +179,7 @@ tbody td:last-child {
   text-align: left;
 }
 
+/*round the corners of the first and last header elements*/
 thead:first-child tr:first-child th:first-child {
   border-top-left-radius: 15px;
 }
@@ -184,10 +188,12 @@ thead:first-child tr:first-child th:last-child {
   border-top-right-radius: 15px;
 }
 
+/*color of highlighted row*/
 tbody > tr:hover {
   background-color: #373737;
 }
 
+/*color of clicked row*/
 tr.track-row.highlight-row {
   background-color: #375037;
 }
@@ -195,28 +201,35 @@ tr.track-row.highlight-row {
 
 /***************  TOOLTIP STYLING  ***************/
 /* Tooltip container */
-.tooltip {
+.tooltip, .tooltip-inner{
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip-inner {
+}
+
+.tooltiptext {
+  max-height: 190px;
+  width: 150px;
+  overflow-y: auto;
 }
 
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 150px;
   background-color: #555;
   color: #fff;
-  text-align: center;
-  padding: 5px 0;
+  text-align: left;
+  padding: 5px 5px;
   border-radius: 6px;
 
   /* Position the tooltip text */
   position: absolute;
   z-index: 1;
-  bottom: 125%;
+  bottom: -170px;
   left: 50%;
-  margin-left: -60px;
+  margin-left: -160px;
 
   /* Fade in tooltip */
   opacity: 0;
@@ -227,16 +240,16 @@ tr.track-row.highlight-row {
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
-  top: 100%;
-  left: 50%;
+  top: 5%;
+  left: 103%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #555 transparent transparent transparent;
+  border-color: transparent transparent transparent #555;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
-#acoustic-li:hover .tooltip .tooltiptext {
+.li-filter:hover .tooltip .tooltiptext {
   /* background-color: red; */
   visibility: visible;
   opacity: 1;
@@ -244,9 +257,6 @@ tr.track-row.highlight-row {
 
 /*
 -------------------------------------------------
-Sources for the below code:
-https://freebiesbug.com/code-stuff/spotify-ui-html-css/
-
 https://jsonformatter.org/scss-to-css
 
 https://www.w3schools.com/howto/howto_css_tooltip.asp
@@ -254,6 +264,14 @@ https://www.w3schools.com/howto/howto_css_tooltip.asp
 https://stackoverflow.com/questions/16635182/solving-table-rounded-corner-css/24712255
 
 https://stackoverflow.com/questions/1429605/creating-a-css3-box-shadow-on-all-sides-but-one
+
+https://stackoverflow.com/questions/29218795/scrollable-hoverable-css-tooltip-with-psuedo-elements
+
+
+
+
+Source for the below code:
+https://freebiesbug.com/code-stuff/spotify-ui-html-css/
 
 */
 /*

@@ -42,6 +42,8 @@ let basicTokenMethods = (token, oldEvent) => {
 
     //listener for filter button
     $('#filter-button').on('click', (event) => {
+        console.log(event);
+        
         event.preventDefault();
         //disable filter button after clicked once so method has time to finish and it can't be spammed
         $('#filter-button').prop('disabled', true);

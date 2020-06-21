@@ -28,6 +28,7 @@ h1 {
   font-size: 36px;
   text-align: center;
   font-weight: 600;
+  margin: 5px;
 }
 
 .sub-header {
@@ -94,7 +95,7 @@ img {
 }
 
 button {
-  margin: 5px 0px;
+  margin: 5px 0px 15px 0px;
   padding: 11px;
   position: relative;
   left: 50%;
@@ -115,6 +116,12 @@ button:active {
   background-color: #3e8e41;
   /* box-shadow: 0 5px #666; */
   /* transform: translate(1%, 1%); */
+}
+
+/* make checkbox 1 layer above invisible tooltip:after hover box so it is still selectable */
+input[type='checkbox'] {
+  position: relative;
+  z-index: 6001;
 }
 
 /***************  LIST STYLING  ***************/
@@ -323,6 +330,11 @@ https://xomisse.com/blog/html-images/
 https://stackoverflow.com/questions/28194444/how-can-i-display-an-image-from-the-local-machine-on-a-webpage
 
 https://api.jquery.com/css/
+
+https://www.quora.com/How-do-I-make-a-div-so-that-you-cant-click-the-underlying-elements
+
+https://www.w3schools.com/cssref/pr_pos_z-index.asp
+
 
 
 Source for the below code:

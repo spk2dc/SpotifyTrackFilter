@@ -216,7 +216,7 @@ tr.track-row.highlight-row {
 .tooltip .tooltiptext, .tooltip .tooltip-inner {
   display: block;
   position: absolute;
-  left: 10px;
+  left: 12px;
   z-index: 6000;
   overflow: visible;
   padding: 5px 8px;
@@ -251,7 +251,7 @@ tr.track-row.highlight-row {
   border-bottom: 8px solid transparent;
   border-left: 8px solid black;
   z-index: 6000;
-  left: 180px;
+  left: 177px;
 }
 
 /* Invisible area so you can hover over tooltip */

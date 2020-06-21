@@ -97,7 +97,7 @@ let searchUserInput = (token) => {
 
     }).then((itemsObj) => {
         // $('#results-tables').html(`
-            
+
         // `)
 
         displaySearchResults(token, itemsObj, limit)
@@ -375,8 +375,10 @@ let runFilters = (token) => {
     $('#filtered-table').show()
     $('#filtered-table tbody').empty()
     $('#filtered-header-total').text('0')
-
-    if ($('#results-tables tbody').length < 1) {
+    console.log(`running filters method`);
+    
+    
+    if ($('#results-tables .track-row').length < 1) {
         alert('Please search for tracks before filtering the results.')
         return;
     }
@@ -392,6 +394,8 @@ let runFilters = (token) => {
 
     //when all tracks have finished getting audio features and being displayed then add click event
     Promise.allSettled(arrPromise).then((data) => {
+        console.log(data);
+        
         $('tbody').on('click', (event) => {
             displayAudioFeatures(event, allFilteredTracks)
         })

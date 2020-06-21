@@ -251,12 +251,13 @@ tr.track-row.highlight-row {
 .tooltip .tooltiptext, .tooltip .tooltip-inner {
   display: block;
   position: absolute;
-  left: -6px;
+  left: -5px;
+  top: -3px;
   z-index: 6000;
   overflow: visible;
   padding: 5px 8px;
   margin-top: 0px;
-  border-radius: 4px;
+  border-radius: 8px;
   text-align: left;
   color: #fff;
   background: #000;
@@ -276,7 +277,7 @@ tr.track-row.highlight-row {
 /* Arrow */
 .tooltip .tooltip-inner:before  {
   display: inline;
-  top: 2px;
+  top: 4px;
   content: "";
   position: absolute;
   border: solid;
@@ -284,7 +285,7 @@ tr.track-row.highlight-row {
   /* border-width: 0 .5em .5em .5em; */
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
-  border-left: 8px solid black;
+  border-left: 8px solid #1ed75fb9;
   z-index: 6000;
   left: 194px;
 }

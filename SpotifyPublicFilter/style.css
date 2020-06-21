@@ -105,10 +105,14 @@ button:active {
 /***************  LIST STYLING  ***************/
 ul {
   list-style-type: none;
+  margin: 8px auto;
+  text-align: center;
+  width: fit-content;
 }
 
 li {
-  margin: auto;
+  display: inline;
+  margin: 0;
   text-align: center;
 }
 
@@ -205,18 +209,22 @@ tr.track-row.highlight-row {
 /* Tooltip container */
 .tooltip {
   transform: none;
-  margin: 0px;    
+  margin: 0px;
+  position: relative;
+  left: -197px;
 }
 
+/*Display when any part of list item is hovered over*/
 .li-filter:hover .tooltiptext, .li-filter:hover .tooltip-inner, .li-filter:hover .tooltip {
   pointer-events: auto;
   opacity: 1.0;
 }
 
+/* Tooltip box and text*/
 .tooltip .tooltiptext, .tooltip .tooltip-inner {
   display: block;
   position: absolute;
-  left: 12px;
+  left: 1px;
   z-index: 6000;
   overflow: visible;
   padding: 5px 8px;
@@ -251,24 +259,24 @@ tr.track-row.highlight-row {
   border-bottom: 8px solid transparent;
   border-left: 8px solid black;
   z-index: 6000;
-  left: 177px;
+  left: 187px;
 }
 
 /* Invisible area so you can hover over tooltip */
 .tooltip .tooltip-inner:after  {
-  top: -20px;
+  top: -5px;
   content: " ";
   display: block;
-  height: 20px;
+  height: 30px;
   position: absolute;
   width: 60px;
-  left: 20px;
+  left: 170px;
 }
 
 .tooltip-inner .tooltiptext {
   overflow-y: scroll;
   max-height: 190px;
-  width: 150px;
+  width: 170px;
   display: block;
 }
 

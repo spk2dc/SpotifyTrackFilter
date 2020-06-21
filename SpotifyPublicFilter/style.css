@@ -203,9 +203,6 @@ tr.track-row.highlight-row {
 
 /***************  TOOLTIP STYLING  ***************/
 /* Tooltip container */
-.tooltip-inner{
-  position:relative;
-}
 .tooltip {
   transform: none;
   margin: 0px;    
@@ -219,11 +216,11 @@ tr.track-row.highlight-row {
 .tooltip .tooltiptext, .tooltip .tooltip-inner {
   display: block;
   position: absolute;
+  left: 10px;
   z-index: 6000;
   overflow: visible;
-  padding: 0px 8px;
+  padding: 5px 8px;
   margin-top: 0px;
-  line-height: 0px;
   border-radius: 4px;
   text-align: left;
   color: #fff;
@@ -237,21 +234,28 @@ tr.track-row.highlight-row {
   transition: all 0.3s ease-out;
 }
 
+.tooltip .tooltip-inner{
+  padding: 0px;
+}
+
 /* Arrow */
-.tooltip .tooltiptext:before, .tooltip .tooltip-inner:before  {
+.tooltip .tooltip-inner:before  {
   display: inline;
-  top: -5px;
+  top: 2px;
   content: "";
   position: absolute;
   border: solid;
   border-color: rgba(0, 0, 0, 1) transparent;
-  border-width: 0 .5em .5em .5em;
+  /* border-width: 0 .5em .5em .5em; */
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid black;
   z-index: 6000;
-  left: 20px;
+  left: 180px;
 }
 
 /* Invisible area so you can hover over tooltip */
-.tooltip .tooltiptext:after, .tooltip .tooltip-inner:after  {
+.tooltip .tooltip-inner:after  {
   top: -20px;
   content: " ";
   display: block;
@@ -262,8 +266,9 @@ tr.track-row.highlight-row {
 }
 
 .tooltip-inner .tooltiptext {
-  overflow-y: auto;
-  max-height: 140px;
+  overflow-y: scroll;
+  max-height: 190px;
+  width: 150px;
   display: block;
 }
 
@@ -342,6 +347,7 @@ https://stackoverflow.com/questions/1429605/creating-a-css3-box-shadow-on-all-si
 
 https://stackoverflow.com/questions/29218795/scrollable-hoverable-css-tooltip-with-psuedo-elements
 
+https://stackoverflow.com/questions/12610409/tooltip-with-a-triangle
 
 
 

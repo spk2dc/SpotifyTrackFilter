@@ -51,7 +51,7 @@ img {
   text-align: start;
   border-radius: 10px;
   border: none;
-  background: #fff;
+  background: rgb(255, 155, 155);
   color: #181818;
   width: 150px;
   transition: width 0.3s ease-in-out;
@@ -140,6 +140,11 @@ label.comparison {
 }
 
 /***************  TABLE STYLING  ***************/
+/* hide tables initially, only show after adding to them in javascript*/
+#filtered-table, #track-analysis-table {
+  display: none;
+}
+
 table {
   width: 700px;
 }
@@ -307,6 +312,7 @@ https://xomisse.com/blog/html-images/
 
 https://stackoverflow.com/questions/28194444/how-can-i-display-an-image-from-the-local-machine-on-a-webpage
 
+https://api.jquery.com/css/
 
 
 Source for the below code:

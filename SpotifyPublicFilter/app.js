@@ -18,6 +18,7 @@ let getBasicToken = (clientID, secretID, event) => {
         }
     }).then((token) => {
         console.log(`token:`, token);
+        $('#apikeys').css('background', 'rgb(155, 255, 155)')
         basicTokenMethods(token, event)
     })
 
@@ -69,8 +70,10 @@ let searchUserInput = (token) => {
 
     $('#results-tables').empty()
     $('#filtered-table tbody').empty()
+    $('#filtered-table').hide()
     $('#filtered-header-total').text('0')
     $('#track-analysis-table tbody').empty()
+    $('#track-analysis-table').hide()
 
     //if user inputs a spotify url call different search function and end this function
     if (queryStr.includes('open.spotify.com')) {
@@ -431,6 +434,7 @@ let addFilteredResultsTrack = (trackID, track) => {
 //add each track in search results table to filtered results table based on current filter settings
 let runFilters = (token) => {
     //clear any filtered results that are already displayed
+    $('#filtered-table').show()
     $('#filtered-table tbody').empty()
     $('#filtered-header-total').text('0')
 
@@ -463,7 +467,7 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     if (!event.target.parentElement.matches('tr.track-row')) {
         return;
     }
-    
+
     let row = event.target.parentElement
     let trackID = row.id.split('_')[1]
     let $tbody = $('#track-analysis-table tbody')
@@ -472,6 +476,7 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     let $trName = $('<tr>').append($('<td>').text('Track Name'), $tdTrackName)
     let $trArtist = $('<tr>').append($('<td>').text('Artist'), $tdArtist)
 
+    $('#track-analysis-table').show()
     $('.highlight-row').removeClass('highlight-row')
     $(row).addClass('highlight-row')
     $tbody.empty()

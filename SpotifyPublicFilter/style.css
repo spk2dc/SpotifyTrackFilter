@@ -208,7 +208,7 @@ tr.track-row.highlight-row {
 }
 .tooltip {
   transform: none;
-  margin: 50px;    
+  margin: 0px;    
 }
 
 .li-filter:hover .tooltiptext, .li-filter:hover .tooltip-inner, .li-filter:hover .tooltip {
@@ -221,9 +221,9 @@ tr.track-row.highlight-row {
   position: absolute;
   z-index: 6000;
   overflow: visible;
-  padding: 5px 8px;
-  margin-top: 10px;
-  line-height: 16px;
+  padding: 0px 8px;
+  margin-top: 0px;
+  line-height: 0px;
   border-radius: 4px;
   text-align: left;
   color: #fff;
@@ -263,7 +263,7 @@ tr.track-row.highlight-row {
 
 .tooltip-inner .tooltiptext {
   overflow-y: auto;
-  max-height: 40px;
+  max-height: 140px;
   display: block;
 }
 

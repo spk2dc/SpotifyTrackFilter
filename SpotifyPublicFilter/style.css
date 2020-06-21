@@ -38,6 +38,11 @@ a {
   color: #1ed760;
 }
 
+img {
+  width: 170px;
+  height: auto;
+}
+
 /***************  SEARCH & BUTTON STYLING  ***************/
 #apikeys {
   display: block;
@@ -224,7 +229,7 @@ tr.track-row.highlight-row {
 .tooltip .tooltiptext, .tooltip .tooltip-inner {
   display: block;
   position: absolute;
-  left: 1px;
+  left: -6px;
   z-index: 6000;
   overflow: visible;
   padding: 5px 8px;
@@ -259,7 +264,7 @@ tr.track-row.highlight-row {
   border-bottom: 8px solid transparent;
   border-left: 8px solid black;
   z-index: 6000;
-  left: 187px;
+  left: 194px;
 }
 
 /* Invisible area so you can hover over tooltip */
@@ -267,16 +272,16 @@ tr.track-row.highlight-row {
   top: -5px;
   content: " ";
   display: block;
-  height: 30px;
+  height: 35px;
   position: absolute;
   width: 60px;
-  left: 170px;
+  left: 180px;
 }
 
 .tooltip-inner .tooltiptext {
   overflow-y: scroll;
   max-height: 190px;
-  width: 170px;
+  width: 185px;
   display: block;
 }
 
@@ -297,6 +302,10 @@ https://stackoverflow.com/questions/1429605/creating-a-css3-box-shadow-on-all-si
 https://stackoverflow.com/questions/29218795/scrollable-hoverable-css-tooltip-with-psuedo-elements
 
 https://stackoverflow.com/questions/12610409/tooltip-with-a-triangle
+
+https://xomisse.com/blog/html-images/
+
+https://stackoverflow.com/questions/28194444/how-can-i-display-an-image-from-the-local-machine-on-a-webpage
 
 
 

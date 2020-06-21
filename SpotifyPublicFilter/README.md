@@ -44,11 +44,9 @@ General code flow is similar to the instructions for using the website. First au
 * Displaying audio features for multiple tracks at a time and from the search results as well instead of only after they have been filtered.
 
 
-##### Author/Developer: 
-[Senthil Kannan](https://www.linkedin.com/in/spk2dc)
+##### Author/Developer: [Senthil Kannan](https://www.linkedin.com/in/spk2dc)
 
-##### Last Updated:
-6/21/2020
+##### Last Updated: 6/21/2020
 <!-- 
 Source: https://guides.github.com/features/mastering-markdown/ 
 -->

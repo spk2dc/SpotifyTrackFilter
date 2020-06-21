@@ -14,20 +14,20 @@
 [Click here for live Spotify Track Filter website](https://spk2dc.github.io/SpotifyPublicFilter/)
 
 1. #### Authentication
-  * Provide a Spotify API key in the top left input in the following layout "client_id:client_secret" (without quotes) and hit enter for token authentication. Input field will turn from red to green if successfully authenticated. [Spotify instructions for getting your API key](https://developer.spotify.com/documentation/web-api/quick-start/)
+    * Provide a Spotify API key in the top left input in the following layout "client_id:client_secret" (without quotes) and hit enter for token authentication. Input field will turn from red to green if successfully authenticated. [Spotify instructions for getting your API key](https://developer.spotify.com/documentation/web-api/quick-start/)
 
 2. #### Searching
-  * Search Spotify database for albums, artists, playlists, and tracks
-  * Input a specific album or playlist URL copied from Spotify with the following layout "https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK" (without quotes)
+    * Search Spotify database for albums, artists, playlists, and tracks
+    * Input a specific album or playlist URL copied from Spotify with the following layout "https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK" (without quotes)
 
 3. #### Filtering
-  * Select desired filters, adjusting values and selecting whether a filtered track's values should be above or below the input value
-    * Click run checked filters with no filters checked to display all tracks from a search result
-    * Hover over a filter option to view a description of its meaning with a clickable picture of the standard value distrubtions
+    * Select desired filters, adjusting values and selecting whether a filtered track's values should be above or below the input value
+      * Click run checked filters with no filters checked to display all tracks from a search result
+      * Hover over a filter option to view a description of its meaning with a clickable picture of the standard value distrubtions
 
 4. #### Track Analysis
-  * Scroll down once filters have finished running to view all resulting track that match the selected filter criteria
-  * Click each result to display a detailed audio analysis of the track
+    * Scroll down once filters have finished running to view all resulting track that match the selected filter criteria
+    * Click each result to display a detailed audio analysis of the track
 
 
 ### Approach Taken
@@ -43,6 +43,8 @@ General code flow is similar to the instructions for using the website. First au
 * Ability to display filtered tracks from all search results, not just ones that result in a list of tracks. For example if an artist is returned it would be possible to filter every song in every album that artist has.
 * Displaying audio features for multiple tracks at a time and from the search results as well instead of only after they have been filtered.
 
+
+##### Author/Developer: [Senthil Kannan](https://www.linkedin.com/in/spk2dc)
 <!-- 
 Source: https://guides.github.com/features/mastering-markdown/ 
 -->

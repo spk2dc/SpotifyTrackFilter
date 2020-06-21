@@ -45,10 +45,10 @@ General code flow is similar to the instructions for using the website. First au
 
 
 ##### Author/Developer: 
-##### [Senthil Kannan](https://www.linkedin.com/in/spk2dc)
+[Senthil Kannan](https://www.linkedin.com/in/spk2dc)
 
 ##### Last Updated:
-##### 6/21/2020
+6/21/2020
 <!-- 
 Source: https://guides.github.com/features/mastering-markdown/ 
 -->

@@ -62,6 +62,7 @@ img {
   text-align: start;
   border-radius: 10px;
   border: none;
+  outline: none;
   background: rgb(255, 155, 155);
   color: #181818;
   width: 150px;
@@ -69,7 +70,7 @@ img {
 }
 
 #apikeys:focus {
-  width: 30%;
+  width: 40%;
 }
 
 #search-box {

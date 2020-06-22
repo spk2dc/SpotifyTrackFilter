@@ -26,7 +26,7 @@ let getBasicToken = (clientID, secretID, event) => {
 
 //true main method of program, only operates if token is valid
 let basicTokenMethods = (token, oldEvent) => {
-    console.log('basic token methods', oldEvent);
+    // console.log('authenticated main method event trigger: ', oldEvent);
 
     //listeners for search box and button
     $('#search-button').on('click', (event) => {
@@ -369,7 +369,7 @@ let runFilters = (token) => {
     let rows = $('#tracks-table tbody').get(0).rows
     let allFilteredTracks = {}
     let arrPromise = []
-    console.log(`running filters method on: `, rows);
+    // console.log(`running filters method on: `, rows);
 
     for (let i = 0; i < rows.length; i++) {
         arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
@@ -395,12 +395,26 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     }
 
     let row = event.target.parentElement
-    let trackID = row.id.split('_')[1]
+
+    //if row id does not start with 'filtered_' then it is from the search results so use the row id value. the length of the split will be 1 in this case. if the length is 2 then it is a filtered row so use the split's 2nd value. if none of these lengths then an unusual row id exists so end the method for security.
+    let trackID = row.id.split('_')[0]
+    switch (row.id.split('_').length) {
+        case 1:
+            trackID = row.id
+            break;
+        case 2:
+            trackID = row.id.split('_')[1]
+            break;
+        default:
+            return;
+    }
+
     let $tbody = $('#track-analysis-table tbody')
     let $tdTrackName = $('<td>').text($(row).children().eq(0).text())
     let $tdArtist = $('<td>').text($(row).children().eq(1).text())
     let $trName = $('<tr>').append($('<td>').text('Track Name'), $tdTrackName)
     let $trArtist = $('<tr>').append($('<td>').text('Artist'), $tdArtist)
+    console.log('row: ', row, 'track ', trackID, 'all tracks', allFilteredTracks);
 
     $('#track-analysis-table').show()
     $('.highlight-row').removeClass('highlight-row')

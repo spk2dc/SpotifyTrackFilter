@@ -443,17 +443,27 @@ $(() => {
     let secretID = ''
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
-    $('#search-button').on('click', (event) => {
+    $('#search-button').on('click', '', (event) => {
         event.preventDefault();
         if (typeof (client_id) === 'string' && typeof (client_secret) === 'string') {
             clientID = client_id
             secretID = client_secret
+            //remove click/keypress events for search so these first event listeners only run the token authentication method once
+            $('#search-button').off('click', '')
+            $('#search-box').off('keypress', '')
+            // console.log($(this));
+            
             getBasicToken(clientID, secretID, event)
         }
     })
-    $('#search-box').on('keypress', (event) => {
+    $('#search-box').on('keypress', '', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
+            //remove click/keypress events for search so these first event listeners only run the token authentication method once
+            $('#search-button').off('click', '')
+            $('#search-box').off('keypress', '')
+            // console.log($(this));
+            
             $('#search-button').click();
         }
     })
@@ -465,7 +475,8 @@ $(() => {
             let userID = $('#apikeys').val().split(':')
             clientID = userID[0]
             secretID = userID[1]
-
+            console.log($(this));
+            
             //get spotify authentication token before any other method can work
             getBasicToken(clientID, secretID, event)
         }

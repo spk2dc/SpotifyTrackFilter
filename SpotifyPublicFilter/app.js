@@ -281,12 +281,12 @@ let displayOneTrack = (itemsObj, i) => {
     $('#tracks-table tbody').append($track)
 }
 
-//get audio feature values for a track
+//get audio feature values for a track. allFilteredTracks argument is an object to store all the data in and boolAdd is a boolean to specify whether the track should be added to the filtered results table or not.
 let getTrackAudioFeatures = (token, trackID, allFilteredTracks, boolAdd) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
     //log below is for testing ajax query using command prompt
-    // console.log(`curl -X "GET" "${baseurl}/${track}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    // console.log(`curl -X "GET" "${baseurl}/${trackID}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     return $.ajax({
         url: `${baseurl}/${trackID}`,
@@ -381,14 +381,14 @@ let runFilters = (token) => {
         // console.log('filter data: ', allFilteredTracks);
 
         $('tbody').on('click', (event) => {
-            displayAudioFeatures(event, allFilteredTracks)
+            displayAudioFeatures(token, event, allFilteredTracks)
         })
     })
 
 }
 
 //display all audio feature properties for the selected track
-let displayAudioFeatures = (event, allFilteredTracks) => {
+let displayAudioFeatures = (token, event, allFilteredTracks) => {
     //do not display if selected element is not a track row
     if (!event.target.parentElement.matches('tr.track-row')) {
         return;
@@ -414,7 +414,6 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     let $tdArtist = $('<td>').text($(row).children().eq(1).text())
     let $trName = $('<tr>').append($('<td>').text('Track Name'), $tdTrackName)
     let $trArtist = $('<tr>').append($('<td>').text('Artist'), $tdArtist)
-    console.log('row: ', row, 'track ', trackID, 'all tracks', allFilteredTracks);
 
     $('#track-analysis-table').show()
     $('.highlight-row').removeClass('highlight-row')
@@ -423,12 +422,29 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     $tbody.append($trName)
     $tbody.append($trArtist)
 
-    for (const key in allFilteredTracks[trackID]) {
-        let $tr = $('<tr>')
-        $tr.append($('<td>').text(key))
-        $tr.append($('<td>').text(allFilteredTracks[trackID][key]))
-        $tbody.append($tr)
+    let arrPromise = []
+    //default promise array to contain a resolved promise so if you do not need to run a query then you can just display the preexisting audio analysis
+    arrPromise[0] = Promise.resolve(true)
+
+    //if audio analysis data does not exist yet, run query to get it
+    if (!allFilteredTracks.hasOwnProperty(trackID)) {
+        //send false for add argument so track is not added to filtered results
+        console.log('row: ', row, 'track ', trackID);
+        arrPromise[1] = getTrackAudioFeatures(token, trackID, allFilteredTracks, false)
     }
+
+    //when promises are all resolved then add to track analysis table
+    Promise.allSettled(arrPromise).then((data) => {
+        //add all audio data to track analysis table
+        console.log(allFilteredTracks);
+
+        for (const key in allFilteredTracks[trackID]) {
+            let $tr = $('<tr>')
+            $tr.append($('<td>').text(key))
+            $tr.append($('<td>').text(allFilteredTracks[trackID][key]))
+            $tbody.append($tr)
+        }
+    })
 }
 
 //clears data from all tables and then hides each emptied table

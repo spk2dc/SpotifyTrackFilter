@@ -373,22 +373,11 @@ let runFilters = (token, allFilteredTracks) => {
 
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#tracks-table tbody').get(0).rows
-    let arrPromise = []
     // console.log(`running filters method on: `, rows);
 
     for (let i = 0; i < rows.length; i++) {
-        arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
+        getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
     }
-
-    //when all tracks have finished getting audio features and being displayed then add click event
-    Promise.allSettled(arrPromise).then((data) => {
-        // console.log('filter promises: ', data);
-        // console.log('filter data: ', allFilteredTracks);
-
-        $('tbody').on('click', (event) => {
-            displayAudioFeatures(token, event, allFilteredTracks)
-        })
-    })
 
 }
 

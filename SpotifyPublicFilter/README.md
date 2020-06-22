@@ -43,6 +43,7 @@ General code flow is similar to the instructions for using the website. First au
 * Ability to display filtered tracks from all search results, not just ones that result in a list of tracks. For example if an artist is returned it would be possible to filter every song in every album that artist has.
 * Displaying audio features for multiple tracks at a time and from the search results as well instead of only after they have been filtered.
 * Add a graph for the audio analysis to visually show all the data in a better more understandable/meaningful format to the average person.
+* Create a sticky navigation bar that is always displayed so user can search and filter from anywhere on the page
 
 
 ##### Author/Developer: [Senthil Kannan](https://www.linkedin.com/in/spk2dc)

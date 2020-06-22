@@ -26,16 +26,20 @@ let getBasicToken = (clientID, secretID, event) => {
 
 //true main method of program, only operates if token is valid
 let basicTokenMethods = (token, oldEvent) => {
+    console.log('basic token methods', oldEvent);
 
     //listeners for search box and button
     $('#search-button').on('click', (event) => {
         event.preventDefault();
+        console.log('authenticated click listener', event);
+
         searchUserInput(token)
 
     })
     $('#search-box').on('keypress', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
+            console.log('authenticated keypress listener', event);
             $('#search-button').click();
         }
     })
@@ -43,7 +47,7 @@ let basicTokenMethods = (token, oldEvent) => {
     //listener for filter button
     $('#filter-button').on('click', (event) => {
         console.log(event);
-        
+
         event.preventDefault();
         //disable filter button after clicked once so method has time to finish and it can't be spammed
         $('#filter-button').prop('disabled', true);
@@ -70,13 +74,7 @@ let searchUserInput = (token) => {
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
 
-    $('#results-tables tbody').empty()
-    $('#results-tables').hide()
-    $('#filtered-table tbody').empty()
-    $('#filtered-table').hide()
-    $('#filtered-header-total').text('0')
-    $('#track-analysis-table tbody').empty()
-    $('#track-analysis-table').hide()
+    clearAndHideTables()
 
     //if user inputs a spotify url call different search function and end this function
     if (queryStr.includes('open.spotify.com')) {
@@ -120,13 +118,7 @@ let searchURL = (token, queryStr) => {
         finalurl += `/tracks`
     }
 
-    $('#results-tables tbody').empty()
-    $('#results-tables').hide()
-    $('#filtered-table tbody').empty()
-    $('#filtered-table').hide()
-    $('#filtered-header-total').text('0')
-    $('#track-analysis-table tbody').empty()
-    $('#track-analysis-table').hide()
+    clearAndHideTables()
 
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
@@ -144,24 +136,7 @@ let searchURL = (token, queryStr) => {
         // console.log(itemsObj);
 
         $('#results-tables tbody').empty()
-        // $('#results-tables').html(`
-        //     <div id="tracks-div">
-        //         <div id="tracks-header" class="sub-header">Tracks</div>
-        //         <div id="tracks-results" class="results-div">
-        //             <table id="tracks-table" class="results-table">
-        //                 <thead class="results-thead">
-        //                     <tr>
-        //                         <th>Track Name</th>
-        //                         <th>Artists</th>
-        //                         <th>Duration (ms)</th>
-        //                         <th>URL</th>
-        //                     </tr>
-        //                 </thead>
-        //                 <tbody></tbody>
-        //             </table>
-        //         </div>
-        //     </div>
-        // `)
+        $('#results-tables').show()
 
         for (let i = 0; i < itemsObj.items.length; i++) {
             displayOneTrack(itemsObj, i)
@@ -172,6 +147,7 @@ let searchURL = (token, queryStr) => {
 //display all search results using 1 loop and calling a separate display function on each item
 let displaySearchResults = (token, itemsObj, limit) => {
     console.log(itemsObj);
+    $('#results-tables').show()
     for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)
         displayOneArtist(token, itemsObj, i)
@@ -279,6 +255,8 @@ let displayOnePlaylist = (itemsObj, i) => {
 
 //display one track in the search results table
 let displayOneTrack = (itemsObj, i) => {
+    $('#tracks-div').show()
+
     //if object contains multiple objects only select the track object, else it's only a track object so go straight to items    
     if ('tracks' in itemsObj) {
         $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
@@ -287,7 +265,6 @@ let displayOneTrack = (itemsObj, i) => {
         $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
         oneItem = itemsObj.items[i]
     }
-    $('#tracks-div').show()
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
@@ -387,15 +364,15 @@ let runFilters = (token) => {
     $('#filtered-table tbody').empty()
     $('#filtered-header-total').text('0')
     console.log(`running filters method`);
-    
-    
+
+
     if ($('#results-tables .track-row').length < 1) {
         alert('Please search for tracks before filtering the results.')
         return;
     }
 
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
-    let rows = $('#results-tables tbody').get(0).rows
+    let rows = $('#tracks-table tbody').get(0).rows
     let allFilteredTracks = {}
     let arrPromise = []
 
@@ -406,7 +383,7 @@ let runFilters = (token) => {
     //when all tracks have finished getting audio features and being displayed then add click event
     Promise.allSettled(arrPromise).then((data) => {
         console.log(data);
-        
+
         $('tbody').on('click', (event) => {
             displayAudioFeatures(event, allFilteredTracks)
         })
@@ -444,6 +421,24 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     }
 }
 
+//clears data from all tables and then hides each emptied table
+let clearAndHideTables = () => {
+    //search results
+    $('#results-tables tbody').empty()
+    $('#results-tables').hide()
+    //hide each direct child div (not all divs) in the results table as well, so only divs with data will be displayed on next search
+    $('#results-tables > div').hide()
+
+    //filtered results
+    $('#filtered-table tbody').empty()
+    $('#filtered-table').hide()
+    $('#filtered-header-total').text('0')
+
+    //track analysis results
+    $('#track-analysis-table tbody').empty()
+    $('#track-analysis-table').hide()
+}
+
 //window onload method that sets initial event listeners to authenticate token so API can be used before any other methods can be called
 $(() => {
     //scroll to the top of the page when page is reloaded
@@ -461,20 +456,20 @@ $(() => {
             //remove click/keypress events for search so these first event listeners only run the token authentication method once
             $('#search-button').off('click', '')
             $('#search-box').off('keypress', '')
-            // console.log($(this));
-            
+            console.log('initial click listener', $(this));
+
             getBasicToken(clientID, secretID, event)
         }
     })
     $('#search-box').on('keypress', '', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
+            console.log('initial keypress listener', $(this));
+            $('#search-button').click();
+
             //remove click/keypress events for search so these first event listeners only run the token authentication method once
             $('#search-button').off('click', '')
             $('#search-box').off('keypress', '')
-            // console.log($(this));
-            
-            $('#search-button').click();
         }
     })
 
@@ -486,7 +481,7 @@ $(() => {
             clientID = userID[0]
             secretID = userID[1]
             console.log($(this));
-            
+
             //get spotify authentication token before any other method can work
             getBasicToken(clientID, secretID, event)
         }

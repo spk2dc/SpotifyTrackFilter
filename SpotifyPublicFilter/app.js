@@ -31,7 +31,7 @@ let basicTokenMethods = (token, oldEvent) => {
     //listeners for search box and button
     $('#search-button').on('click', (event) => {
         event.preventDefault();
-        console.log('authenticated click listener', event);
+        // console.log('authenticated click listener', event);
 
         searchUserInput(token)
 
@@ -39,14 +39,14 @@ let basicTokenMethods = (token, oldEvent) => {
     $('#search-box').on('keypress', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            console.log('authenticated keypress listener', event);
+            // console.log('authenticated keypress listener', event);
             $('#search-button').click();
         }
     })
 
     //listener for filter button
     $('#filter-button').on('click', (event) => {
-        console.log(event);
+        // console.log('filter listener ', event);
 
         event.preventDefault();
         //disable filter button after clicked once so method has time to finish and it can't be spammed
@@ -97,10 +97,6 @@ let searchUserInput = (token) => {
         }
 
     }).then((itemsObj) => {
-        // $('#results-tables').html(`
-
-        // `)
-
         displaySearchResults(token, itemsObj, limit)
     })
 }
@@ -146,7 +142,7 @@ let searchURL = (token, queryStr) => {
 
 //display all search results using 1 loop and calling a separate display function on each item
 let displaySearchResults = (token, itemsObj, limit) => {
-    console.log(itemsObj);
+    // console.log(itemsObj);
     $('#results-tables').show()
     for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)
@@ -363,8 +359,6 @@ let runFilters = (token) => {
     $('#filtered-table').show()
     $('#filtered-table tbody').empty()
     $('#filtered-header-total').text('0')
-    console.log(`running filters method`);
-
 
     if ($('#results-tables .track-row').length < 1) {
         alert('Please search for tracks before filtering the results.')
@@ -375,6 +369,7 @@ let runFilters = (token) => {
     let rows = $('#tracks-table tbody').get(0).rows
     let allFilteredTracks = {}
     let arrPromise = []
+    console.log(`running filters method on: `, rows);
 
     for (let i = 0; i < rows.length; i++) {
         arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
@@ -382,7 +377,8 @@ let runFilters = (token) => {
 
     //when all tracks have finished getting audio features and being displayed then add click event
     Promise.allSettled(arrPromise).then((data) => {
-        console.log(data);
+        // console.log('filter promises: ', data);
+        // console.log('filter data: ', allFilteredTracks);
 
         $('tbody').on('click', (event) => {
             displayAudioFeatures(event, allFilteredTracks)
@@ -456,7 +452,7 @@ $(() => {
             //remove click/keypress events for search so these first event listeners only run the token authentication method once
             $('#search-button').off('click', '')
             $('#search-box').off('keypress', '')
-            console.log('initial click listener', $(this));
+            // console.log('initial click listener', $(this));
 
             getBasicToken(clientID, secretID, event)
         }
@@ -464,7 +460,7 @@ $(() => {
     $('#search-box').on('keypress', '', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            console.log('initial keypress listener', $(this));
+            // console.log('initial keypress listener', $(this));
             $('#search-button').click();
 
             //remove click/keypress events for search so these first event listeners only run the token authentication method once

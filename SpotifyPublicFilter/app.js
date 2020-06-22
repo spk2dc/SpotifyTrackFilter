@@ -349,8 +349,9 @@ let addFilteredResultsTrack = (trackID, track) => {
     if (addTrack) {
         //clone html row containing track to add. do not copy event handlers
         let $tr = $(`#${trackID}`).clone(false)
-        //cannot have duplicate id's, must change new one
+        //cannot have duplicate id's, must change new one. remove highlighting in case original row is highlighted.
         $tr.attr('id', `filtered_${trackID}`)
+        $tr.removeClass('highlight-row')
         $('#filtered-table tbody').append($tr)
         //increase total number in header by 1
         let $total = $('#filtered-header-total')

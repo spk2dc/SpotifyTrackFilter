@@ -71,6 +71,7 @@ let searchUserInput = (token) => {
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
 
     $('#results-tables tbody').empty()
+    $('#results-tables').hide()
     $('#filtered-table tbody').empty()
     $('#filtered-table').hide()
     $('#filtered-header-total').text('0')
@@ -119,6 +120,14 @@ let searchURL = (token, queryStr) => {
         finalurl += `/tracks`
     }
 
+    $('#results-tables tbody').empty()
+    $('#results-tables').hide()
+    $('#filtered-table tbody').empty()
+    $('#filtered-table').hide()
+    $('#filtered-header-total').text('0')
+    $('#track-analysis-table tbody').empty()
+    $('#track-analysis-table').hide()
+
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
@@ -134,25 +143,25 @@ let searchURL = (token, queryStr) => {
     }).then((itemsObj) => {
         // console.log(itemsObj);
 
-        $('#results-tables').empty()
-        $('#results-tables').html(`
-            <div id="tracks-div">
-                <div id="tracks-header" class="sub-header">Tracks</div>
-                <div id="tracks-results" class="results-div">
-                    <table id="tracks-table" class="results-table">
-                        <thead class="results-thead">
-                            <tr>
-                                <th>Track Name</th>
-                                <th>Artists</th>
-                                <th>Duration (ms)</th>
-                                <th>URL</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        `)
+        $('#results-tables tbody').empty()
+        // $('#results-tables').html(`
+        //     <div id="tracks-div">
+        //         <div id="tracks-header" class="sub-header">Tracks</div>
+        //         <div id="tracks-results" class="results-div">
+        //             <table id="tracks-table" class="results-table">
+        //                 <thead class="results-thead">
+        //                     <tr>
+        //                         <th>Track Name</th>
+        //                         <th>Artists</th>
+        //                         <th>Duration (ms)</th>
+        //                         <th>URL</th>
+        //                     </tr>
+        //                 </thead>
+        //                 <tbody></tbody>
+        //             </table>
+        //         </div>
+        //     </div>
+        // `)
 
         for (let i = 0; i < itemsObj.items.length; i++) {
             displayOneTrack(itemsObj, i)
@@ -435,6 +444,7 @@ let displayAudioFeatures = (event, allFilteredTracks) => {
     }
 }
 
+//window onload method that sets initial event listeners to authenticate token so API can be used before any other methods can be called
 $(() => {
     //scroll to the top of the page when page is reloaded
     $(window).scrollTop(0);

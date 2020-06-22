@@ -469,8 +469,11 @@ let clearAndHideTables = () => {
 
 //window onload method that sets initial event listeners to authenticate token so API can be used before any other methods can be called
 $(() => {
-    //scroll to the top of the page when page is reloaded
+    //scroll to the top of the page when page is reloaded. need to scroll to the top before the page is reloaded as well since chrome still remembers the scroll position.
     $(window).scrollTop(0);
+    $(window).on('beforeunload', () => {
+        $(window).scrollTop(0);
+    });
 
     let clientID = ''
     let secretID = ''

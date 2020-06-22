@@ -44,6 +44,12 @@ let basicTokenMethods = (token, oldEvent) => {
         }
     })
 
+    //object to contain current data for all tracks that have been analyzed since authentication for quicker retrieval and display
+    let allFilteredTracks = {}
+    //if any row is clicked within a table tbody, display an audio analysis if possible
+    $('tbody').on('click', (event) => {
+        displayAudioFeatures(token, event, allFilteredTracks)
+    })
     //listener for filter button
     $('#filter-button').on('click', (event) => {
         // console.log('filter listener ', event);
@@ -52,7 +58,7 @@ let basicTokenMethods = (token, oldEvent) => {
         //disable filter button after clicked once so method has time to finish and it can't be spammed
         $('#filter-button').prop('disabled', true);
 
-        runFilters(token)
+        runFilters(token, allFilteredTracks)
         //re-enable filter button after all tracks have finished filtering
         $('#filter-button').prop('disabled', false)
 
@@ -62,7 +68,6 @@ let basicTokenMethods = (token, oldEvent) => {
     if (oldEvent.currentTarget.id === 'search-button') {
         searchUserInput(token)
     }
-
 }
 
 //main search method, for when usere inputs normal text. searches the first 10 results for albums, artists, playlists, and tracks
@@ -354,7 +359,7 @@ let addFilteredResultsTrack = (trackID, track) => {
 }
 
 //add each track in search results table to filtered results table based on current filter settings
-let runFilters = (token) => {
+let runFilters = (token, allFilteredTracks) => {
     //clear any filtered results that are already displayed
     $('#filtered-table').show()
     $('#filtered-table tbody').empty()
@@ -367,7 +372,6 @@ let runFilters = (token) => {
 
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#tracks-table tbody').get(0).rows
-    let allFilteredTracks = {}
     let arrPromise = []
     // console.log(`running filters method on: `, rows);
 
@@ -429,15 +433,12 @@ let displayAudioFeatures = (token, event, allFilteredTracks) => {
     //if audio analysis data does not exist yet, run query to get it
     if (!allFilteredTracks.hasOwnProperty(trackID)) {
         //send false for add argument so track is not added to filtered results
-        console.log('row: ', row, 'track ', trackID);
         arrPromise[1] = getTrackAudioFeatures(token, trackID, allFilteredTracks, false)
     }
 
     //when promises are all resolved then add to track analysis table
     Promise.allSettled(arrPromise).then((data) => {
         //add all audio data to track analysis table
-        console.log(allFilteredTracks);
-
         for (const key in allFilteredTracks[trackID]) {
             let $tr = $('<tr>')
             $tr.append($('<td>').text(key))

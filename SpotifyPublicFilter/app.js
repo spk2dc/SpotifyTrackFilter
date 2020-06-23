@@ -263,13 +263,13 @@ let displayOneTrack = (itemsObj, i) => {
         $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
         oneItem = itemsObj.tracks.items[i]
     } else if (itemsObj.href.includes('playlists')) {
-        $('#tracks-header').text(`Tracks (first ${itemsObj.limit} out of ${itemsObj.total} matches)`)
+        $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.total} matches)`)
         oneItem = itemsObj.items[i].track
     } else {
         $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
         oneItem = itemsObj.items[i]
     }
-
+    
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''

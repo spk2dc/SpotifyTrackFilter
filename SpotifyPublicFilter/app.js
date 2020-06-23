@@ -257,15 +257,19 @@ let displayOnePlaylist = (itemsObj, i) => {
 //display one track in the search results table
 let displayOneTrack = (itemsObj, i) => {
     $('#tracks-div').show()
-
-    //if object contains multiple objects only select the track object, else it's only a track object so go straight to items    
-    if ('tracks' in itemsObj) {
+    let oneItem = {}
+    //if object contains multiple items select the tracks object then the track item. if object is a playlist select item object then track object. else it's only a track object so go straight to items    
+    if (itemsObj.hasOwnProperty('tracks')) {
         $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
         oneItem = itemsObj.tracks.items[i]
+    } else if (itemsObj.href.includes('playlists')) {
+        $('#tracks-header').text(`Tracks (first ${itemsObj.limit} out of ${itemsObj.total} matches)`)
+        oneItem = itemsObj.items[i].track
     } else {
         $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
         oneItem = itemsObj.items[i]
     }
+
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''

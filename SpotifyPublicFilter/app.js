@@ -31,15 +31,13 @@ let basicTokenMethods = (token, oldEvent) => {
     //listeners for search box and button
     $('#search-button').on('click', (event) => {
         event.preventDefault();
-        // console.log('authenticated click listener', event);
-
+        console.log('authenticated click listener', event);
         searchUserInput(token)
-
     })
     $('#search-box').on('keypress', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            // console.log('authenticated keypress listener', event);
+            console.log('authenticated keypress listener', event);
             $('#search-button').click();
         }
     })
@@ -59,9 +57,6 @@ let basicTokenMethods = (token, oldEvent) => {
         $('#filter-button').prop('disabled', true);
 
         runFilters(token, allFilteredTracks)
-        //re-enable filter button after all tracks have finished filtering
-        $('#filter-button').prop('disabled', false)
-
     })
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
@@ -269,7 +264,7 @@ let displayOneTrack = (itemsObj, i) => {
         $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
         oneItem = itemsObj.items[i]
     }
-    
+
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
@@ -377,11 +372,17 @@ let runFilters = (token, allFilteredTracks) => {
 
     //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#tracks-table tbody').get(0).rows
+    let arrPromise = []
     // console.log(`running filters method on: `, rows);
 
     for (let i = 0; i < rows.length; i++) {
-        getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
+        arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
     }
+
+    //re-enable filter button after all tracks have finished filtering so filters are not clicked/called multiple times
+    Promise.allSettled(arrPromise).then((data) => {
+        $('#filter-button').prop('disabled', false)
+    })
 
 }
 

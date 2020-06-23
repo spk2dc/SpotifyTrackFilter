@@ -142,7 +142,7 @@ let searchURL = (token, queryStr) => {
 
 //display all search results using 1 loop and calling a separate display function on each item
 let displaySearchResults = (token, itemsObj, limit) => {
-    // console.log(itemsObj);
+    console.log(itemsObj);
     $('#results-tables').show()
     for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)

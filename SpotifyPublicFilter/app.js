@@ -159,7 +159,7 @@ let displayOneAlbum = (itemsObj, i) => {
         $('#albums-header').text(`Albums (first ${itemsObj.albums.items.length} out of ${itemsObj.albums.items.length} matches)`)
         return;
     }
-    
+
     $('#albums-div').show()
     $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
     let $album = $('<tr>').addClass('album-row').attr('id', itemsObj.albums.items[i].id)
@@ -252,7 +252,7 @@ let displayOnePlaylist = (itemsObj, i) => {
         $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.items.length} out of ${itemsObj.playlists.items.length} matches)`)
         return;
     }
-    
+
     $('#playlists-div').show()
     $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
     let $playlist = $('<tr>').addClass('playlist-row').attr('id', itemsObj.playlists.items[i].id)
@@ -269,24 +269,28 @@ let displayOnePlaylist = (itemsObj, i) => {
 
 //display one track in the search results table
 let displayOneTrack = (itemsObj, i) => {
-    //if there are less items then the limit specified and you try to access one that does not exist, end the function
-    if (i >= itemsObj.tracks.items.length) {
-        $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.items.length} out of ${itemsObj.tracks.items.length} matches)`)
-        return;
-    }
-    
     $('#tracks-div').show()
     let oneItem = {}
+    let length = 0
     //if object contains multiple items select the tracks object then the track item. if object is a playlist select item object then track object. else it's only a track object so go straight to items    
     if (itemsObj.hasOwnProperty('tracks')) {
-        $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
+        length = itemsObj.tracks.items.length
+        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
         oneItem = itemsObj.tracks.items[i]
     } else if (itemsObj.href.includes('playlists')) {
-        $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.total} matches)`)
+        length = itemsObj.items.length
+        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
         oneItem = itemsObj.items[i].track
     } else {
-        $('#tracks-header').text(`Tracks (first ${itemsObj.items.length} out of ${itemsObj.items.length} matches)`)
+        length = itemsObj.items.length
+        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
         oneItem = itemsObj.items[i]
+    }
+
+    //if there are less items then the limit specified and you try to access one that does not exist, end the function
+    if (i >= length) {
+        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
+        return;
     }
 
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)

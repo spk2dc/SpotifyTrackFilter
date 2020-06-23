@@ -142,7 +142,7 @@ let searchURL = (token, queryStr) => {
 
 //display all search results using 1 loop and calling a separate display function on each item
 let displaySearchResults = (token, itemsObj, limit) => {
-    console.log(itemsObj);
+    // console.log(itemsObj);
     $('#results-tables').show()
     for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)
@@ -154,6 +154,12 @@ let displaySearchResults = (token, itemsObj, limit) => {
 
 //display one album in the search results table
 let displayOneAlbum = (itemsObj, i) => {
+    //if there are less items then the limit specified and you try to access one that does not exist, end the function
+    if (i >= itemsObj.albums.items.length) {
+        $('#albums-header').text(`Albums (first ${itemsObj.albums.total} out of ${itemsObj.albums.total} matches)`)
+        return;
+    }
+    
     $('#albums-div').show()
     $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
     let $album = $('<tr>').addClass('album-row').attr('id', itemsObj.albums.items[i].id)
@@ -179,6 +185,12 @@ let displayOneAlbum = (itemsObj, i) => {
 
 //display one artist in the search results table
 let displayOneArtist = (token, itemsObj, i) => {
+    //if there are less items then the limit specified and you try to access one that does not exist, end the function
+    if (i >= itemsObj.artists.items.length) {
+        $('#artists-header').text(`Artists (first ${itemsObj.artists.total} out of ${itemsObj.artists.total} matches)`)
+        return;
+    }
+
     $('#artists-div').show()
     $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
     let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id', itemsObj.artists.items[i].id)
@@ -235,6 +247,12 @@ let setOneArtistsAlbums = (token, itemsObj, i) => {
 
 //display one playlist in the search results table
 let displayOnePlaylist = (itemsObj, i) => {
+    //if there are less items then the limit specified and you try to access one that does not exist, end the function
+    if (i >= itemsObj.playlists.items.length) {
+        $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.total} out of ${itemsObj.playlists.total} matches)`)
+        return;
+    }
+    
     $('#playlists-div').show()
     $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
     let $playlist = $('<tr>').addClass('playlist-row').attr('id', itemsObj.playlists.items[i].id)
@@ -251,6 +269,12 @@ let displayOnePlaylist = (itemsObj, i) => {
 
 //display one track in the search results table
 let displayOneTrack = (itemsObj, i) => {
+    //if there are less items then the limit specified and you try to access one that does not exist, end the function
+    if (i >= itemsObj.tracks.items.length) {
+        $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.total} out of ${itemsObj.tracks.total} matches)`)
+        return;
+    }
+    
     $('#tracks-div').show()
     let oneItem = {}
     //if object contains multiple items select the tracks object then the track item. if object is a playlist select item object then track object. else it's only a track object so go straight to items    

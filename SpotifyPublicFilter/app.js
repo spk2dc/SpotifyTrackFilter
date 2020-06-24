@@ -33,7 +33,7 @@ let basicTokenMethods = (token, oldEvent) => {
     //listeners for search box and button
     $('#search-button').on('click', { boolOff: true, tokenExists: true }, (event) => {
         event.preventDefault();
-        console.log('authenticated click listener', event);
+        // console.log('authenticated click listener', event);
         //call initial handler method and remove it
         // initialSearchHandler(event)
 
@@ -42,7 +42,7 @@ let basicTokenMethods = (token, oldEvent) => {
     $('#search-box').on('keypress', { boolOff: true, tokenExists: true }, (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            console.log('authenticated keypress listener', event);
+            // console.log('authenticated keypress listener', event);
             //call initial handler method and remove it
             // initialSearchHandler(event)
 
@@ -150,7 +150,7 @@ let searchURL = (token, queryStr) => {
 
 //display all search results using 1 loop and calling a separate display function on each item
 let displaySearchResults = (token, itemsObj, limit) => {
-    console.log(itemsObj);
+    // console.log(itemsObj);
     $('#results-tables').show()
     for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)

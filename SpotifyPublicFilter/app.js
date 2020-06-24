@@ -29,20 +29,20 @@ let basicTokenMethods = (token, oldEvent) => {
     // console.log('authenticated main method event trigger: ', oldEvent);
 
     //listeners for search box and button
-    $('#search-button').on('click', (event) => {
+    $('#search-button').on('click', { boolOff: true, tokenExists: true }, (event) => {
         event.preventDefault();
         console.log('authenticated click listener', event);
         //call initial handler method and remove it
-        initialSearchHandler(oldEvent, { boolOff: true, tokenExists: true })
+        initialSearchHandler(event)
 
         searchUserInput(token)
     })
-    $('#search-box').on('keypress', (event) => {
+    $('#search-box').on('keypress', { boolOff: true, tokenExists: true }, (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
             console.log('authenticated keypress listener', event);
             //call initial handler method and remove it
-            initialSearchHandler(oldEvent, { boolOff: true, tokenExists: true })
+            initialSearchHandler(event)
 
             searchUserInput(token)
         }
@@ -499,6 +499,7 @@ let initialSearchHandler = (event) => {
     event.preventDefault();
     let arrOff = []
     let boolOff = event.data.boolOff
+
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event. also if token exists does not exist then run because that means you need a token.
     if (typeof (client_id) === 'string' && typeof (client_secret) === 'string' && !event.data.tokenExists) {
         boolOff = true
@@ -509,7 +510,7 @@ let initialSearchHandler = (event) => {
         //remove click/keypress events for search so these first event listeners only run the token authentication method once
         arrOff[0] = $('#search-button').off('click', initialSearchHandler)
         arrOff[1] = $('#search-box').off('keypress', initialSearchHandler)
-        console.log('button listener off ', arrOff[0], 'box listener off ', arrOff[1]);
+        // console.log('button listener off ', arrOff[0], 'box listener off ', arrOff[1]);
         return arrOff;
     } else {
         alert('Please provide valid keys in the format "client_id:client_secret" without quotes for token authentication.')

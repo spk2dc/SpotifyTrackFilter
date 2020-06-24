@@ -19,6 +19,8 @@ let getBasicToken = (clientID, secretID, event) => {
     }).then((token) => {
         console.log(`token:`, token);
         $('#apikeys').css('background', 'rgb(155, 255, 155)')
+        //turn off initial search handler method to prevent duplicate requests and methods from runnings
+        initialSearchHandler({ data: {boolOff: true, tokenExists: true} })
         basicTokenMethods(token, event)
     })
 
@@ -33,7 +35,7 @@ let basicTokenMethods = (token, oldEvent) => {
         event.preventDefault();
         console.log('authenticated click listener', event);
         //call initial handler method and remove it
-        initialSearchHandler(event)
+        // initialSearchHandler(event)
 
         searchUserInput(token)
     })
@@ -42,7 +44,7 @@ let basicTokenMethods = (token, oldEvent) => {
             event.preventDefault();
             console.log('authenticated keypress listener', event);
             //call initial handler method and remove it
-            initialSearchHandler(event)
+            // initialSearchHandler(event)
 
             searchUserInput(token)
         }

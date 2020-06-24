@@ -41,7 +41,10 @@ let basicTokenMethods = (token, oldEvent) => {
         if (event.keyCode === 13) {
             event.preventDefault();
             console.log('authenticated keypress listener', event);
-            $('#search-button').click();
+            //call initial handler method and remove it
+            initialSearchHandler(oldEvent, { boolOff: true, tokenExists: true })
+
+            searchUserInput(token)
         }
     })
 

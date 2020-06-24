@@ -32,6 +32,9 @@ let basicTokenMethods = (token, oldEvent) => {
     $('#search-button').on('click', (event) => {
         event.preventDefault();
         console.log('authenticated click listener', event);
+        //call initial handler method and remove it
+        initialSearchHandler(oldEvent, { boolOff: true })
+
         searchUserInput(token)
     })
     $('#search-box').on('keypress', (event) => {
@@ -488,6 +491,28 @@ let clearAndHideTables = () => {
     $('#track-analysis-table tbody').empty()
     $('#track-analysis-table').hide()
 }
+//initial handler for search box/button
+let initialSearchHandler = (event) => {
+    event.preventDefault();
+    let arrOff = []
+    let boolOff = event.data.boolOff
+    //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
+    if (typeof (client_id) === 'string' && typeof (client_secret) === 'string') {
+        boolOff = true
+        getBasicToken(client_id, client_secret, event)
+    }
+
+    if (boolOff) {
+        //remove click/keypress events for search so these first event listeners only run the token authentication method once
+        arrOff[0] = $('#search-button').off('click', initialSearchHandler)
+        arrOff[1] = $('#search-box').off('keypress', initialSearchHandler)
+        console.log('button listener off ', arrOff[0], 'box listener off ', arrOff[1]);
+        return arrOff;
+    } else {
+        alert('Please provide valid keys in the format "client_id:client_secret" without quotes for token authentication.')
+    }
+    return arrOff;
+}
 
 //window onload method that sets initial event listeners to authenticate token so API can be used before any other methods can be called
 $(() => {
@@ -501,30 +526,8 @@ $(() => {
     let secretID = ''
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
-    $('#search-button').on('click', '', (event) => {
-        event.preventDefault();
-        if (typeof (client_id) === 'string' && typeof (client_secret) === 'string') {
-            clientID = client_id
-            secretID = client_secret
-            //remove click/keypress events for search so these first event listeners only run the token authentication method once
-            $('#search-button').off('click', '')
-            $('#search-box').off('keypress', '')
-            // console.log('initial click listener', $(this));
-
-            getBasicToken(clientID, secretID, event)
-        }
-    })
-    $('#search-box').on('keypress', '', (event) => {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            // console.log('initial keypress listener', $(this));
-            $('#search-button').click();
-
-            //remove click/keypress events for search so these first event listeners only run the token authentication method once
-            $('#search-button').off('click', '')
-            $('#search-box').off('keypress', '')
-        }
-    })
+    $('#search-button').on('click', { boolOff: false }, initialSearchHandler)
+    $('#search-box').on('keypress', { boolOff: false }, initialSearchHandler)
 
     //if need to get client and secret ids from user then wait until they are entered and go to token method
     $('#apikeys').on('keypress', (event) => {

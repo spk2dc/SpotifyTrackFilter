@@ -498,7 +498,6 @@ let clearAndHideTables = () => {
 }
 //initial handler for search box/button
 let initialSearchHandler = (event) => {
-    event.preventDefault();
     let arrOff = []
     let boolOff = event.data.boolOff
 

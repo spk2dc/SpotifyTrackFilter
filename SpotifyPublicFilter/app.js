@@ -33,7 +33,7 @@ let basicTokenMethods = (token, oldEvent) => {
         event.preventDefault();
         console.log('authenticated click listener', event);
         //call initial handler method and remove it
-        initialSearchHandler(oldEvent, { boolOff: true })
+        initialSearchHandler(oldEvent, { boolOff: true, tokenExists: true })
 
         searchUserInput(token)
     })
@@ -496,8 +496,8 @@ let initialSearchHandler = (event) => {
     event.preventDefault();
     let arrOff = []
     let boolOff = event.data.boolOff
-    //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
-    if (typeof (client_id) === 'string' && typeof (client_secret) === 'string') {
+    //if client and secret ids already exist in environment variables then go straight to token method and reassign click event. also if token exists does not exist then run because that means you need a token.
+    if (typeof (client_id) === 'string' && typeof (client_secret) === 'string' && !event.data.tokenExists) {
         boolOff = true
         getBasicToken(client_id, client_secret, event)
     }
@@ -526,8 +526,8 @@ $(() => {
     let secretID = ''
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
-    $('#search-button').on('click', { boolOff: false }, initialSearchHandler)
-    $('#search-box').on('keypress', { boolOff: false }, initialSearchHandler)
+    $('#search-button').on('click', { boolOff: false, tokenExists: false }, initialSearchHandler)
+    $('#search-box').on('keypress', { boolOff: false, tokenExists: false }, initialSearchHandler)
 
     //if need to get client and secret ids from user then wait until they are entered and go to token method
     $('#apikeys').on('keypress', (event) => {

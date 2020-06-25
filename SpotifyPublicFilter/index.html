@@ -20,7 +20,8 @@
         </div>
         <div id="results-header" class="main-header">Search Results</div>
         <div id="results-search">
-            <input type="search" id="search-box" value="https://open.spotify.com/playlist/2rUNIGichLH0E0AuQROrtB"> <!-- https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK-->
+            <input type="search" id="search-box" value="https://open.spotify.com/playlist/2rUNIGichLH0E0AuQROrtB">
+            <!-- https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK-->
             <button type="button" id="search-button">Search</button>
         </div>
 
@@ -346,20 +347,23 @@
     </div>
 
     <div id="filtered-tracks" class="main-div">
-        <div id="filtered-header" class="main-header">Filtered Tracks (total <span id="filtered-header-total">0</span>)
-        </div>
-        <div id="filtered-results">
-            <table id="filtered-table">
-                <thead>
-                    <tr>
-                        <th>Track Name</th>
-                        <th>Artists</th>
-                        <th>Duration (ms)</th>
-                        <th>URL</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="filtered-results-section">
+            <div id="filtered-header" class="main-header">Filtered Tracks (total <span
+                    id="filtered-header-total">0</span>)
+            </div>
+            <div id="filtered-results" class="filtered-div">
+                <table id="filtered-table">
+                    <thead>
+                        <tr>
+                            <th>Track Name</th>
+                            <th>Artists</th>
+                            <th>Duration (ms)</th>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 

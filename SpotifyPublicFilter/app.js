@@ -154,6 +154,7 @@ let searchURL = (token, queryStr, allSearchResults) => {
     }).then((itemsObj) => {
         // console.log(itemsObj);
         $('#results-tables').show()
+        $('#tracks-header').text(`Tracks (total ${itemsObj.total})`)
 
         for (let i = 0; i < itemsObj.items.length; i++) {
             displayOneTrack(itemsObj, i, allSearchResults)
@@ -162,7 +163,6 @@ let searchURL = (token, queryStr, allSearchResults) => {
         //if a next exists in the list of results, recursively call this method until that is not the case
         if (itemsObj.next != null) {
             searchURL(token, itemsObj.next, allSearchResults)
-            $('#tracks-header').text(`Tracks (total ${itemsObj.total})`)
         }
 
         //reenable searching once previous search is finished

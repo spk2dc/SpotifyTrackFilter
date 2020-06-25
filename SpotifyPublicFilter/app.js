@@ -135,8 +135,6 @@ let searchURL = (token, queryStr, allSearchResults) => {
         finalurl += `/tracks`
     }
 
-    clearAndHideTables()
-
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
@@ -151,8 +149,6 @@ let searchURL = (token, queryStr, allSearchResults) => {
 
     }).then((itemsObj) => {
         // console.log(itemsObj);
-
-        $('#results-tables tbody').empty()
         $('#results-tables').show()
 
         for (let i = 0; i < itemsObj.items.length; i++) {
@@ -161,7 +157,7 @@ let searchURL = (token, queryStr, allSearchResults) => {
 
         //if a next exists in the list of results, recursively call this method until that is not the case
         if (itemsObj.next != null) {
-            // searchURL(token, itemsObj.next, allSearchResults)
+            searchURL(token, itemsObj.next, allSearchResults)
         }
 
         //reenable searching once previous search is finished

@@ -40,8 +40,8 @@ let basicTokenMethods = (token, oldEvent) => {
         // console.log('authenticated click listener', event);
 
         //disable search button after clicked once so method has time to finish and it can't be spammed
-        // $('#search-button').prop('disabled', true);
-        // $('#search-box').prop('disabled', true);
+        $('#search-button').prop('disabled', true);
+        $('#search-box').prop('disabled', true);
 
         searchUserInput(token, allSearchResults)
     })
@@ -51,8 +51,8 @@ let basicTokenMethods = (token, oldEvent) => {
             // console.log('authenticated keypress listener', event);
 
             //disable search button after clicked once so method has time to finish and it can't be spammed
-            // $('#search-button').prop('disabled', true);
-            // $('#search-box').prop('disabled', true);
+            $('#search-button').prop('disabled', true);
+            $('#search-box').prop('disabled', true);
 
             searchUserInput(token, allSearchResults)
         }
@@ -115,7 +115,11 @@ let searchUserInput = (token, allSearchResults) => {
         }
 
     }).then((itemsObj) => {
-        displaySearchResults(token, itemsObj, limit, allSearchResults)
+        displaySearchResults(token, itemsObj, allSearchResults)
+
+        //reenable searching once previous search is finished
+        $('#search-button').prop('disabled', false);
+        $('#search-box').prop('disabled', false);
     })
 }
 
@@ -158,19 +162,28 @@ let searchURL = (token, queryStr, allSearchResults) => {
         //if a next exists in the list of results, recursively call this method until that is not the case
         if (itemsObj.next != null) {
             searchURL(token, itemsObj.next, allSearchResults)
+            $('#tracks-header').text(`Tracks (total ${itemsObj.total})`)
         }
 
         //reenable searching once previous search is finished
-        // $('#search-button').prop('disabled', false);
-        // $('#search-box').prop('disabled', false);
+        $('#search-button').prop('disabled', false);
+        $('#search-box').prop('disabled', false);
     })
 }
 
 //display all search results using 1 loop and calling a separate display function on each item
-let displaySearchResults = (token, itemsObj, limit, allSearchResults) => {
+let displaySearchResults = (token, itemsObj, allSearchResults) => {
     // console.log(itemsObj);
+
+    //show tables and set totals in headers
     $('#results-tables').show()
-    for (let i = 0; i < limit; i++) {
+    $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
+    $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
+    $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
+    $('#tracks-header').text(`Tracks (first ${itemsObj.tracks.limit} out of ${itemsObj.tracks.total} matches)`)
+
+    //loop through and display all items
+    for (let i = 0; i < itemsObj.tracks.limit; i++) {
         displayOneAlbum(itemsObj, i)
         displayOneArtist(token, itemsObj, i)
         displayOnePlaylist(itemsObj, i)
@@ -187,7 +200,6 @@ let displayOneAlbum = (itemsObj, i) => {
     }
 
     $('#albums-div').show()
-    $('#albums-header').text(`Albums (first ${itemsObj.albums.limit} out of ${itemsObj.albums.total} matches)`)
     let $album = $('<tr>').addClass('album-row').attr('id', itemsObj.albums.items[i].id)
     let $albumLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
@@ -218,7 +230,6 @@ let displayOneArtist = (token, itemsObj, i) => {
     }
 
     $('#artists-div').show()
-    $('#artists-header').text(`Artists (first ${itemsObj.artists.limit} out of ${itemsObj.artists.total} matches)`)
     let $artist = $('<tr>').addClass(`artist-row r${i}`).attr('id', itemsObj.artists.items[i].id)
     let $artistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
 
@@ -280,7 +291,6 @@ let displayOnePlaylist = (itemsObj, i) => {
     }
 
     $('#playlists-div').show()
-    $('#playlists-header').text(`Playlists (first ${itemsObj.playlists.limit} out of ${itemsObj.playlists.total} matches)`)
     let $playlist = $('<tr>').addClass('playlist-row').attr('id', itemsObj.playlists.items[i].id)
     let $playlistLink = $('<a>').text('View in Spotify').attr('target', 'blank')
 
@@ -302,15 +312,12 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
     //if object contains multiple items select the tracks object then the track item. if object is a playlist select item object then track object. else it's only a track object so go straight to items    
     if (itemsObj.hasOwnProperty('tracks')) {
         length = itemsObj.tracks.items.length
-        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
         oneItem = itemsObj.tracks.items[i]
     } else if (itemsObj.href.includes('playlists')) {
         length = itemsObj.items.length
-        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
         oneItem = itemsObj.items[i].track
     } else {
         length = itemsObj.items.length
-        $('#tracks-header').text(`Tracks (first ${length} out of ${length} matches)`)
         oneItem = itemsObj.items[i]
     }
 

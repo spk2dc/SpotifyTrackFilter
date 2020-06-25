@@ -49,7 +49,7 @@ let basicTokenMethods = (token, oldEvent) => {
         if (event.keyCode === 13) {
             event.preventDefault();
             // console.log('authenticated keypress listener', event);
-            
+
             //disable search button after clicked once so method has time to finish and it can't be spammed
             // $('#search-button').prop('disabled', true);
             // $('#search-box').prop('disabled', true);
@@ -74,7 +74,7 @@ let basicTokenMethods = (token, oldEvent) => {
     })
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
-    if (oldEvent.currentTarget.id === 'search-button' || oldEvent.currentTarget.id === 'search-box') {
+    if (oldEvent.currentTarget.id === 'search-button' || (oldEvent.currentTarget.id === 'search-box' && oldEvent.keyCode === 13)) {
         //disable search button after clicked once so method has time to finish and it can't be spammed
         $('#search-button').prop('disabled', true);
         $('#search-box').prop('disabled', true);

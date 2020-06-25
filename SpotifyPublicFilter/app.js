@@ -71,7 +71,7 @@ let basicTokenMethods = (token, oldEvent) => {
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
     if (oldEvent.currentTarget.id === 'search-button') {
-        searchUserInput(token)
+        searchUserInput(token, allSearchResults)
     }
 }
 
@@ -117,13 +117,15 @@ let searchURL = (token, queryStr, allSearchResults) => {
     let queryURL = new URL(queryStr)
     let path = queryURL.pathname.split('/')
     let finalurl = `${baseurl}/${path[1]}s/${path[2]}`
+    console.log(path);
 
-    if (path[1] === 'artist') {
+    if (path[1] === 'v1') {
+        //if v1 exists in url then it is an automatic recursive call from this method to get the next set of items until it reaches the total 
+        finalurl = queryStr
+    } else if (path[1] === 'artist') {
         finalurl += `/top-tracks?country=from_token`
     } else if (path[1] !== 'track') {
         finalurl += `/tracks`
-    } else if (path[1] === 'v1') {
-        finalurl = queryStr
     }
 
     clearAndHideTables()
@@ -148,6 +150,11 @@ let searchURL = (token, queryStr, allSearchResults) => {
 
         for (let i = 0; i < itemsObj.items.length; i++) {
             displayOneTrack(itemsObj, i, allSearchResults)
+        }
+
+        //if a next exists in the list of results, recursively call this method until that is not the case
+        if (itemsObj.next != null) {
+            searchURL(token, itemsObj.next, allSearchResults)
         }
     })
 }
@@ -330,6 +337,7 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
     oneSearchResult['allArtists'] = allArtists
     oneSearchResult['duration'] = oneItem.duration_ms
     oneSearchResult['link'] = oneItem.external_urls.spotify
+    console.log(oneItem.id, oneSearchResult);
     allSearchResults[oneItem.id] = oneSearchResult
 }
 

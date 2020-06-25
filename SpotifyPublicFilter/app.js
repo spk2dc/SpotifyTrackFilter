@@ -38,8 +38,10 @@ let basicTokenMethods = (token, oldEvent) => {
     $('#search-button').on('click', { boolOff: true, tokenExists: true }, (event) => {
         event.preventDefault();
         // console.log('authenticated click listener', event);
-        //call initial handler method and remove it
-        // initialSearchHandler(event)
+
+        //disable search button after clicked once so method has time to finish and it can't be spammed
+        $('#search-button').prop('disabled', true);
+        $('#search-box').prop('disabled', true);
 
         searchUserInput(token, allSearchResults)
     })
@@ -47,8 +49,10 @@ let basicTokenMethods = (token, oldEvent) => {
         if (event.keyCode === 13) {
             event.preventDefault();
             // console.log('authenticated keypress listener', event);
-            //call initial handler method and remove it
-            // initialSearchHandler(event)
+            
+            //disable search button after clicked once so method has time to finish and it can't be spammed
+            $('#search-button').prop('disabled', true);
+            $('#search-box').prop('disabled', true);
 
             searchUserInput(token, allSearchResults)
         }
@@ -70,7 +74,11 @@ let basicTokenMethods = (token, oldEvent) => {
     })
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
-    if (oldEvent.currentTarget.id === 'search-button') {
+    if (oldEvent.currentTarget.id === 'search-button' || oldEvent.currentTarget.id === 'search-box') {
+        //disable search button after clicked once so method has time to finish and it can't be spammed
+        $('#search-button').prop('disabled', true);
+        $('#search-box').prop('disabled', true);
+        
         searchUserInput(token, allSearchResults)
     }
 }
@@ -117,7 +125,6 @@ let searchURL = (token, queryStr, allSearchResults) => {
     let queryURL = new URL(queryStr)
     let path = queryURL.pathname.split('/')
     let finalurl = `${baseurl}/${path[1]}s/${path[2]}`
-    console.log(path);
 
     if (path[1] === 'v1') {
         //if v1 exists in url then it is an automatic recursive call from this method to get the next set of items until it reaches the total 
@@ -156,6 +163,10 @@ let searchURL = (token, queryStr, allSearchResults) => {
         if (itemsObj.next != null) {
             searchURL(token, itemsObj.next, allSearchResults)
         }
+
+        //reenable searching once previous search is finished
+        $('#search-button').prop('disabled', false);
+        $('#search-box').prop('disabled', false);
     })
 }
 
@@ -337,7 +348,6 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
     oneSearchResult['allArtists'] = allArtists
     oneSearchResult['duration'] = oneItem.duration_ms
     oneSearchResult['link'] = oneItem.external_urls.spotify
-    console.log(oneItem.id, oneSearchResult);
     allSearchResults[oneItem.id] = oneSearchResult
 }
 

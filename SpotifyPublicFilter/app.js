@@ -20,7 +20,7 @@ let getBasicToken = (clientID, secretID, event) => {
         console.log(`token:`, token);
         $('#apikeys').css('background', 'rgb(155, 255, 155)')
         //turn off initial search handler method to prevent duplicate requests and methods from runnings
-        initialSearchHandler({ data: {boolOff: true, tokenExists: true} })
+        initialSearchHandler({ data: { boolOff: true, tokenExists: true } })
         basicTokenMethods(token, event)
     })
 
@@ -30,6 +30,10 @@ let getBasicToken = (clientID, secretID, event) => {
 let basicTokenMethods = (token, oldEvent) => {
     // console.log('authenticated main method event trigger: ', oldEvent);
 
+    //object to contain current data for all tracks that have been analyzed since authentication for quicker retrieval and display
+    let allFilteredTracks = {}
+    let allSearchResults = {}
+
     //listeners for search box and button
     $('#search-button').on('click', { boolOff: true, tokenExists: true }, (event) => {
         event.preventDefault();
@@ -37,7 +41,7 @@ let basicTokenMethods = (token, oldEvent) => {
         //call initial handler method and remove it
         // initialSearchHandler(event)
 
-        searchUserInput(token)
+        searchUserInput(token, allSearchResults)
     })
     $('#search-box').on('keypress', { boolOff: true, tokenExists: true }, (event) => {
         if (event.keyCode === 13) {
@@ -46,12 +50,10 @@ let basicTokenMethods = (token, oldEvent) => {
             //call initial handler method and remove it
             // initialSearchHandler(event)
 
-            searchUserInput(token)
+            searchUserInput(token, allSearchResults)
         }
     })
 
-    //object to contain current data for all tracks that have been analyzed since authentication for quicker retrieval and display
-    let allFilteredTracks = {}
     //if any row is clicked within a table tbody, display an audio analysis if possible
     $('tbody').on('click', (event) => {
         displayAudioFeatures(token, event, allFilteredTracks)
@@ -74,7 +76,7 @@ let basicTokenMethods = (token, oldEvent) => {
 }
 
 //main search method, for when usere inputs normal text. searches the first 10 results for albums, artists, playlists, and tracks
-let searchUserInput = (token) => {
+let searchUserInput = (token, allSearchResults) => {
     let baseurl = "https://api.spotify.com/v1/search"
     let queryStr = $('#search-box').val()
     let typeStr = encodeURIComponent('album,artist,playlist,track')
@@ -86,7 +88,7 @@ let searchUserInput = (token) => {
 
     //if user inputs a spotify url call different search function and end this function
     if (queryStr.includes('open.spotify.com')) {
-        searchURL(token, queryStr)
+        searchURL(token, queryStr, allSearchResults)
         return;
     }
     queryStr = encodeURIComponent(queryStr)
@@ -110,7 +112,7 @@ let searchUserInput = (token) => {
 }
 
 //separate search method for when user inputs a spotify URL
-let searchURL = (token, queryStr) => {
+let searchURL = (token, queryStr, allSearchResults) => {
     let baseurl = "https://api.spotify.com/v1"
     let queryURL = new URL(queryStr)
     let path = queryURL.pathname.split('/')
@@ -120,6 +122,8 @@ let searchURL = (token, queryStr) => {
         finalurl += `/top-tracks?country=from_token`
     } else if (path[1] !== 'track') {
         finalurl += `/tracks`
+    } else if (path[1] === 'v1') {
+        finalurl = queryStr
     }
 
     clearAndHideTables()
@@ -143,7 +147,7 @@ let searchURL = (token, queryStr) => {
         $('#results-tables').show()
 
         for (let i = 0; i < itemsObj.items.length; i++) {
-            displayOneTrack(itemsObj, i)
+            displayOneTrack(itemsObj, i, allSearchResults)
         }
     })
 }
@@ -276,10 +280,11 @@ let displayOnePlaylist = (itemsObj, i) => {
 }
 
 //display one track in the search results table
-let displayOneTrack = (itemsObj, i) => {
+let displayOneTrack = (itemsObj, i, allSearchResults) => {
     $('#tracks-div').show()
     let oneItem = {}
     let length = 0
+    let oneSearchResult = {}
     //if object contains multiple items select the tracks object then the track item. if object is a playlist select item object then track object. else it's only a track object so go straight to items    
     if (itemsObj.hasOwnProperty('tracks')) {
         length = itemsObj.tracks.items.length
@@ -304,7 +309,6 @@ let displayOneTrack = (itemsObj, i) => {
     let $track = $('<tr>').addClass('track-row').attr('id', oneItem.id)
     let $trackLink = $('<a>').text('View in Spotify').attr('target', 'blank')
     let allArtists = ''
-    $track.append($('<td>').text(oneItem.name))
 
     for (const itr of oneItem.artists) {
         if (allArtists.length < 1) {
@@ -313,12 +317,20 @@ let displayOneTrack = (itemsObj, i) => {
             allArtists += ', ' + itr.name
         }
     }
+    $track.append($('<td>').text(oneItem.name))
     $track.append($('<td>').text(allArtists))
     $track.append($('<td>').text(oneItem.duration_ms))
     $trackLink.attr('href', oneItem.external_urls.spotify)
     $track.append($('<td>').append($trackLink))
 
     $('#tracks-table tbody').append($track)
+
+    oneSearchResult['type'] = 'track'
+    oneSearchResult['name'] = oneItem.name
+    oneSearchResult['allArtists'] = allArtists
+    oneSearchResult['duration'] = oneItem.duration_ms
+    oneSearchResult['link'] = oneItem.external_urls.spotify
+    allSearchResults[oneItem.id] = oneSearchResult
 }
 
 //get audio feature values for a track. allFilteredTracks argument is an object to store all the data in and boolAdd is a boolean to specify whether the track should be added to the filtered results table or not.

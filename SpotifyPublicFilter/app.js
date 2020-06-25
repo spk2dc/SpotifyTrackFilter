@@ -40,8 +40,8 @@ let basicTokenMethods = (token, oldEvent) => {
         // console.log('authenticated click listener', event);
 
         //disable search button after clicked once so method has time to finish and it can't be spammed
-        $('#search-button').prop('disabled', true);
-        $('#search-box').prop('disabled', true);
+        // $('#search-button').prop('disabled', true);
+        // $('#search-box').prop('disabled', true);
 
         searchUserInput(token, allSearchResults)
     })
@@ -51,8 +51,8 @@ let basicTokenMethods = (token, oldEvent) => {
             // console.log('authenticated keypress listener', event);
             
             //disable search button after clicked once so method has time to finish and it can't be spammed
-            $('#search-button').prop('disabled', true);
-            $('#search-box').prop('disabled', true);
+            // $('#search-button').prop('disabled', true);
+            // $('#search-box').prop('disabled', true);
 
             searchUserInput(token, allSearchResults)
         }
@@ -78,7 +78,7 @@ let basicTokenMethods = (token, oldEvent) => {
         //disable search button after clicked once so method has time to finish and it can't be spammed
         $('#search-button').prop('disabled', true);
         $('#search-box').prop('disabled', true);
-        
+
         searchUserInput(token, allSearchResults)
     }
 }
@@ -115,7 +115,7 @@ let searchUserInput = (token, allSearchResults) => {
         }
 
     }).then((itemsObj) => {
-        displaySearchResults(token, itemsObj, limit)
+        displaySearchResults(token, itemsObj, limit, allSearchResults)
     })
 }
 
@@ -161,24 +161,24 @@ let searchURL = (token, queryStr, allSearchResults) => {
 
         //if a next exists in the list of results, recursively call this method until that is not the case
         if (itemsObj.next != null) {
-            searchURL(token, itemsObj.next, allSearchResults)
+            // searchURL(token, itemsObj.next, allSearchResults)
         }
 
         //reenable searching once previous search is finished
-        $('#search-button').prop('disabled', false);
-        $('#search-box').prop('disabled', false);
+        // $('#search-button').prop('disabled', false);
+        // $('#search-box').prop('disabled', false);
     })
 }
 
 //display all search results using 1 loop and calling a separate display function on each item
-let displaySearchResults = (token, itemsObj, limit) => {
+let displaySearchResults = (token, itemsObj, limit, allSearchResults) => {
     // console.log(itemsObj);
     $('#results-tables').show()
     for (let i = 0; i < limit; i++) {
         displayOneAlbum(itemsObj, i)
         displayOneArtist(token, itemsObj, i)
         displayOnePlaylist(itemsObj, i)
-        displayOneTrack(itemsObj, i)
+        displayOneTrack(itemsObj, i, allSearchResults)
     }
 }
 

@@ -32,7 +32,7 @@ let basicTokenMethods = (token, oldEvent) => {
 
     //object to contain current data for all tracks that have been analyzed since authentication for quicker retrieval and display
     let allFilteredTracks = {}
-    let allSearchResults = {}
+    let allSearchResults = new Map()
 
     //listeners for search box and button
     $('#search-button').on('click', { boolOff: true, tokenExists: true }, (event) => {
@@ -351,7 +351,7 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
     oneSearchResult['allArtists'] = allArtists
     oneSearchResult['duration'] = oneItem.duration_ms
     oneSearchResult['link'] = oneItem.external_urls.spotify
-    allSearchResults[oneItem.id] = oneSearchResult
+    allSearchResults.set(oneItem.id, oneSearchResult)
 }
 
 //get audio feature values for a track. allFilteredTracks argument is an object to store all the data in and boolAdd is a boolean to specify whether the track should be added to the filtered results table or not.
@@ -451,6 +451,9 @@ let runFilters = (token, allFilteredTracks) => {
     //re-enable filter button after all tracks have finished filtering so filters are not clicked/called multiple times
     Promise.allSettled(arrPromise).then((data) => {
         $('#filter-button').prop('disabled', false)
+        console.log(arrPromise);
+        console.log(allFilteredTracks);
+
     })
 
 }

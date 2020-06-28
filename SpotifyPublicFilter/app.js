@@ -116,7 +116,7 @@ let searchUserInput = (token, allSearchResults) => {
     queryStr = encodeURIComponent(queryStr)
 
     //log below is for testing ajax query using command prompt
-    //console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
 
     $.ajax({
@@ -154,7 +154,7 @@ let searchURL = (token, queryStr, allSearchResults) => {
     }
 
     //log below is for testing ajax query using command prompt
-    // console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     $.ajax({
         type: "GET",

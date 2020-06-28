@@ -392,9 +392,8 @@ let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
     //if a specific track id is passed in only run the query for that track instead of the entire array
     if (typeof trackID !== 'undefined') {
         idsList = trackID
-        allSearchResults.set(trackID, {})
     }
-
+    
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
@@ -543,9 +542,10 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     let arrPromise = []
     //default promise array to contain a resolved promise so if you do not need to run a query then you can just display the preexisting audio analysis
     arrPromise[0] = Promise.resolve(true)
-
+    console.log('id ', trackID, 'has ', allSearchResults.get(trackID).hasOwnProperty('audioFeatures'), allSearchResults);
+    
     //if audio analysis data does not exist yet, run query to get it
-    if (!allSearchResults.has(trackID)) {
+    if (!allSearchResults.get(trackID).hasOwnProperty('audioFeatures')) {
         //send false for add argument so track is not added to filtered results
         arrPromise[1] = getTrackAudioFeatures(token, allSearchResults, false, trackID)
     }

@@ -396,7 +396,7 @@ let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
     }
 
     //log below is for testing ajax query using command prompt
-    console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    // console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     return $.ajax({
         url: `${baseurl}/?ids=${idsList}`,
@@ -411,26 +411,27 @@ let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
         }
 
     }).then((tracks) => {
-        console.log(tracks);
+        // console.log(tracks);
 
         for (const itr of tracks.audio_features) {
             allSearchResults.get(itr.id)['audioFeatures'] = itr
 
             if (boolAdd) {
-                addFilteredResultsTrack(itr.id, tracks)
+                addFilteredResultsTrack(itr.id, allSearchResults)
             }
         }
         console.log(allSearchResults);
-        
+
         return tracks
     })
 }
 
 //add track to filtered results if it meets all user input criteria
-let addFilteredResultsTrack = (trackID, track) => {
+let addFilteredResultsTrack = (trackID, allSearchResults) => {
     //names correspond to both spotify object keys and ids in various html input elements
     let filterNames = ['acousticness', 'danceability', 'duration_ms', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness', 'tempo', 'valence']
     //set default boolean to add track as true
+    let track = allSearchResults.get(trackID)['audioFeatures']
     let addTrack = true
 
     filterNames.forEach((name) => {
@@ -477,6 +478,9 @@ let runFilters = (token, allSearchResults) => {
     $('#filtered-table').show()
     $('#filtered-table tbody').empty()
     $('#filtered-header-total').text('0')
+    //show CSS border and elements that were initially hidden
+    $('.filtered-results-section').css('border', '1px solid #1ed75fb9')
+    $('.filtered-div').css('display', 'block')
 
     if ($('#results-tables .track-row').length < 1) {
         alert('Please search for tracks before filtering the results.')
@@ -496,8 +500,7 @@ let runFilters = (token, allSearchResults) => {
     //re-enable filter button after all tracks have finished filtering so filters are not clicked/called multiple times
     Promise.allSettled(arrPromise).then((data) => {
         $('#filter-button').prop('disabled', false)
-        console.log(arrPromise);
-
+        // console.log(arrPromise);
     })
 
 }

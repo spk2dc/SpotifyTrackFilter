@@ -57,6 +57,16 @@ h1 {
   padding: 8px;
 }
 
+/* hide filter section border initially */
+.filtered-results-section {
+  border: none;
+}
+
+/* hide filter div initially */
+.filtered-div {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

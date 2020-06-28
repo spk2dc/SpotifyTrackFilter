@@ -35,7 +35,6 @@ let basicTokenMethods = (token, oldEvent) => {
     // console.log('authenticated main method event trigger: ', oldEvent);
 
     //object to contain current data for all tracks that have been analyzed since authentication for quicker retrieval and display
-    let allFilteredTracks = {}
     let allSearchResults = new Map()
 
     //listeners for search box and button
@@ -104,7 +103,10 @@ let searchUserInput = (token, allSearchResults) => {
     let offset = 0
     let finalurl = `${baseurl}?q=${queryStr}&type=${typeStr}&limit=${limit}&offset=${offset}`
 
+    //clear and hide all data tables, and delete all search results from map
     clearAndHideTables()
+    allSearchResults = new Map()
+    console.log(allSearchResults);
 
     //if user inputs a spotify url call different search function and end this function
     if (queryStr.includes('open.spotify.com')) {
@@ -382,7 +384,7 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
 /************************ FILTER METHODS *************************/
 /*****************************************************************/
 
-//get audio feature values for a track. allFilteredTracks argument is an object to store all the data in and boolAdd is a boolean to specify whether the track should be added to the filtered results table or not.
+//get audio feature values for all tracks in allSearchResults map object where data is stored. boolAdd is a boolean to specify whether the tracks should be added to the filtered results table or not. trackID is an optional argument that indicates only 1 specific track's audio analysis is needed.
 let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
@@ -393,7 +395,7 @@ let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
     if (typeof trackID !== 'undefined') {
         idsList = trackID
     }
-    
+
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
@@ -543,7 +545,7 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     //default promise array to contain a resolved promise so if you do not need to run a query then you can just display the preexisting audio analysis
     arrPromise[0] = Promise.resolve(true)
     console.log('id ', trackID, 'has ', allSearchResults.get(trackID).hasOwnProperty('audioFeatures'), allSearchResults);
-    
+
     //if audio analysis data does not exist yet, run query to get it
     if (!allSearchResults.get(trackID).hasOwnProperty('audioFeatures')) {
         //send false for add argument so track is not added to filtered results

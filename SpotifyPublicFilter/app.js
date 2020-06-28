@@ -154,7 +154,7 @@ let searchURL = (token, queryStr, allSearchResults) => {
     }
 
     //log below is for testing ajax query using command prompt
-    console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    // console.log(`curl -X "GET" "${finalurl}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     $.ajax({
         type: "GET",
@@ -388,43 +388,60 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
 let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
-    //get list of all keys in map and covert to an array then join into a string separating ids with a comma
-    let idsList = Array.from(allSearchResults.keys()).join(',')
-
-    //if a specific track id is passed in only run the query for that track instead of the entire array
-    if (typeof trackID !== 'undefined') {
-        idsList = trackID
-    }
+    //get list of all keys in map and covert to an array
+    let idsArr = Array.from(allSearchResults.keys())
+    let idsList = ''
 
     //log below is for testing ajax query using command prompt
     // console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
-    return $.ajax({
-        url: `${baseurl}/?ids=${idsList}`,
-        type: "GET",
-        data: {
-
-        },
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `${token.token_type} ${token.access_token}`
+    let arrPromise = []
+    let i = 0
+    //keep sending queries to get audio feature data until array of ids is empty and all search results have data
+    do {
+        //remove first 100 array elements and join into a string separating ids with a comma. limit the list to 100 items because of api query restrictions.
+        if (idsArr.length >= 100) {
+            idsList = idsArr.splice(0, 100).join(',')
+        } else {
+            idsList = idsArr.splice(0, idsArr.length).join(',')
         }
 
-    }).then((tracks) => {
-        // console.log(tracks);
+        //if a specific track id is passed in only run the query for that track instead of the entire array
+        if (typeof trackID !== 'undefined') {
+            idsArr.length = 0
+            idsList = trackID
+        }
+        console.log('query list ', idsArr.length);
+        
+        arrPromise[i] = $.ajax({
+            url: `${baseurl}/?ids=${idsList}`,
+            type: "GET",
+            data: {
 
-        for (const itr of tracks.audio_features) {
-            allSearchResults.get(itr.id)['audioFeatures'] = itr
-
-            if (boolAdd) {
-                addFilteredResultsTrack(itr.id, allSearchResults)
+            },
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `${token.token_type} ${token.access_token}`
             }
-        }
-        console.log(allSearchResults);
 
-        return tracks
-    })
+        }).then((tracks) => {
+            // console.log(tracks);
+
+            for (const itr of tracks.audio_features) {
+                allSearchResults.get(itr.id)['audioFeatures'] = itr
+
+                if (boolAdd) {
+                    addFilteredResultsTrack(itr.id, allSearchResults)
+                }
+            }
+
+            return tracks
+        })
+
+        i++
+    } while (idsArr.length > 0);
+    return arrPromise
 }
 
 //add track to filtered results if it meets all user input criteria
@@ -488,12 +505,8 @@ let runFilters = (token, allSearchResults) => {
         return;
     }
 
-    //note that .get() does NOT return a jquery object like .eq() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
-    // let rows = $('#tracks-table tbody').get(0).rows
-    let arrPromise = []
-    // console.log(`running filters method on: `, rows);
-
-    arrPromise[0] = getTrackAudioFeatures(token, allSearchResults, true)
+    //get audio features for all tracks returned in search results
+    let arrPromise = getTrackAudioFeatures(token, allSearchResults, true)
 
     //re-enable filter button after all tracks have finished filtering so filters are not clicked/called multiple times
     Promise.allSettled(arrPromise).then((data) => {
@@ -545,7 +558,7 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     //if audio analysis data does not exist yet, run query to get it
     if (!allSearchResults.get(trackID).hasOwnProperty('audioFeatures')) {
         //send false for add argument so track is not added to filtered results
-        arrPromise[1] = getTrackAudioFeatures(token, allSearchResults, false, trackID)
+        arrPromise = getTrackAudioFeatures(token, allSearchResults, false, trackID)
     }
 
     //when promises are all resolved then add to track analysis table

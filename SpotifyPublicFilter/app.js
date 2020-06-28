@@ -547,19 +547,18 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     //if audio analysis data does not exist yet, run query to get it
     if (!allSearchResults.has(trackID)) {
         //send false for add argument so track is not added to filtered results
-        arrPromise[1] = getTrackAudioFeatures(token, allFilteredTracks, false, trackID)
+        arrPromise[1] = getTrackAudioFeatures(token, allSearchResults, false, trackID)
     }
 
     //when promises are all resolved then add to track analysis table
     Promise.allSettled(arrPromise).then((data) => {
         //add all audio data to track analysis table
-        for (const key in allFilteredTracks[trackID]) {
+        let features = allSearchResults.get(trackID)['audioFeatures']
+        for (const key in features) {
             let $tr = $('<tr>')
             $tr.append($('<td>').text(key))
-            $tr.append($('<td>').text(allFilteredTracks[trackID][key]))
+            $tr.append($('<td>').text(features[key]))
             $tbody.append($tr)
-            console.log(allFilteredTracks);
-
         }
     })
 }

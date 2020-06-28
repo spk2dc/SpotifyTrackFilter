@@ -360,11 +360,14 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
 let getTrackAudioFeatures = (token, trackID, allSearchResults, boolAdd) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
+    //get list of all keys in map and covert to an array then join into a string separating ids with a comma
+    let idsList = Array.from(allSearchResults.keys()).join(',')
+
     //log below is for testing ajax query using command prompt
-    // console.log(`curl -X "GET" "${baseurl}/${trackID}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
     return $.ajax({
-        url: `${baseurl}/${trackID}`,
+        url: `${baseurl}/?ids=${idsList}`,
         type: "GET",
         data: {
 
@@ -375,15 +378,17 @@ let getTrackAudioFeatures = (token, trackID, allSearchResults, boolAdd) => {
             'Authorization': `${token.token_type} ${token.access_token}`
         }
 
-    }).then((track) => {
-        let temp = allSearchResults.get(trackID)
-        temp['audioFeatures'] = track
-        allSearchResults.set(trackID, temp)
+    }).then((tracks) => {
+        for (const itr of tracks) {
+            let temp = allSearchResults.get(itr.id)
+            temp['audioFeatures'] = itr
+            allSearchResults.set(trackID, temp)
+        }
 
         if (boolAdd) {
-            addFilteredResultsTrack(trackID, track)
+            addFilteredResultsTrack(trackID, tracks)
         }
-        return track
+        return tracks
     })
 }
 

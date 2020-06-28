@@ -1,3 +1,7 @@
+/*****************************************************************/
+/******************** AUTHENTICATION METHODS *********************/
+/*****************************************************************/
+
 //gets a valid client credentials token from spotify for authentication purposes
 let getBasicToken = (clientID, secretID, event) => {
     let baseurl = "https://accounts.spotify.com/api/token"
@@ -82,6 +86,14 @@ let basicTokenMethods = (token, oldEvent) => {
         searchUserInput(token, allSearchResults)
     }
 }
+
+/*****************************************************************/
+/******************** AUTHENTICATION METHODS *********************/
+/*****************************************************************/
+
+/*****************************************************************/
+/************************ SEARCH METHODS *************************/
+/*****************************************************************/
 
 //main search method, for when usere inputs normal text. searches the first 10 results for albums, artists, playlists, and tracks
 let searchUserInput = (token, allSearchResults) => {
@@ -170,6 +182,14 @@ let searchURL = (token, queryStr, allSearchResults) => {
         $('#search-box').prop('disabled', false);
     })
 }
+
+/*****************************************************************/
+/************************ SEARCH METHODS *************************/
+/*****************************************************************/
+
+/*****************************************************************/
+/************************ DISPLAY METHODS ************************/
+/*****************************************************************/
 
 //display all search results using 1 loop and calling a separate display function on each item
 let displaySearchResults = (token, itemsObj, allSearchResults) => {
@@ -308,7 +328,7 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
     $('#tracks-div').show()
     let oneItem = {}
     let length = 0
-    let oneSearchResult = {}
+
     //if object contains multiple items select the tracks object then the track item. if object is a playlist select item object then track object. else it's only a track object so go straight to items    
     if (itemsObj.hasOwnProperty('tracks')) {
         length = itemsObj.tracks.items.length
@@ -346,22 +366,34 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
 
     $('#tracks-table tbody').append($track)
 
-    oneSearchResult['type'] = 'track'
-    oneSearchResult['name'] = oneItem.name
-    oneSearchResult['allArtists'] = allArtists
-    oneSearchResult['duration'] = oneItem.duration_ms
-    oneSearchResult['link'] = oneItem.external_urls.spotify
-    allSearchResults.set(oneItem.id, oneSearchResult)
-    console.log(allSearchResults);
-
+    allSearchResults.set(oneItem.id, {})
+    allSearchResults.get(oneItem.id)['type'] = 'track'
+    allSearchResults.get(oneItem.id)['name'] = oneItem.name
+    allSearchResults.get(oneItem.id)['allArtists'] = allArtists
+    allSearchResults.get(oneItem.id)['duration'] = oneItem.duration_ms
+    allSearchResults.get(oneItem.id)['link'] = oneItem.external_urls.spotify
 }
 
+/*****************************************************************/
+/************************ DISPLAY METHODS ************************/
+/*****************************************************************/
+
+/*****************************************************************/
+/************************ FILTER METHODS *************************/
+/*****************************************************************/
+
 //get audio feature values for a track. allFilteredTracks argument is an object to store all the data in and boolAdd is a boolean to specify whether the track should be added to the filtered results table or not.
-let getTrackAudioFeatures = (token, trackID, allSearchResults, boolAdd) => {
+let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
     //get list of all keys in map and covert to an array then join into a string separating ids with a comma
     let idsList = Array.from(allSearchResults.keys()).join(',')
+
+    //if a specific track id is passed in only run the query for that track instead of the entire array
+    if (typeof trackID !== 'undefined') {
+        idsList = trackID
+        allSearchResults.set(trackID, {})
+    }
 
     //log below is for testing ajax query using command prompt
     console.log(`curl -X "GET" "${baseurl}/?ids=${idsList}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
@@ -379,15 +411,17 @@ let getTrackAudioFeatures = (token, trackID, allSearchResults, boolAdd) => {
         }
 
     }).then((tracks) => {
-        for (const itr of tracks) {
-            let temp = allSearchResults.get(itr.id)
-            temp['audioFeatures'] = itr
-            allSearchResults.set(trackID, temp)
-        }
+        console.log(tracks);
 
-        if (boolAdd) {
-            addFilteredResultsTrack(trackID, tracks)
+        for (const itr of tracks.audio_features) {
+            allSearchResults.get(itr.id)['audioFeatures'] = itr
+
+            if (boolAdd) {
+                addFilteredResultsTrack(itr.id, tracks)
+            }
         }
+        console.log(allSearchResults);
+        
         return tracks
     })
 }
@@ -454,10 +488,10 @@ let runFilters = (token, allSearchResults) => {
     let arrPromise = []
     // console.log(`running filters method on: `, rows);
 
-    for (let i = 0; i < rows.length; i++) {
-        allSearchResults.set(rows[i].id, {})
-    }
-    arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allSearchResults, true)
+    // for (let i = 0; i < rows.length; i++) {
+    //     allSearchResults.set(rows[i].id, {})
+    // }
+    arrPromise[0] = getTrackAudioFeatures(token, allSearchResults, true)
 
     //re-enable filter button after all tracks have finished filtering so filters are not clicked/called multiple times
     Promise.allSettled(arrPromise).then((data) => {
@@ -508,9 +542,9 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     arrPromise[0] = Promise.resolve(true)
 
     //if audio analysis data does not exist yet, run query to get it
-    if (!allFilteredTracks.hasOwnProperty(trackID)) {
+    if (!allSearchResults.has(trackID)) {
         //send false for add argument so track is not added to filtered results
-        arrPromise[1] = getTrackAudioFeatures(token, trackID, allFilteredTracks, false)
+        arrPromise[1] = getTrackAudioFeatures(token, allFilteredTracks, false, trackID)
     }
 
     //when promises are all resolved then add to track analysis table
@@ -521,9 +555,19 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
             $tr.append($('<td>').text(key))
             $tr.append($('<td>').text(allFilteredTracks[trackID][key]))
             $tbody.append($tr)
+            console.log(allFilteredTracks);
+
         }
     })
 }
+
+/*****************************************************************/
+/************************ FILTER METHODS *************************/
+/*****************************************************************/
+
+/*****************************************************************/
+/************************ HELPER METHODS *************************/
+/*****************************************************************/
 
 //clears data from all tables and then hides each emptied table
 let clearAndHideTables = () => {
@@ -564,6 +608,14 @@ let initialSearchHandler = (event) => {
     }
     return arrOff;
 }
+
+/*****************************************************************/
+/************************ HELPER METHODS *************************/
+/*****************************************************************/
+
+/*****************************************************************/
+/************************* MAIN METHOD ***************************/
+/*****************************************************************/
 
 //window onload method that sets initial event listeners to authenticate token so API can be used before any other methods can be called
 $(() => {

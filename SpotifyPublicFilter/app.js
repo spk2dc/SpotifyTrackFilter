@@ -60,7 +60,7 @@ let basicTokenMethods = (token, oldEvent) => {
 
     //if any row is clicked within a table tbody, display an audio analysis if possible
     $('tbody').on('click', (event) => {
-        displayAudioFeatures(token, event, allFilteredTracks)
+        displayAudioFeatures(token, event, allSearchResults)
     })
     //listener for filter button
     $('#filter-button').on('click', (event) => {
@@ -70,7 +70,7 @@ let basicTokenMethods = (token, oldEvent) => {
         //disable filter button after clicked once so method has time to finish and it can't be spammed
         $('#filter-button').prop('disabled', true);
 
-        runFilters(token, allFilteredTracks)
+        runFilters(token, allSearchResults)
     })
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
@@ -352,10 +352,12 @@ let displayOneTrack = (itemsObj, i, allSearchResults) => {
     oneSearchResult['duration'] = oneItem.duration_ms
     oneSearchResult['link'] = oneItem.external_urls.spotify
     allSearchResults.set(oneItem.id, oneSearchResult)
+    console.log(allSearchResults);
+
 }
 
 //get audio feature values for a track. allFilteredTracks argument is an object to store all the data in and boolAdd is a boolean to specify whether the track should be added to the filtered results table or not.
-let getTrackAudioFeatures = (token, trackID, allFilteredTracks, boolAdd) => {
+let getTrackAudioFeatures = (token, trackID, allSearchResults, boolAdd) => {
     let baseurl = "https://api.spotify.com/v1/audio-features"
 
     //log below is for testing ajax query using command prompt
@@ -374,7 +376,10 @@ let getTrackAudioFeatures = (token, trackID, allFilteredTracks, boolAdd) => {
         }
 
     }).then((track) => {
-        allFilteredTracks[trackID] = track
+        let temp = allSearchResults.get(trackID)
+        temp['audioFeatures'] = track
+        allSearchResults.set(trackID, temp)
+
         if (boolAdd) {
             addFilteredResultsTrack(trackID, track)
         }
@@ -428,7 +433,7 @@ let addFilteredResultsTrack = (trackID, track) => {
 }
 
 //add each track in search results table to filtered results table based on current filter settings
-let runFilters = (token, allFilteredTracks) => {
+let runFilters = (token, allSearchResults) => {
     //clear any filtered results that are already displayed
     $('#filtered-table').show()
     $('#filtered-table tbody').empty()
@@ -439,27 +444,27 @@ let runFilters = (token, allFilteredTracks) => {
         return;
     }
 
-    //note that .get() does NOT return a jquery object like .eg() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
+    //note that .get() does NOT return a jquery object like .eq() does. this is necessary to get the rows since they seem to only be accessible with vanilla javascript
     let rows = $('#tracks-table tbody').get(0).rows
     let arrPromise = []
     // console.log(`running filters method on: `, rows);
 
     for (let i = 0; i < rows.length; i++) {
-        arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allFilteredTracks, true)
+        allSearchResults.set(rows[i].id, {})
     }
+    arrPromise[i] = getTrackAudioFeatures(token, rows[i].id, allSearchResults, true)
 
     //re-enable filter button after all tracks have finished filtering so filters are not clicked/called multiple times
     Promise.allSettled(arrPromise).then((data) => {
         $('#filter-button').prop('disabled', false)
         console.log(arrPromise);
-        console.log(allFilteredTracks);
 
     })
 
 }
 
 //display all audio feature properties for the selected track
-let displayAudioFeatures = (token, event, allFilteredTracks) => {
+let displayAudioFeatures = (token, event, allSearchResults) => {
     //do not display if selected element is not a track row
     if (!event.target.parentElement.matches('tr.track-row')) {
         return;

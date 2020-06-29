@@ -116,7 +116,7 @@ let searchUserInput = (token, allSearchResults) => {
     queryStr = encodeURIComponent(queryStr)
 
     //log below is for testing ajax query using command prompt
-    console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
+    // console.log(`curl -X "GET" "${baseurl}?q=${queryStr}&type=${typeStr}&limit=10&offset=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: ${token.token_type} ${token.access_token}"`);
 
 
     $.ajax({
@@ -411,7 +411,6 @@ let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
             idsArr.length = 0
             idsList = trackID
         }
-        console.log('query list ', idsArr.length);
         
         arrPromise[i] = $.ajax({
             url: `${baseurl}/?ids=${idsList}`,
@@ -594,6 +593,9 @@ let clearAndHideTables = () => {
     $('#filtered-table tbody').empty()
     $('#filtered-table').hide()
     $('#filtered-header-total').text('0')
+    //hide CSS border and elements that might be shown
+    $('.filtered-results-section').css('border', 'none')
+    $('.filtered-div').css('display', 'none')
 
     //track analysis results
     $('#track-analysis-table tbody').empty()

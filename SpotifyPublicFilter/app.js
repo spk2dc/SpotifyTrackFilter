@@ -411,7 +411,7 @@ let getTrackAudioFeatures = (token, allSearchResults, boolAdd, trackID) => {
             idsArr.length = 0
             idsList = trackID
         }
-        
+
         arrPromise[i] = $.ajax({
             url: `${baseurl}/?ids=${idsList}`,
             type: "GET",
@@ -624,6 +624,25 @@ let initialSearchHandler = (event) => {
     return arrOff;
 }
 
+let gitRepoInformation = () => {
+    let baseurl = `https://api.github.com/repos/spk2dc/spk2dc.github.io`
+    //curl -i https://api.github.com/repos/spk2dc/spk2dc.github.io
+
+    $.ajax({
+        url: baseurl,
+        type: 'GET',
+    }).then((resp) => {
+        console.log('repo: ', resp)
+    })
+
+    $.ajax({
+        url: `${baseurl}/commits`,
+        type: 'GET',
+    }).then((resp) => {
+        console.log('commit: ', resp[0])
+    })
+}
+
 /*****************************************************************/
 /************************ HELPER METHODS *************************/
 /*****************************************************************/
@@ -639,6 +658,8 @@ $(() => {
     $(window).on('beforeunload', () => {
         $(window).scrollTop(0);
     });
+
+    gitRepoInformation()
 
     let clientID = ''
     let secretID = ''

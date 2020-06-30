@@ -601,15 +601,16 @@ let clearAndHideTables = () => {
     $('#track-analysis-table tbody').empty()
     $('#track-analysis-table').hide()
 }
+
 //initial handler for search box/button
 let initialSearchHandler = (event) => {
     let arrOff = []
     let boolOff = event.data.boolOff
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event. also if token exists does not exist then run because that means you need a token.
-    if (typeof (client_id) === 'string' && typeof (client_secret) === 'string' && !event.data.tokenExists) {
+    if (typeof (CLIENT_ID) === 'string' && typeof (CLIENT_SECRET) === 'string' && !event.data.tokenExists) {
         boolOff = true
-        getBasicToken(client_id, client_secret, event)
+        getBasicToken(CLIENT_ID, CLIENT_SECRET, event)
     }
 
     if (boolOff) {
@@ -619,11 +620,12 @@ let initialSearchHandler = (event) => {
         // console.log('button listener off ', arrOff[0], 'box listener off ', arrOff[1]);
         return arrOff;
     } else {
-        alert('Please provide valid keys in the format "client_id:client_secret" without quotes for token authentication.')
+        alert('Please provide valid keys in the format "CLIENT_ID:CLIENT_SECRET" without quotes for token authentication.')
     }
     return arrOff;
 }
 
+//run queries to github api to get this repo and its commits
 let gitRepoInformation = () => {
     let baseurl = `https://api.github.com/repos/spk2dc/spk2dc.github.io`
     //curl -i https://api.github.com/repos/spk2dc/spk2dc.github.io

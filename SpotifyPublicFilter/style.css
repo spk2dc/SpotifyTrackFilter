@@ -132,6 +132,10 @@ img {
 #tooltip-git #tooltiptext-git, #tooltip-git #tooltip-inner-git{
   left: 67px;
   top: 11px;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: normal;
+  word-break: break-word;
 }
 
 #tooltip-git #tooltip-inner-git:before {

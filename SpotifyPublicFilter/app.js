@@ -643,13 +643,19 @@ let gitRepoInformation = () => {
     Promise.allSettled(arrPromise).then((data) => {
         let repo = arrPromise[0].responseJSON
         let commit = arrPromise[1].responseJSON[0]
-        $('#git-repo').text(repo.html_url)
+        
+        let thisURL = `${repo.html_url}/tree/master/SpotifyPublicFilter`
+        $('#header-git').on('click', () => {
+            window.open(thisURL)
+        })
+        
+        $('#git-repo').attr('href', thisURL)
         $('#git-update').text(repo.updated_at)
         $('#git-sha').text(commit.sha)
-        $('#git-commit').text(commit.url)
+        $('#git-commit').attr('href', commit.html_url)
         $('#git-message').text(commit.commit.message)
 
-        console.log('git repo: ', repo, 'git commit: ', commit);
+        // console.log('git repo: ', repo, 'git commit: ', commit);
     })
 }
 
@@ -677,6 +683,10 @@ $(() => {
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
     $('#search-button').on('click', { boolOff: false, tokenExists: false }, initialSearchHandler)
     $('#search-box').on('keypress', { boolOff: false, tokenExists: false }, initialSearchHandler)
+
+    $('#header-site').on('click', () => {
+        window.open('https://spk2dc.github.io/')
+    })
 
     //if need to get client and secret ids from user then wait until they are entered and go to token method
     $('#apikeys').on('keypress', (event) => {

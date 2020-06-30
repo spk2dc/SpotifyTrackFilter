@@ -628,18 +628,28 @@ let gitRepoInformation = () => {
     let baseurl = `https://api.github.com/repos/spk2dc/spk2dc.github.io`
     //curl -i https://api.github.com/repos/spk2dc/spk2dc.github.io
 
-    $.ajax({
+    let arrPromise = []
+
+    arrPromise[0] = $.ajax({
         url: baseurl,
         type: 'GET',
-    }).then((resp) => {
-        console.log('repo: ', resp)
     })
 
-    $.ajax({
+    arrPromise[1] = $.ajax({
         url: `${baseurl}/commits`,
         type: 'GET',
-    }).then((resp) => {
-        console.log('commit: ', resp[0])
+    })
+
+    Promise.allSettled(arrPromise).then((data) => {
+        let repo = arrPromise[0].responseJSON
+        let commit = arrPromise[1].responseJSON[0]
+        $('#git-repo').text(repo.html_url)
+        $('#git-update').text(repo.updated_at)
+        $('#git-sha').text(commit.sha)
+        $('#git-commit').text(commit.url)
+        $('#git-message').text(commit.commit.message)
+
+        console.log('git repo: ', repo, 'git commit: ', commit);
     })
 }
 

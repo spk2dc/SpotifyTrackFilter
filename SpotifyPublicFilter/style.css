@@ -123,6 +123,30 @@ img {
   background-color: rgb(0, 80, 0);
 }
 
+/*Display when any part of list item is hovered over*/
+.header-button:hover .tooltiptext, .header-button:hover .tooltip-inner, .header-button:hover .tooltip {
+  pointer-events: auto;
+  opacity: 1.0;
+}
+
+#tooltip-git #tooltiptext-git, #tooltip-git #tooltip-inner-git{
+  left: 67px;
+  top: 11px;
+}
+
+#tooltip-git #tooltip-inner-git:before {
+  left: 165px;
+  top: -4px;
+  border-bottom: 8px solid black;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+}
+
+#tooltip-git #tooltip-inner-git:after {
+  width: 102px;
+  left: 120px;
+}
+
 /***************  SEARCH & BUTTON STYLING  ***************/
 #apikeys {
   display: block;

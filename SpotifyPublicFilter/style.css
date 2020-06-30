@@ -138,6 +138,7 @@ img {
   word-break: break-word;
 }
 
+/* Arrow */
 #tooltip-git #tooltip-inner-git:before {
   left: 165px;
   top: -4px;
@@ -146,6 +147,7 @@ img {
   border-left: 8px solid transparent;
 }
 
+/* Invisible area so you can hover over tooltip */
 #tooltip-git #tooltip-inner-git:after {
   width: 102px;
   left: 120px;

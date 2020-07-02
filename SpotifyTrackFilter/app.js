@@ -550,6 +550,10 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     $tbody.append($trName)
     $tbody.append($trArtist)
 
+    //scrolls to the track analysis div element
+    location.href = '#track-analysis'
+    // document.getElementById("track-analysis").scrollIntoView();
+
     let arrPromise = []
     //default promise array to contain a resolved promise so if you do not need to run a query then you can just display the preexisting audio analysis
     arrPromise[0] = Promise.resolve(true)
@@ -620,7 +624,7 @@ let initialSearchHandler = (event) => {
         // console.log('button listener off ', arrOff[0], 'box listener off ', arrOff[1]);
         return arrOff;
     } else {
-        alert('Please provide valid keys in the format "CLIENT_ID:CLIENT_SECRET" without quotes for token authentication.')
+        alert('Please provide valid keys in the format "CLIENT_ID:CLIENT_SECRET" without quotes. Then hit the enter key for token authentication, input will turn green if successful.')
     }
     return arrOff;
 }

@@ -22,6 +22,7 @@ jobs:
           BUILD_PATH: public
           GITHUB_PAGE_NAME: spk2dc.github.io
           PA_TOKEN: ${{ secrets.PA_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}
           USERNAME: spk2dc
           EMAIL: spk2dc@virginia.edu
           CLIENT_ID: ${{ secrets.CLIENT_ID }}

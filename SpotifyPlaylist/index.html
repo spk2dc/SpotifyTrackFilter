@@ -5,20 +5,48 @@
     <meta charset="utf-8">
     <title></title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
-    
+
     <script src="apikeys.js"></script>
     <script src="app.js" charset="utf-8"></script>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script>
+        // compile the template
+        var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
+        // execute the compiled template and print the output to the console
+        console.log(template({ doesWhat: "rocks!" }));
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="container">
-        <button id="login">Login</button>
-
-
+    <div class="container">
+        <h1>Displaying User Data</h1>
+        <p>Log in with your Spotify account and this demo will display information about you fetched using the Spotify
+            Web API</p>
+        <button class="btn btn-primary" id="btn-login">Login</button>
+        <div id="result"></div>
     </div>
-    
+    <script id="result-template" type="text/x-handlebars-template">
+        <dl>
+          <img src="{{images.0.url}}">
+          <dt>User Name</dt>
+          <dd>{{id}}</dd>
+          <dt>Display Name</dt>
+          <dd>{{display_name}}</dd>
+          <dt>Country</dt>
+          <dd>{{country}}</dd>
+          <dt>Followers</dt>
+          <dd>{{followers.total}}</dd>
+          <dt>Profile</dt>
+          <dd><a href="{{external_urls.spotify}}" target="_blank">{{external_urls.spotify}}</a></dd>
+          <dt>Email</dt>
+          <dd>{{email}}</dd>
+          <dt>Product</dt>
+          <dd>{{product}}</dd>
+        </dl>
+    </script>
+
 </body>
 
 </html>

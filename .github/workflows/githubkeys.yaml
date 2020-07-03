@@ -1,0 +1,38 @@
+#get spotify api keys stored in github repository secret settings in order for live site to work without entering keys in manually
+
+steps:
+  - name: SpotifyKeys
+    env: # Or as an environment variable
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+
+
+
+###### source: https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets ######
+
+# steps:
+#   - name: Hello world action
+#     with: # Set the secret as an input
+#       super_secret: ${{ secrets.SuperSecret }}
+#     env: # Or as an environment variable
+#       super_secret: ${{ secrets.SuperSecret }}
+
+
+###### source: https://docs.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow ######
+
+# jobs:
+#   build:
+#     # Job name is Greeting
+#     name: Greeting
+#     # This job runs on Linux
+#     runs-on: ubuntu-latest
+#     steps:
+#       # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
+#       - name: Hello world
+#         uses: actions/hello-world-javascript-action@v1
+#         with:
+#           who-to-greet: 'Mona the Octocat'
+#         id: hello
+#       # This step prints an output (time) from the previous step's action.
+#       - name: Echo the greeting's time
+#         run: echo 'The time was ${{ steps.hello.outputs.time }}.'

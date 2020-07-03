@@ -12,17 +12,19 @@ jobs:
       matrix:
         node-version: [13.2.0]
     steps:
-      - uses: actions/checkout@master
-      - name: install, build, and test
+      - name: Checkout
+        uses: actions/checkout@master
+      
+      - name: Build
         run: |
-          yarn install
-          yarn lint
-          yarn build
-          yarn test
+          npm install
+          npm run-script build
         env:
-          CI: true
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          
       - name: Deploy to production
-        uses: awb-pw/deploy-to-github-pages-action@1.1.1
+        uses: spk2dc/deploy-to-github-pages-action@1.1.1
         env:
           AUTHOR: spk2dc
           BUILD_PATH: public
@@ -30,10 +32,10 @@ jobs:
           PA_TOKEN: ${{ secrets.PA_TOKEN }}
           USERNAME: spk2dc
           EMAIL: spk2dc@virginia.edu
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          
 
 ###### source: https://github.com/marketplace/actions/deploy-your-app-to-github-pages ######
+###### source: https://stackoverflow.com/questions/53648652/how-to-use-environment-variables-in-github-page ######
 
 
 

@@ -9,8 +9,8 @@ $(() => {
         var REDIRECT_URI = 'http://jmperezperez.com/spotify-oauth-jsfiddle-proxy/';
 
         //my variables
-        var CLIENT_ID = '6a9b462fe78344ec8fe04d1bd91409b1';
-        var REDIRECT_URI = 'https://spk2dc.github.io/SpotifyTrackFilter/';
+        // var CLIENT_ID = '6a9b462fe78344ec8fe04d1bd91409b1';
+        // var REDIRECT_URI = 'https://spk2dc.github.io/SpotifyTrackFilter/';
 
         function getLoginURL(scopes) {
             console.log('scopes: ', scopes);
@@ -63,7 +63,7 @@ $(() => {
 
     loginButton.addEventListener('click', function () {
         login(function (accessToken) {
-            console.log(accessToken);
+            console.log('token: ',accessToken);
 
             getUserData(accessToken)
                 .then(function (response) {

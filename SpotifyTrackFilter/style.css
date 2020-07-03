@@ -68,12 +68,16 @@ h1 {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background: #373737;
+}
+
+::-webkit-scrollbar-corner { 
+  background: #282828; 
 }
 
 a {
@@ -99,7 +103,8 @@ img {
 
 #header-site-div, #header-git-div {
   position: absolute;
-  transform: translateY(55%);
+  transform: translateY(15%);
+  min-height: 67px;
 }
 
 #header-site-div {
@@ -112,8 +117,9 @@ img {
 
 .header-button {
   position: relative;
-  margin: auto;
-  width: 105px;
+  margin: 3px auto;
+  padding: 8px;
+  /* width: 105px; */
   min-width: 0px;
   background-color: darkgreen;
   border: 1px solid black;
@@ -121,6 +127,29 @@ img {
 
 .header-button:active {
   background-color: rgb(0, 80, 0);
+}
+
+.header-item img {
+  width: 40px;
+}
+
+/* turn header into sticky bar */
+#header-box.sticky{
+  position: fixed;  
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  margin: 0px;
+  z-index: 6002;
+  border-radius: 0px;
+  transition-property: top, margin-top;
+  /* transition-duration: 0.4s; */
+  /* transition-timing-function: ease-in-out; */
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + #results-box {
+  margin-top: 115px;
 }
 
 /*Display when any part of list item is hovered over*/

@@ -649,12 +649,12 @@ let gitRepoInformation = () => {
     Promise.allSettled(arrPromise).then((data) => {
         let repo = arrPromise[0].responseJSON
         let commit = arrPromise[1].responseJSON[0]
-        
+
         let thisURL = `${repo.html_url}/tree/master/SpotifyPublicFilter`
         $('#header-git').on('click', () => {
             window.open(thisURL)
         })
-        
+
         $('#git-repo').attr('href', thisURL)
         $('#git-update').text(repo.updated_at)
         $('#git-sha').text(commit.sha)
@@ -707,6 +707,20 @@ $(() => {
             getBasicToken(clientID, secretID, event)
         }
     })
+
+    //get offset position of header box
+    let offsetPos = $('#header-box').get(0).offsetTop
+
+    //when window is scrolled check position and turn header into sticky 
+    window.onscroll = () => {
+        console.log('header offset: ', offsetPos, 'page y offset: ', window.pageYOffset);
+
+        if (window.pageYOffset >= offsetPos) {
+            $('#header-box').addClass('sticky')
+        } else {
+            $('#header-box').removeClass('sticky')
+        }
+    }
 
 });
 

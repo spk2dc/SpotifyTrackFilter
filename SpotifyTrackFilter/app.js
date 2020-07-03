@@ -551,7 +551,7 @@ let displayAudioFeatures = (token, event, allSearchResults) => {
     $tbody.append($trArtist)
 
     //scrolls to the track analysis div element
-    location.href = '#track-analysis'
+    // location.href = '#track-analysis'
     // document.getElementById("track-analysis").scrollIntoView();
 
     let arrPromise = []
@@ -650,7 +650,7 @@ let gitRepoInformation = () => {
         let repo = arrPromise[0].responseJSON
         let commit = arrPromise[1].responseJSON[0]
 
-        let thisURL = `${repo.html_url}/tree/master/SpotifyPublicFilter`
+        let thisURL = `${repo.html_url}/tree/master/SpotifyTrackFilter`
         $('#header-git').on('click', () => {
             window.open(thisURL)
         })
@@ -713,7 +713,7 @@ $(() => {
 
     //when window is scrolled check position and turn header into sticky 
     window.onscroll = () => {
-        console.log('header offset: ', offsetPos, 'page y offset: ', window.pageYOffset);
+        // console.log('header offset: ', offsetPos, 'page y offset: ', window.pageYOffset);
 
         if (window.pageYOffset >= offsetPos) {
             $('#header-box').addClass('sticky')

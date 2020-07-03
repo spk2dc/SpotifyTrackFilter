@@ -121,12 +121,12 @@ img {
   padding: 8px;
   /* width: 105px; */
   min-width: 0px;
-  background-color: darkgreen;
+  background-color: #1ba24b;
   border: 1px solid black;
 }
 
 .header-button:active {
-  background-color: rgb(0, 80, 0);
+  /* background-color: rgb(0, 80, 0); */
 }
 
 .header-item img {
@@ -159,7 +159,7 @@ img {
 }
 
 #tooltip-git #tooltiptext-git, #tooltip-git #tooltip-inner-git{
-  left: 67px;
+  left: 44px;
   top: 11px;
   text-transform: none;
   letter-spacing: normal;

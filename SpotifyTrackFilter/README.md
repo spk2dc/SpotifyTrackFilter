@@ -1,4 +1,4 @@
-# [Spotify Track Filter](https://spk2dc.github.io/SpotifyPublicFilter/) Read Me
+# [Spotify Track Filter](https://spk2dc.github.io/SpotifyTrackFilter/) Read Me
 
 
 ### Technologies Used
@@ -11,7 +11,7 @@
 
 
 ### Instructions
-[Click here for live Spotify Track Filter website](https://spk2dc.github.io/SpotifyPublicFilter/)
+[Click here for live Spotify Track Filter website](https://spk2dc.github.io/SpotifyTrackFilter/)
 
 1. #### Authentication
     * Provide a Spotify API key in the top left input in the following layout "client_id:client_secret" (without quotes) and hit enter for token authentication. Input field will turn from red to green if successfully authenticated. [Spotify instructions for getting your API key](https://developer.spotify.com/documentation/web-api/quick-start/)

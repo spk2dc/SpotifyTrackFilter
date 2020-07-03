@@ -1,10 +1,39 @@
 #get spotify api keys stored in github repository secret settings in order for live site to work without entering keys in manually
 
-steps:
-  - name: SpotifyKeys
-    env: # Or as an environment variable
-      CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [13.2.0]
+    steps:
+      - uses: actions/checkout@master
+      - name: install, build, and test
+        run: |
+          yarn install
+          yarn lint
+          yarn build
+          yarn test
+        env:
+          CI: true
+      - name: Deploy to production
+        uses: awb-pw/deploy-to-github-pages-action@1.1.1
+        env:
+          AUTHOR: spk2dc
+          BUILD_PATH: public
+          GITHUB_PAGE_NAME: spk2dc.github.io
+          PA_TOKEN: ${{ secrets.PA_TOKEN }}
+          USERNAME: spk2dc
+          EMAIL: spk2dc@virginia.edu
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+
+###### source: https://github.com/marketplace/actions/deploy-your-app-to-github-pages ######
 
 
 

@@ -20,7 +20,7 @@ jobs:
         env:
           AUTHOR: spk2dc
           BUILD_PATH: public
-          BRANCH: gh-pages # The branch the action should deploy to.
+          BRANCH: master # The branch the action should deploy to.
           GITHUB_PAGE_NAME: spk2dc.github.io
           PA_TOKEN: ${{ secrets.PA_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}

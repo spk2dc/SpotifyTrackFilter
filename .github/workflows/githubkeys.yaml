@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Deploy to production
-        # uses: spk2dc/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         env:
           AUTHOR: spk2dc
           BUILD_PATH: public

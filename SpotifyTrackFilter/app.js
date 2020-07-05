@@ -650,7 +650,7 @@ let gitRepoInformation = () => {
         let repo = arrPromise[0].responseJSON
         let commit = arrPromise[1].responseJSON[0]
 
-        let thisURL = `${repo.html_url}/tree/master/SpotifyTrackFilter`
+        let thisURL = `${repo.html_url}/tree/master/SpotifyTrackFilter#spotify-track-filter-read-me`
         $('#header-git').on('click', () => {
             window.open(thisURL)
         })

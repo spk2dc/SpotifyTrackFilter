@@ -91,7 +91,7 @@ img {
 
 /*****************  HEADER BOX STYLING  ******************/
 #header-box {
-  text-align: center;
+  text-align: left;
   position: relative;
   padding: 0px;
   background-color: #21a750;
@@ -101,18 +101,23 @@ img {
   display: inline-block;
 }
 
-#header-site-div, #header-git-div {
+#header-buttons-div {
+  display: inline-block;
   position: absolute;
-  transform: translateY(15%);
+  right: 1.5%;
+  top: 9%;
+}
+
+#header-site-div, #header-git-div {
   min-height: 67px;
 }
 
 #header-site-div {
-  left: 5%;
+  left: 83.3%;
 }
 
 #header-git-div {
-  right: 5%;
+  right: 1.5%;
 }
 
 .header-button {
@@ -131,6 +136,7 @@ img {
 
 .header-item img {
   width: 40px;
+  height: 40px;
 }
 
 /* turn header into sticky bar */

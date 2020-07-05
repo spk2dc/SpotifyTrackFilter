@@ -108,7 +108,7 @@ img {
   top: 9%;
 }
 
-#header-site-div, #header-git-div {
+.button-div {
   min-height: 67px;
 }
 

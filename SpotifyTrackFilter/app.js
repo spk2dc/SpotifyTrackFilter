@@ -650,9 +650,16 @@ let gitRepoInformation = () => {
         let repo = arrPromise[0].responseJSON
         let commit = arrPromise[1].responseJSON[0]
 
+        //set click event for git button to open readme in github repository
         let thisURL = `${repo.html_url}/tree/master/SpotifyTrackFilter#spotify-track-filter-read-me`
-        $('#header-git').on('click', () => {
+        $('#header-git').on('click', (event) => {
             window.open(thisURL)
+        })
+
+        //stop click events in tooltip otherwise clicking anywhere in the tooltip also activates git button click.
+        $('#tooltip-git').on('click', (event) => {
+            // console.log(event.target.id);
+            event.stopPropagation()
         })
 
         $('#git-repo').attr('href', thisURL)

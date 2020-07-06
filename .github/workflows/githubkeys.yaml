@@ -1,31 +1,31 @@
 #get spotify api keys stored in github repository secret settings in order for live site to work without entering keys in manually
 
-name: Deploy to GitHub Pages
-on: [push]
+# name: Deploy to GitHub Pages
+# on: [push]
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [13.2.0]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         node-version: [13.2.0]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@master
 
-      - name: Deploy to production
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        env:
-          AUTHOR: spk2dc
-          BUILD_PATH: public
-          BRANCH: master # The branch the action should deploy to.
-          GITHUB_PAGE_NAME: spk2dc.github.io
-          PA_TOKEN: ${{ secrets.PA_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}
-          USERNAME: spk2dc
-          EMAIL: spk2dc@virginia.edu
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+#       - name: Deploy to production
+#         uses: JamesIves/github-pages-deploy-action@releases/v3
+#         env:
+#           AUTHOR: spk2dc
+#           BUILD_PATH: public
+#           BRANCH: master # The branch the action should deploy to.
+#           GITHUB_PAGE_NAME: spk2dc.github.io
+#           PA_TOKEN: ${{ secrets.PA_TOKEN }}
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}
+#           USERNAME: spk2dc
+#           EMAIL: spk2dc@virginia.edu
+#           CLIENT_ID: ${{ secrets.CLIENT_ID }}
+#           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           
 
 ###### source: https://github.com/marketplace/actions/deploy-your-app-to-github-pages ######

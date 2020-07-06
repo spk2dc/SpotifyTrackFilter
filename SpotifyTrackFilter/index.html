@@ -13,6 +13,9 @@
 </head>
 
 <body>
+    <!-- ///////////////////////////////////////////////////////
+        ////////////////////  SITE HEADER  ////////////////////
+       /////////////////////////////////////////////////////// -->
     <div id="header-box" class="main-div">
         <div id="header-title-div" class="header-item">
             <h1>Spotify Track Filter</h1>
@@ -23,21 +26,40 @@
                 <button id="header-key" class="header-button">
                     <img src="imgs/key-icon.jpg" alt="Key" id="img-key">
                 </button>
+
+                <div id="tooltip-key" class="tooltip header-tooltip">
+                    <div id="tooltip-inner-key" class="tooltip-inner header-tooltip-inner">
+                        <span id="tooltiptext-key" class="tooltiptext header-tooltiptext">
+                            <input type="text" name="apikeys" id="apikeys" placeholder="client_id:client_secret">
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <div id="header-search-div" class="header-item button-div">
                 <button id="header-search" class="header-button">
                     <img src="imgs/search-icon.svg" alt="Search" id="img-search">
                 </button>
+
+                <div id="tooltip-search" class="tooltip header-tooltip">
+                    <div id="tooltip-inner-search" class="tooltip-inner header-tooltip-inner">
+                        <span id="tooltiptext-search" class="tooltiptext header-tooltiptext">
+                            <input type="search" id="search-box"
+                                value="https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK">
+                            <!-- https://open.spotify.com/playlist/2rUNIGichLH0E0AuQROrtB     https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK-->
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <div id="header-git-div" class="header-item button-div">
                 <button id="header-git" class="header-button">
                     <img src="imgs/github-logo-transparent.png" alt="GitHub" id="img-git">
                 </button>
-                <div id="tooltip-git" class="tooltip">
-                    <div id="tooltip-inner-git" class="tooltip-inner">
-                        <span id="tooltiptext-git" class="tooltiptext">
+
+                <div id="tooltip-git" class="tooltip header-tooltip">
+                    <div id="tooltip-inner-git" class="tooltip-inner header-tooltip-inner">
+                        <span id="tooltiptext-git" class="tooltiptext header-tooltiptext">
                             <a id="git-repo" target="_blank">
                                 <b>Git Repository</b>
                             </a>
@@ -69,7 +91,14 @@
             </div>
         </div>
     </div>
+    <!-- ///////////////////////////////////////////////////////
+        ////////////////////  SITE HEADER  ////////////////////
+       /////////////////////////////////////////////////////// -->
 
+
+    <!-- ///////////////////////////////////////////////////////
+        //////////////////  SEARCH RESULTS  ///////////////////
+       /////////////////////////////////////////////////////// -->
     <div id="results-box" class="main-div">
         <div id="apikeys-div">
             <input type="text" name="apikeys" id="apikeys" placeholder="client_id:client_secret">
@@ -151,7 +180,14 @@
             </div>
         </div>
     </div>
+    <!-- ///////////////////////////////////////////////////////
+        //////////////////  SEARCH RESULTS  ///////////////////
+       /////////////////////////////////////////////////////// -->
 
+
+    <!-- ///////////////////////////////////////////////////////
+        /////////////////  FILTER SETTINGS  ///////////////////
+       /////////////////////////////////////////////////////// -->
     <div id="filter-settings" class="main-div">
         <div id="filter-header" class="main-header">Filter Settings</div>
         <div id="filter-body">
@@ -401,7 +437,14 @@
 
         </div>
     </div>
+    <!-- ///////////////////////////////////////////////////////
+        /////////////////  FILTER SETTINGS  ///////////////////
+       /////////////////////////////////////////////////////// -->
 
+
+    <!-- ///////////////////////////////////////////////////////
+        /////////////////  FILTERED TRACKS  ///////////////////
+       /////////////////////////////////////////////////////// -->
     <div id="filtered-tracks" class="main-div">
         <div class="filtered-results-section">
             <div id="filtered-header" class="main-header">Filtered Tracks (total <span
@@ -422,7 +465,14 @@
             </div>
         </div>
     </div>
+    <!-- ///////////////////////////////////////////////////////
+        /////////////////  FILTERED TRACKS  ///////////////////
+       /////////////////////////////////////////////////////// -->
 
+
+    <!-- ///////////////////////////////////////////////////////
+        //////////////////  TRACK ANALYSIS  ///////////////////
+       /////////////////////////////////////////////////////// -->
     <div id="track-analysis" class="main-div">
         <div id="track-analysis-header" class="main-header">Selected Track Audio Analysis</div>
         <div id="track-analysis-results">

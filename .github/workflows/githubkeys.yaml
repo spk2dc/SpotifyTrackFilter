@@ -1,10 +1,8 @@
 #get spotify api keys stored in github repository secret settings in order for live site to work without entering keys in manually
 
 name: Deploy to GitHub Pages
-on:
-  push:
-    branches:
-      - master
+on: [push]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

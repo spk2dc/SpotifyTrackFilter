@@ -158,15 +158,15 @@ img {
   margin-top: 115px;
 }
 
-/*Display when any part of list item is hovered over*/
-.header-button:hover .tooltiptext, .header-button:hover .tooltip-inner, .header-button:hover .tooltip {
+/*Display when any part of div is hovered over*/
+#header-git-div:hover .tooltiptext, #header-git-div:hover .tooltip-inner, #header-git-div:hover .tooltip {
   pointer-events: auto;
   opacity: 1.0;
 }
 
 #tooltip-git #tooltiptext-git, #tooltip-git #tooltip-inner-git{
-  left: 44px;
-  top: 11px;
+  left: 51.7px;
+  top: 4px;
   text-transform: none;
   letter-spacing: normal;
   font-weight: normal;
@@ -176,7 +176,7 @@ img {
 /* Arrow */
 #tooltip-git #tooltip-inner-git:before {
   left: 165px;
-  top: -4px;
+  top: -11px;
   border-bottom: 8px solid black;
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
@@ -184,8 +184,8 @@ img {
 
 /* Invisible area so you can hover over tooltip */
 #tooltip-git #tooltip-inner-git:after {
-  width: 102px;
-  left: 120px;
+  width: 78px;
+  left: 135px;
 }
 
 /***************  SEARCH & BUTTON STYLING  ***************/

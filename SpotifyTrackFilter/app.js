@@ -656,12 +656,6 @@ let gitRepoInformation = () => {
             window.open(thisURL)
         })
 
-        //stop click events in tooltip otherwise clicking anywhere in the tooltip also activates git button click.
-        $('#tooltip-git').on('click', (event) => {
-            // console.log(event.target.id);
-            event.stopPropagation()
-        })
-
         $('#git-repo').attr('href', thisURL)
         $('#git-update').text(repo.updated_at)
         $('#git-sha').text(commit.sha)

@@ -697,16 +697,20 @@ $(() => {
     })
 
     //if need to get client and secret ids from user then wait until they are entered and go to token method
+    $('#header-key').on('click', (event) => {
+        event.preventDefault();
+        let userID = $('#apikeys').val().split(':')
+        clientID = userID[0]
+        secretID = userID[1]
+        console.log($(this));
+
+        //get spotify authentication token before any other method can work
+        getBasicToken(clientID, secretID, event)
+    })
     $('#apikeys').on('keypress', (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            let userID = $('#apikeys').val().split(':')
-            clientID = userID[0]
-            secretID = userID[1]
-            console.log($(this));
-
-            //get spotify authentication token before any other method can work
-            getBasicToken(clientID, secretID, event)
+            $('#header-key').click()
         }
     })
 

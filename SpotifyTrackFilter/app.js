@@ -23,6 +23,7 @@ let getBasicToken = (clientID, secretID, event) => {
     }).then((token) => {
         console.log(`token:`, token);
         $('#apikeys').css('background', 'rgb(155, 255, 155)')
+        $('#header-key').css('background', '#21a750')
         //turn off initial search handler method to prevent duplicate requests and methods from runnings
         initialSearchHandler({ data: { boolOff: true, tokenExists: true } })
         basicTokenMethods(token, event)
@@ -38,12 +39,12 @@ let basicTokenMethods = (token, oldEvent) => {
     let allSearchResults = new Map()
 
     //listeners for search box and button
-    $('#search-button').on('click', { boolOff: true, tokenExists: true }, (event) => {
+    $('#header-search').on('click', { boolOff: true, tokenExists: true }, (event) => {
         event.preventDefault();
         // console.log('authenticated click listener', event);
 
         //disable search button after clicked once so method has time to finish and it can't be spammed
-        $('#search-button').prop('disabled', true);
+        $('#header-search').prop('disabled', true);
         $('#search-box').prop('disabled', true);
 
         searchUserInput(token, allSearchResults)
@@ -54,7 +55,7 @@ let basicTokenMethods = (token, oldEvent) => {
             // console.log('authenticated keypress listener', event);
 
             //disable search button after clicked once so method has time to finish and it can't be spammed
-            $('#search-button').prop('disabled', true);
+            $('#header-search').prop('disabled', true);
             $('#search-box').prop('disabled', true);
 
             searchUserInput(token, allSearchResults)
@@ -77,9 +78,9 @@ let basicTokenMethods = (token, oldEvent) => {
     })
 
     //if apikeys already exist and user clicks search button without providing them, then go straight to executing search so don't have to click it twice when click event is reassigned
-    if (oldEvent.currentTarget.id === 'search-button' || (oldEvent.currentTarget.id === 'search-box' && oldEvent.keyCode === 13)) {
+    if (oldEvent.currentTarget.id === 'header-search' || (oldEvent.currentTarget.id === 'search-box' && oldEvent.keyCode === 13)) {
         //disable search button after clicked once so method has time to finish and it can't be spammed
-        $('#search-button').prop('disabled', true);
+        $('#header-search').prop('disabled', true);
         $('#search-box').prop('disabled', true);
 
         searchUserInput(token, allSearchResults)
@@ -132,7 +133,7 @@ let searchUserInput = (token, allSearchResults) => {
         displaySearchResults(token, itemsObj, allSearchResults)
 
         //reenable searching once previous search is finished
-        $('#search-button').prop('disabled', false);
+        $('#header-search').prop('disabled', false);
         $('#search-box').prop('disabled', false);
     })
 }
@@ -180,7 +181,7 @@ let searchURL = (token, queryStr, allSearchResults) => {
         }
 
         //reenable searching once previous search is finished
-        $('#search-button').prop('disabled', false);
+        $('#header-search').prop('disabled', false);
         $('#search-box').prop('disabled', false);
     })
 }
@@ -619,7 +620,7 @@ let initialSearchHandler = (event) => {
 
     if (boolOff) {
         //remove click/keypress events for search so these first event listeners only run the token authentication method once
-        arrOff[0] = $('#search-button').off('click', initialSearchHandler)
+        arrOff[0] = $('#header-search').off('click', initialSearchHandler)
         arrOff[1] = $('#search-box').off('keypress', initialSearchHandler)
         // console.log('button listener off ', arrOff[0], 'box listener off ', arrOff[1]);
         return arrOff;
@@ -688,7 +689,7 @@ $(() => {
     let secretID = ''
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
-    $('#search-button').on('click', { boolOff: false, tokenExists: false }, initialSearchHandler)
+    $('#header-search').on('click', { boolOff: false, tokenExists: false }, initialSearchHandler)
     $('#search-box').on('keypress', { boolOff: false, tokenExists: false }, initialSearchHandler)
 
     $('#header-site').on('click', () => {

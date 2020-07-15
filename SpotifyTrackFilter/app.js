@@ -668,7 +668,6 @@ let gitRepoInformation = () => {
 }
 
 let getHerokuENV = () => {
-    console.log("getHerokuENV -> data")
     $.ajax({
         url: 'https://spotify-github-backend.herokuapp.com/spotify-variables',
         type: "GET",
@@ -699,7 +698,6 @@ $(() => {
     gitRepoInformation()
 
     getHerokuENV()
-    console.log("getHerokuENV")
 
     let clientID = ''
     let secretID = ''

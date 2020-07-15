@@ -675,6 +675,7 @@ let getHerokuENV = () => {
     }).then((data) => {
         console.log(`data:`, data);
     })
+    console.log("getHerokuENV -> data", data)
 }
 
 /*****************************************************************/

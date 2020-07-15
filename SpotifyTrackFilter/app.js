@@ -667,6 +667,16 @@ let gitRepoInformation = () => {
     })
 }
 
+let getHerokuENV = () => {
+    $.ajax({
+        url: 'https://spotify-github-backend.herokuapp.com/spotify-variables',
+        type: "GET",
+
+    }).then((data) => {
+        console.log(`data:`, data);
+    })
+}
+
 /*****************************************************************/
 /************************ HELPER METHODS *************************/
 /*****************************************************************/
@@ -684,6 +694,8 @@ $(() => {
     });
 
     gitRepoInformation()
+
+    getHerokuENV()
 
     let clientID = ''
     let secretID = ''

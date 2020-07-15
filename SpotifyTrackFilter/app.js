@@ -667,13 +667,16 @@ let gitRepoInformation = () => {
     })
 }
 
-let getHerokuENV = () => {
+let getHerokuENV = () => {    
     $.ajax({
         url: 'https://spotify-github-backend.herokuapp.com/spotify-variables',
         type: "GET",
 
     }).then((data) => {
-        console.log(`data:`, data);
+        clientID = data.CLIENT_ID
+        secretID = data.CLIENT_SECRET
+        console.log(`getHerokuENV -> secretID`, secretID)
+        
     }).catch((err) => {
         console.log(`getHerokuENV -> err`, err)
     })
@@ -697,16 +700,19 @@ $(() => {
 
     gitRepoInformation()
 
-    getHerokuENV()
-
+    
     let clientID = ''
     let secretID = ''
+
+    getHerokuENV()
+
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
     $('#header-search').on('click', { boolOff: false, tokenExists: false }, initialSearchHandler)
     $('#search-box').on('keypress', { boolOff: false, tokenExists: false }, initialSearchHandler)
 
     $('#header-site').on('click', () => {
+        console.log('ids: ', clientID, secretID);
         window.open('https://spk2dc.github.io/')
     })
 

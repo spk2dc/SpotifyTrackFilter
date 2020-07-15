@@ -667,7 +667,7 @@ let gitRepoInformation = () => {
     })
 }
 
-let getHerokuENV = (clientID, secretID) => {    
+let getHerokuENV = (clientID, secretID) => {
     $.ajax({
         url: 'https://spotify-github-backend.herokuapp.com/spotify-variables',
         type: "GET",
@@ -675,8 +675,10 @@ let getHerokuENV = (clientID, secretID) => {
     }).then((data) => {
         clientID = data.CLIENT_ID
         secretID = data.CLIENT_SECRET
-        console.log(`getHerokuENV -> secretID`, secretID)
-        
+        CLIENT_ID = data.CLIENT_ID
+        CLIENT_SECRET = data.CLIENT_SECRET
+        console.log(`getHerokuENV -> secretID`, CLIENT_ID)
+
     }).catch((err) => {
         console.log(`getHerokuENV -> err`, err)
     })
@@ -703,7 +705,10 @@ $(() => {
     let clientID = ''
     let secretID = ''
 
-    getHerokuENV(clientID, secretID)
+    let CLIENT_ID = 0
+    let CLIENT_SECRET = 0
+
+    getHerokuENV()
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
     $('#header-search').on('click', { boolOff: false, tokenExists: false }, initialSearchHandler)

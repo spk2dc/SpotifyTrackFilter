@@ -712,7 +712,6 @@ $(() => {
     $('#search-box').on('keypress', { boolOff: false, tokenExists: false }, initialSearchHandler)
 
     $('#header-site').on('click', () => {
-        console.log('ids: ', env);
         window.open('https://spk2dc.github.io/')
     })
 

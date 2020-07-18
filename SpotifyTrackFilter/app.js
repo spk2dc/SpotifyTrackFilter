@@ -3,10 +3,10 @@
 /*****************************************************************/
 
 //gets a valid client credentials token from spotify for authentication purposes
-let getBasicToken = (clientID, secretID, event) => {
+let getBasicToken = (env, event) => {
     let baseurl = "https://accounts.spotify.com/api/token"
-    let encodedID = btoa(`${clientID}:${secretID}`)
-    console.log(`client: ${clientID} \nsecret: ${secretID} \nencoded: ${encodedID}`);
+    let encodedID = btoa(`${env.clientID}:${env.secretID}`)
+    console.log(`client: ${env.clientID} \nsecret: ${env.secretID} \nencoded: ${encodedID}`);
 
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "POST" -H "Authorization: Basic ${encodedID}" -d grant_type=client_credentials ${baseurl}`);
@@ -705,9 +705,6 @@ $(() => {
         secretID: ''
     }
 
-    let CLIENT_ID = 0
-    let CLIENT_SECRET = 0
-
     getHerokuENV(env)
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event
@@ -723,12 +720,12 @@ $(() => {
     $('#header-key').on('click', (event) => {
         event.preventDefault();
         let userID = $('#apikeys').val().split(':')
-        clientID = userID[0]
-        secretID = userID[1]
+        env.clientID = userID[0]
+        env.secretID = userID[1]
         console.log($(this));
 
         //get spotify authentication token before any other method can work
-        getBasicToken(clientID, secretID, event)
+        getBasicToken(env.clientID, env.secretID, event)
     })
     $('#apikeys').on('keypress', (event) => {
         if (event.keyCode === 13) {

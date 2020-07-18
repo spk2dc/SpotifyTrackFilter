@@ -220,6 +220,8 @@ img {
 /***************  SEARCH & BUTTON STYLING  ***************/
 #header-key {
   background: rgb(255, 155, 155);
+  /* env variables working, button is no longer necessary but keeping it if needed in the future */
+  visibility: hidden;
 }
 #header-key:active {
   background-color: #3e8e41;

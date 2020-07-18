@@ -6,7 +6,7 @@
 let getBasicToken = (env, event) => {
     let baseurl = "https://accounts.spotify.com/api/token"
     let encodedID = btoa(`${env.clientID}:${env.secretID}`)
-    console.log(`client: ${env.clientID} \nsecret: ${env.secretID} \nencoded: ${encodedID}`);
+    // console.log(`client: ${env.clientID} \nsecret: ${env.secretID} \nencoded: ${encodedID}`);
 
     //log below is for testing ajax query using command prompt
     //console.log(`curl -X "POST" -H "Authorization: Basic ${encodedID}" -d grant_type=client_credentials ${baseurl}`);

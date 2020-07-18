@@ -158,6 +158,11 @@ img {
   margin-top: 115px;
 }
 
+/* env variables working, apikey div is no longer necessary but keeping it if needed in the future */
+#header-key-div {
+  visibility: hidden;
+}
+
 /*Display tooltip when any part of div is hovered over*/
 .button-div:hover .header-tooltiptext, .button-div:hover .tooltip-inner, .button-div:hover .header-tooltip {
   pointer-events: auto;
@@ -220,8 +225,6 @@ img {
 /***************  SEARCH & BUTTON STYLING  ***************/
 #header-key {
   background: rgb(255, 155, 155);
-  /* env variables working, button is no longer necessary but keeping it if needed in the future */
-  visibility: hidden;
 }
 #header-key:active {
   background-color: #3e8e41;

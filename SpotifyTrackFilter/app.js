@@ -614,7 +614,6 @@ let initialSearchHandler = (event) => {
 
     //if client and secret ids already exist in environment variables then go straight to token method and reassign click event. also if token does not exist then run because that means you need a token. 
     //no longer necessary due to env variables working with heroku method. keeping this in case needed in future. 
-    
     if (typeof (CLIENT_ID) === 'string' && typeof (CLIENT_SECRET) === 'string' && !event.data.tokenExists) {
         boolOff = true
         getBasicToken(CLIENT_ID, CLIENT_SECRET, event)

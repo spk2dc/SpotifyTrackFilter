@@ -618,7 +618,7 @@ let initialSearchHandler = (event) => {
         boolOff = true
         getBasicToken(CLIENT_ID, CLIENT_SECRET, event)
     }
-    
+
 
     if (boolOff) {
         //remove click/keypress events for search so these first event listeners only run the token authentication method once
@@ -669,6 +669,20 @@ let gitRepoInformation = () => {
     })
 }
 
+//pull instructions from the readme file so they are always in synce and up to date
+let pullFromReadME = () => {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            console.log(`xhr.onreadystatechange -> xhr.responseText`, xhr.responseText)
+            $('#readme-text').text = xhr.responseText
+        }
+    }
+    xhr.open('GET', './README.md', true);
+    xhr.send(null);
+}
+
+//get environment variables from Spotify backend repository (https://github.com/spk2dc/SpotifyGitHubBackend) hosted on Heroku so that they are not exposed publicly
 let getHerokuENV = (env) => {
     $.ajax({
         url: 'https://spotify-github-backend.herokuapp.com/spotify-variables',
@@ -700,6 +714,7 @@ $(() => {
     });
 
     gitRepoInformation()
+    pullFromReadME()
 
     let env = {
         clientID: '',
@@ -799,5 +814,7 @@ https://stackoverflow.com/questions/42418925/prevent-click-event-for-two-seconds
 https://davidwalsh.name/event-delegate
 
 https://stackoverflow.com/questions/3664381/force-page-scroll-position-to-top-at-page-refresh-in-html
+
+https://stackoverflow.com/questions/3038901/how-to-get-the-response-of-xmlhttprequest
 
 */

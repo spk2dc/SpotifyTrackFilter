@@ -719,12 +719,12 @@ $(() => {
     $('#header-key').on('click', (event) => {
         event.preventDefault();
         let userID = $('#apikeys').val().split(':')
-        env.clientID = userID[0]
-        env.secretID = userID[1]
+        // env.clientID = userID[0]
+        // env.secretID = userID[1]
         console.log($(this));
 
         //get spotify authentication token before any other method can work
-        getBasicToken(env.clientID, env.secretID, event)
+        getBasicToken(env)
     })
     $('#apikeys').on('keypress', (event) => {
         if (event.keyCode === 13) {

@@ -89,11 +89,9 @@ img {
   height: auto;
 }
 
-#readme-text ul {
-  text-align: left;
-}
-
 #readme-text li {
+  text-align: left;
+  list-style: disc;
   display: list-item;
 }
 

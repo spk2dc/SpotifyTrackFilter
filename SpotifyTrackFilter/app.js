@@ -675,7 +675,7 @@ let pullFromReadME = () => {
     xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             console.log(`xhr.onreadystatechange -> xhr.responseText`, xhr.responseText)
-            $('#readme-text').text = xhr.responseText
+            $('#readme-text').text(xhr.responseText)
         }
     }
     xhr.open('GET', './README.md', true);

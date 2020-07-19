@@ -99,7 +99,7 @@ img {
   display: list-item;
 }
 
-#readme-text.sub-li-item {
+#readme-text li.sub-li-item {
   list-style: none;
 }
 

@@ -9,23 +9,22 @@
 * Document Object Model (DOM) manipulation 
 * Event listeners and handlers
 
+### Purpose
+Search for a keyword or specific album/playlist and use this website to filter all the tracks returned based on their musical properties to create a more specific playlist of songs.
 
 ### Instructions
 [Click here for live Spotify Track Filter website](https://spk2dc.github.io/SpotifyTrackFilter/)
 
-1. #### Authentication
-    * Provide a Spotify API key in the top left input in the following layout "client_id:client_secret" (without quotes) and hit enter for token authentication. Input field will turn from red to green if successfully authenticated. [Spotify instructions for getting your API key](https://developer.spotify.com/documentation/web-api/quick-start/)
+1. #### Searching
+    * Search Spotify database for albums, artists, playlists, and tracks normally using keywords
+    * Or input a specific album or playlist URL copied from Spotify with the following layout "https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK" (without quotes)
 
-2. #### Searching
-    * Search Spotify database for albums, artists, playlists, and tracks
-    * Input a specific album or playlist URL copied from Spotify with the following layout "https://open.spotify.com/album/7tHPr5YXzvm42CeCjUFqBK" (without quotes)
-
-3. #### Filtering
+2. #### Filtering
     * Select desired filters, adjusting values and selecting whether a filtered track's values should be above or below the input value
       * Click run checked filters with no filters checked to display all tracks from a search result
       * Hover over a filter option to view a description of its meaning with a clickable picture of the standard value distrubtions
 
-4. #### Track Analysis
+3. #### Track Analysis
     * Scroll down once filters have finished running to view all resulting track that match the selected filter criteria
     * Click each result to display a detailed audio analysis of the track
 

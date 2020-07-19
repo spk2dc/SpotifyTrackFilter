@@ -714,7 +714,8 @@ $(() => {
     });
 
     gitRepoInformation()
-    pullFromReadME()
+    //not using since too much work to parse text returned from readme
+    //pullFromReadME()
 
     let env = {
         clientID: '',

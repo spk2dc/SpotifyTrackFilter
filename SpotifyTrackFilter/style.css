@@ -93,6 +93,10 @@ img {
   font-size: 1.1em;
 }
 
+#readme-text ul {
+  width: initial;
+}
+
 #readme-text li {
   text-align: left;
   list-style: disc;

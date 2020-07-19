@@ -89,6 +89,14 @@ img {
   height: auto;
 }
 
+#readme-text ul {
+  text-align: left;
+}
+
+#readme-text li {
+  display: list-item;
+}
+
 /*****************  HEADER BOX STYLING  ******************/
 #header-box {
   text-align: left;

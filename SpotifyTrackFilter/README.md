@@ -10,7 +10,7 @@
 * Event listeners and handlers
 
 ### Purpose
-Search for a keyword or specific album/playlist and use this website to filter all the tracks returned based on their musical properties to create a more specific playlist of songs.
+Search for a keyword or specific album/playlist then filter all the tracks returned based on their musical properties to create a more specific playlist of songs.
 
 ### Instructions
 [Click here for live Spotify Track Filter website](https://spk2dc.github.io/SpotifyTrackFilter/)

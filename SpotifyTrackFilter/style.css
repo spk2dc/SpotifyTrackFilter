@@ -95,6 +95,10 @@ img {
   display: list-item;
 }
 
+#readme-text.sub-li-item {
+  list-style: none;
+}
+
 /*****************  HEADER BOX STYLING  ******************/
 #header-box {
   text-align: left;

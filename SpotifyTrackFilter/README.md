@@ -25,7 +25,7 @@ Search for a keyword or specific album/playlist and use this website to filter a
       * Hover over a filter option to view a description of its meaning with a clickable picture of the standard value distrubtions
 
 3. #### Track Analysis
-    * Scroll down once filters have finished running to view all resulting track that match the selected filter criteria
+    * Scroll down once filters have finished running to view all resulting tracks that match the selected filter criteria
     * Click each result to display a detailed audio analysis of the track
 
 

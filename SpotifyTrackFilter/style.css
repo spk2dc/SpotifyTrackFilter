@@ -89,6 +89,11 @@ img {
   height: auto;
 }
 
+#spotify-icon {
+  vertical-align: text-bottom;
+  margin-right: 8px;
+}
+
 #readme-text p {
   font-size: 1.1em;
 }

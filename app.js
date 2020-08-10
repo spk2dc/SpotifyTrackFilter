@@ -634,8 +634,8 @@ let initialSearchHandler = (event) => {
 
 //run queries to github api to get this repo and its commits
 let gitRepoInformation = () => {
-    let baseurl = `https://api.github.com/repos/spk2dc/spk2dc.github.io`
-    //curl -i https://api.github.com/repos/spk2dc/spk2dc.github.io
+    let baseurl = `https://api.github.com/repos/spk2dc/SpotifyTrackFilter`
+    //curl -i https://api.github.com/repos/spk2dc/SpotifyTrackFilter
 
     let arrPromise = []
 
